@@ -14,5 +14,8 @@
 		"charset",
 		"icu"
 	],
-	"license": "BSD-2-Clause"
+	"license": "BSD-2-Clause",
+	"devDependencies": {
+		"mocha": "^2.1.0"
+	}
 }
