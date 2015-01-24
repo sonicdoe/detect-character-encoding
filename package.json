@@ -15,6 +15,9 @@
 		"icu"
 	],
 	"license": "BSD-2-Clause",
+	"scripts": {
+		"test": "mocha"
+	},
 	"devDependencies": {
 		"mocha": "^2.1.0"
 	}
