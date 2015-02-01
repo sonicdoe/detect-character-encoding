@@ -18,6 +18,9 @@
 	"scripts": {
 		"test": "mocha"
 	},
+	"dependencies": {
+		"nan": "^1.6.1"
+	},
 	"devDependencies": {
 		"mocha": "^2.1.0"
 	}
