@@ -1,0 +1,13 @@
+# http://editorconfig.org
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.{js,h,c,cpp}]
+indent_style = tab
+
+[*.{md,yml}]
+indent_style = space
+indent_size = 2
