@@ -1,0 +1,18 @@
+{
+	"name": "detect-character-encoding",
+	"version": "0.1.0",
+	"author": "Jakob Krigovsky <jakob.krigovsky@gmail.com>",
+	"description": "Detect character encoding using ICU.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SonicHedgehog/detect-character-encoding.git"
+	},
+	"keywords": [
+		"detect",
+		"character",
+		"encoding",
+		"charset",
+		"icu"
+	],
+	"license": "BSD-2-Clause"
+}
