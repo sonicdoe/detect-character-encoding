@@ -19,6 +19,7 @@
 		"test": "mocha"
 	},
 	"dependencies": {
+		"bindings": "^1.2.1",
 		"nan": "^1.6.1"
 	},
 	"devDependencies": {
