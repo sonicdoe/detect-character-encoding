@@ -7,9 +7,9 @@
 
 {
   'variables': {
-    'icu_src_derb': [ '../../deps/icu/source/tools/genrb/derb.c' ],
+    'icu_src_derb': [ 'tools/genrb/derb.c' ],
   },
-  'includes': [ '../../icu_config.gypi' ],
+  'includes': [ 'icu_config.gypi' ],
   'targets': [
     {
       # a target for additional uconfig defines, target only
@@ -119,40 +119,40 @@
               ## Made ICU-specific for future-proofing.
 
               # alphabetic index
-              '../../deps/icu/source/i18n/alphaindex.cpp',
+              'i18n/alphaindex.cpp',
               # BOCSU
               # misc
-              '../../deps/icu/source/i18n/regexcmp.cpp',
-              '../../deps/icu/source/i18n/regexcmp.h',
-              '../../deps/icu/source/i18n/regexcst.h',
-              '../../deps/icu/source/i18n/regeximp.cpp',
-              '../../deps/icu/source/i18n/regeximp.h',
-              '../../deps/icu/source/i18n/regexst.cpp',
-              '../../deps/icu/source/i18n/regexst.h',
-              '../../deps/icu/source/i18n/regextxt.cpp',
-              '../../deps/icu/source/i18n/regextxt.h',
-              '../../deps/icu/source/i18n/region.cpp',
-              '../../deps/icu/source/i18n/region_impl.h',
-              '../../deps/icu/source/i18n/reldatefmt.cpp',
-              '../../deps/icu/source/i18n/reldatefmt.h'
-              '../../deps/icu/source/i18n/scientificformathelper.cpp',
-              '../../deps/icu/source/i18n/tmunit.cpp',
-              '../../deps/icu/source/i18n/tmutamt.cpp',
-              '../../deps/icu/source/i18n/tmutfmt.cpp',
-              '../../deps/icu/source/i18n/uregex.cpp',
-              '../../deps/icu/source/i18n/uregexc.cpp',
-              '../../deps/icu/source/i18n/uregion.cpp',
-              '../../deps/icu/source/i18n/uspoof.cpp',
-              '../../deps/icu/source/i18n/uspoof_build.cpp',
-              '../../deps/icu/source/i18n/uspoof_conf.cpp',
-              '../../deps/icu/source/i18n/uspoof_conf.h',
-              '../../deps/icu/source/i18n/uspoof_impl.cpp',
-              '../../deps/icu/source/i18n/uspoof_impl.h',
-              '../../deps/icu/source/i18n/uspoof_wsconf.cpp',
-              '../../deps/icu/source/i18n/uspoof_wsconf.h',
+              'i18n/regexcmp.cpp',
+              'i18n/regexcmp.h',
+              'i18n/regexcst.h',
+              'i18n/regeximp.cpp',
+              'i18n/regeximp.h',
+              'i18n/regexst.cpp',
+              'i18n/regexst.h',
+              'i18n/regextxt.cpp',
+              'i18n/regextxt.h',
+              'i18n/region.cpp',
+              'i18n/region_impl.h',
+              'i18n/reldatefmt.cpp',
+              'i18n/reldatefmt.h'
+              'i18n/scientificformathelper.cpp',
+              'i18n/tmunit.cpp',
+              'i18n/tmutamt.cpp',
+              'i18n/tmutfmt.cpp',
+              'i18n/uregex.cpp',
+              'i18n/uregexc.cpp',
+              'i18n/uregion.cpp',
+              'i18n/uspoof.cpp',
+              'i18n/uspoof_build.cpp',
+              'i18n/uspoof_conf.cpp',
+              'i18n/uspoof_conf.h',
+              'i18n/uspoof_impl.cpp',
+              'i18n/uspoof_impl.h',
+              'i18n/uspoof_wsconf.cpp',
+              'i18n/uspoof_wsconf.h',
             ]}]],
           'include_dirs': [
-            '../../deps/icu/source/i18n',
+            'i18n',
           ],
           'defines': [
             'U_I18N_IMPLEMENTATION=1',
@@ -160,7 +160,7 @@
           'dependencies': [ 'icuucx', 'icu_implementation', 'icu_uconfig', 'icu_uconfig_target' ],
           'direct_dependent_settings': {
             'include_dirs': [
-              '../../deps/icu/source/i18n',
+              'i18n',
             ],
           },
           'export_dependent_settings': [ 'icuucx', 'icu_uconfig_target' ],
@@ -242,7 +242,7 @@
               'sources': [ '<(SHARED_INTERMEDIATE_DIR)/icudt<(icu_ver_major)_dat.c' ],
               'dependencies': [ 'genccode#host', 'icupkg#host', 'icu_implementation#host', 'icu_uconfig' ],
               'include_dirs': [
-                '../../deps/icu/source/common',
+                'common',
               ],
               'actions': [
                 {
@@ -322,7 +322,7 @@
               'sources': [ '<(SHARED_INTERMEDIATE_DIR)/icusmdt<(icu_ver_major)_dat.c' ],
               # for umachine.h
               'include_dirs': [
-                '../../deps/icu/source/common',
+                'common',
               ],
             }]], # end icu_small == true
         }]], # end OS != win
@@ -338,7 +338,7 @@
         '<@(icu_src_stubdata)'
       ],
       'include_dirs': [
-        '../../deps/icu/source/common',
+        'common',
       ],
     },
     # this target is for v8 consumption.
@@ -377,24 +377,24 @@
           ## Made ICU-specific for future-proofing.
 
           # bidi- not needed (yet!)
-          '../../deps/icu/source/common/ubidi.c',
-          '../../deps/icu/source/common/ubidiimp.h',
-          '../../deps/icu/source/common/ubidiln.c',
-          '../../deps/icu/source/common/ubidiwrt.c',
-          #'../../deps/icu/source/common/ubidi_props.c',
-          #'../../deps/icu/source/common/ubidi_props.h',
-          #'../../deps/icu/source/common/ubidi_props_data.h',
+          'common/ubidi.c',
+          'common/ubidiimp.h',
+          'common/ubidiln.c',
+          'common/ubidiwrt.c',
+          #'common/ubidi_props.c',
+          #'common/ubidi_props.h',
+          #'common/ubidi_props_data.h',
           # and the callers
-          '../../deps/icu/source/common/ushape.cpp',
-          '../../deps/icu/source/common/usprep.cpp',
-          '../../deps/icu/source/common/uts46.cpp',
+          'common/ushape.cpp',
+          'common/usprep.cpp',
+          'common/uts46.cpp',
         ]}],
         [ 'OS == "solaris"', { 'defines': [
           '_XOPEN_SOURCE_EXTENDED=0',
         ]}],
       ],
       'include_dirs': [
-        '../../deps/icu/source/common',
+        'common',
       ],
       'defines': [
         'U_COMMON_IMPLEMENTATION=1',
@@ -403,7 +403,7 @@
       'export_dependent_settings': [ 'icu_uconfig', 'icu_uconfig_target' ],
       'direct_dependent_settings': {
         'include_dirs': [
-          '../../deps/icu/source/common',
+          'common',
         ],
         'conditions': [
           [ 'OS=="win"', {
@@ -428,16 +428,16 @@
         '<@(icu_src_stubdata)',
       ],
       'sources!': [
-        '../../deps/icu/source/tools/toolutil/udbgutil.cpp',
-        '../../deps/icu/source/tools/toolutil/udbgutil.h',
-        '../../deps/icu/source/tools/toolutil/dbgutil.cpp',
-        '../../deps/icu/source/tools/toolutil/dbgutil.h',
+        'tools/toolutil/udbgutil.cpp',
+        'tools/toolutil/udbgutil.h',
+        'tools/toolutil/dbgutil.cpp',
+        'tools/toolutil/dbgutil.h',
       ],
       'include_dirs': [
-        '../../deps/icu/source/common',
-        '../../deps/icu/source/i18n',
-        '../../deps/icu/source/io',
-        '../../deps/icu/source/tools/toolutil',
+        'common',
+        'i18n',
+        'io',
+        'tools/toolutil',
       ],
       'defines': [
         'U_COMMON_IMPLEMENTATION=1',
@@ -454,10 +454,10 @@
       ],
       'direct_dependent_settings': {
         'include_dirs': [
-          '../../deps/icu/source/common',
-          '../../deps/icu/source/i18n',
-          '../../deps/icu/source/io',
-          '../../deps/icu/source/tools/toolutil',
+          'common',
+          'i18n',
+          'io',
+          'tools/toolutil',
         ],
         'conditions': [
           [ 'OS=="win"', {
