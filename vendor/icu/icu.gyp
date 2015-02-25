@@ -16,11 +16,6 @@
       'target_name': 'icu_uconfig_target',
       'type': 'none',
       'toolsets': [ 'target' ],
-      'direct_dependent_settings': {
-        'defines': [
-          'UCONFIG_NO_CONVERSION=1',
-        ]
-      },
     },
     {
       # a target to hold uconfig defines.
