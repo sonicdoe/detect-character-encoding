@@ -162,8 +162,6 @@
         }],
         ['_toolset=="host"', {
           'type': 'none',
-          'dependencies': [ 'icutools' ],
-          'export_dependent_settings': [ 'icutools' ],
         }],
       ],
     },
