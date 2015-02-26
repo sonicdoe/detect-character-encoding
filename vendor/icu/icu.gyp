@@ -8,6 +8,13 @@
 {
   'variables': {
     'icu_src_derb': [ 'tools/genrb/derb.c' ],
+    'conditions': [
+      ['OS == "win"', {
+        'os_posix': 0,
+      }, {
+        'os_posix': 1,
+      }],
+    ],
   },
   'includes': [ 'icu_config.gypi' ],
   'targets': [
