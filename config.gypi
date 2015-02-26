@@ -7,6 +7,7 @@
 		"icu_locales": "en,root",
 		"icu_path": ".",
 		"icu_small": "true",
-		"icu_ver_major": "54"
+		"icu_ver_major": "54",
+		"library": "static_library"
 	}
 }
