@@ -77,6 +77,8 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## Release history
 
+- v0.1.0 (2015-03-15): Initial release.
+
 ## License
 
 detect-character-encoding is licensed under the BSD 2-clause license, subject to additional terms. See [LICENSE](./LICENSE) for the full license text.
