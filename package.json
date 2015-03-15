@@ -16,6 +16,10 @@
 	],
 	"license": "BSD-2-Clause",
 	"files": [
+		"vendor/icu/icu.gyp",
+		"vendor/icu/icu_config.gypi",
+		"vendor/icu/common",
+		"vendor/icu/i18n",
 		"binding.gyp",
 		"config.gypi",
 		"icuWrapper.cpp",
