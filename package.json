@@ -15,6 +15,13 @@
 		"icu"
 	],
 	"license": "BSD-2-Clause",
+	"files": [
+		"binding.gyp",
+		"config.gypi",
+		"icuWrapper.cpp",
+		"index.js",
+		"LICENSE"
+	],
 	"scripts": {
 		"test": "mocha"
 	},
