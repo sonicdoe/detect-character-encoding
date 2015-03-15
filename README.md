@@ -1,5 +1,7 @@
 # detect-character-encoding
 
+[![Node.js package](http://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
+
 Detect character encoding using [ICU](http://site.icu-project.org).
 
 ## Getting started
