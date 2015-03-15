@@ -1,0 +1,39 @@
+{
+	"name": "detect-character-encoding",
+	"version": "0.1.0",
+	"author": "Jakob Krigovsky <jakob.krigovsky@gmail.com>",
+	"description": "Detect character encoding using ICU.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SonicHedgehog/detect-character-encoding.git"
+	},
+	"keywords": [
+		"detect",
+		"character",
+		"encoding",
+		"charset",
+		"icu"
+	],
+	"license": "BSD-2-Clause",
+	"files": [
+		"vendor/icu/icu.gyp",
+		"vendor/icu/icu_config.gypi",
+		"vendor/icu/common",
+		"vendor/icu/i18n",
+		"binding.gyp",
+		"config.gypi",
+		"icuWrapper.cpp",
+		"index.js",
+		"LICENSE"
+	],
+	"scripts": {
+		"test": "mocha"
+	},
+	"dependencies": {
+		"bindings": "^1.2.1",
+		"nan": "^1.6.1"
+	},
+	"devDependencies": {
+		"mocha": "^2.1.0"
+	}
+}
