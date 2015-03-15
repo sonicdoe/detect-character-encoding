@@ -26,6 +26,17 @@ console.log(charsetMatch);
 // }
 ```
 
+## Supported environments
+
+detect-character-encoding should work fine on:
+
+- Ubuntu 12.04 x64
+- Ubuntu 14.04 x64
+- Debian 7 x64
+- OS X 10.9
+
+You may currently encounter issues on 32-bit systems and Windows.
+
 ## Supported character sets
 
 As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/detection#TOC-Detected-Encodings):
