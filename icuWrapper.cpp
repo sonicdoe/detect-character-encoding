@@ -4,9 +4,9 @@
 #include <unicode/ucsdet.h>
 
 NAN_METHOD(DetectCharacterEncoding) {
-	NanScope();
+	Nan::HandleScope scope;
 
-	v8::Local<v8::Object> inputBuffer = args[0]->ToObject();
+	v8::Local<v8::Object> inputBuffer = info[0]->ToObject();
 
 	UCharsetDetector *charsetDetector;
 	const UCharsetMatch *charsetMatch;
@@ -15,7 +15,7 @@ NAN_METHOD(DetectCharacterEncoding) {
 	charsetDetector = ucsdet_open(&errorCode);
 
 	if(U_FAILURE(errorCode)) {
-		NanThrowError("Failed to open ICU charset detector.");
+		Nan::ThrowError("Failed to open ICU charset detector.");
 	}
 
 	ucsdet_setText(
@@ -26,37 +26,37 @@ NAN_METHOD(DetectCharacterEncoding) {
 	);
 
 	if(U_FAILURE(errorCode)) {
-		NanThrowError("Failed to set ICU charset detector’s text.");
+		Nan::ThrowError("Failed to set ICU charset detector’s text.");
 	}
 
 	charsetMatch = ucsdet_detect(charsetDetector, &errorCode);
 
 	if(U_FAILURE(errorCode)) {
-		NanThrowError("Failed to detect charset.");
+		Nan::ThrowError("Failed to detect charset.");
 	}
 
 	const char *charsetName = ucsdet_getName(charsetMatch, &errorCode);
 
 	if(U_FAILURE(errorCode)) {
-		NanThrowError("Failed to get name from charset match.");
+		Nan::ThrowError("Failed to get name from charset match.");
 	}
 
 	int32_t confidence = ucsdet_getConfidence(charsetMatch, &errorCode);
 
 	if(U_FAILURE(errorCode)) {
-		NanThrowError("Failed to get confidence from charset match.");
+		Nan::ThrowError("Failed to get confidence from charset match.");
 	}
 
-	v8::Local<v8::Object> obj = NanNew<v8::Object>();
-	obj->Set(NanNew<v8::String>("encoding"), NanNew<v8::String>(charsetName));
-	obj->Set(NanNew<v8::String>("confidence"), NanNew<v8::Number>(confidence));
+	v8::Local<v8::Object> obj = Nan::New<v8::Object>();
+	obj->Set(Nan::New<v8::String>("encoding").ToLocalChecked(), Nan::New<v8::String>(charsetName).ToLocalChecked());
+	obj->Set(Nan::New<v8::String>("confidence").ToLocalChecked(), Nan::New<v8::Number>(confidence));
 
-	NanReturnValue(obj);
+	info.GetReturnValue().Set(obj);
 }
 
-void Init(v8::Handle<v8::Object> exports) {
-	exports->Set(NanNew<v8::String>("detectCharacterEncoding"),
-		NanNew<v8::FunctionTemplate>(DetectCharacterEncoding)->GetFunction());
+void Init(v8::Local<v8::Object> exports) {
+	exports->Set(Nan::New<v8::String>("detectCharacterEncoding").ToLocalChecked(),
+		Nan::New<v8::FunctionTemplate>(DetectCharacterEncoding)->GetFunction());
 }
 
 NODE_MODULE(icuWrapper, Init);
