@@ -77,6 +77,7 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## Release history
 
+- v0.2.0 (2015-09-15): Add support for Node.js v4.
 - v0.1.0 (2015-03-15): Initial release.
 
 ## License
