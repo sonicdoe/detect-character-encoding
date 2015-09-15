@@ -1,6 +1,6 @@
 {
 	"name": "detect-character-encoding",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"author": "Jakob Krigovsky <jakob.krigovsky@gmail.com>",
 	"description": "Detect character encoding using ICU.",
 	"repository": {
@@ -31,7 +31,7 @@
 	},
 	"dependencies": {
 		"bindings": "^1.2.1",
-		"nan": "^1.6.1"
+		"nan": "^2.0.9"
 	},
 	"devDependencies": {
 		"mocha": "^2.1.0"
