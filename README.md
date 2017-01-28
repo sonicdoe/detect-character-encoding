@@ -1,7 +1,7 @@
 # detect-character-encoding
 
 [![Node.js package](http://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
-[![Linux Build Status](http://img.shields.io/travis/SonicHedgehog/detect-character-encoding/develop.svg)](https://travis-ci.org/SonicHedgehog/detect-character-encoding)
+[![Linux Build Status](http://img.shields.io/travis/sonicdoe/detect-character-encoding/develop.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
 
 Detect character encoding using [ICU](http://site.icu-project.org).
 
