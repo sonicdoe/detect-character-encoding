@@ -77,6 +77,8 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## Release history
 
+- v0.3.0 (2017-01-28): Add support for Node.js v6 and v7 and
+  drop support for Node.js v0.10 and v0.12.
 - v0.2.1 (2015-12-28): Republish because v0.2.0 didn’t include `config.gypi`.
 - v0.2.0 (2015-09-15): Add support for Node.js v4.
 - v0.1.0 (2015-03-15): Initial release.
