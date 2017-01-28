@@ -10,9 +10,6 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
-install:
-  - "npm install -g npm"
-  - "npm install"
 matrix:
   fast_finish: true
 sudo: false
