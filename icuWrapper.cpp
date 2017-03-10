@@ -16,6 +16,7 @@ NAN_METHOD(DetectCharacterEncoding) {
 
 	if(U_FAILURE(errorCode)) {
 		Nan::ThrowError("Failed to open ICU charset detector.");
+		return;
 	}
 
 	ucsdet_setText(
@@ -27,24 +28,32 @@ NAN_METHOD(DetectCharacterEncoding) {
 
 	if(U_FAILURE(errorCode)) {
 		Nan::ThrowError("Failed to set ICU charset detector’s text.");
+		ucsdet_close(charsetDetector);
+		return;
 	}
 
 	charsetMatch = ucsdet_detect(charsetDetector, &errorCode);
 
 	if(U_FAILURE(errorCode)) {
 		Nan::ThrowError("Failed to detect charset.");
+		ucsdet_close(charsetDetector);
+		return;
 	}
 
 	const char *charsetName = ucsdet_getName(charsetMatch, &errorCode);
 
 	if(U_FAILURE(errorCode)) {
 		Nan::ThrowError("Failed to get name from charset match.");
+		ucsdet_close(charsetDetector);
+		return;
 	}
 
 	int32_t confidence = ucsdet_getConfidence(charsetMatch, &errorCode);
 
 	if(U_FAILURE(errorCode)) {
 		Nan::ThrowError("Failed to get confidence from charset match.");
+		ucsdet_close(charsetDetector);
+		return;
 	}
 
 	v8::Local<v8::Object> obj = Nan::New<v8::Object>();
@@ -52,6 +61,7 @@ NAN_METHOD(DetectCharacterEncoding) {
 	obj->Set(Nan::New<v8::String>("confidence").ToLocalChecked(), Nan::New<v8::Number>(confidence));
 
 	info.GetReturnValue().Set(obj);
+	ucsdet_close(charsetDetector);
 }
 
 void Init(v8::Local<v8::Object> exports) {
