@@ -1,10 +1,10 @@
 'use strict';
 
-var assert = require('assert');
-var fs = require('fs');
-var path = require('path');
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 
-var detectCharacterEncoding = require('..');
+const detectCharacterEncoding = require('..');
 
 function getFixture(fixture) {
 	return fs.readFileSync(path.join(__dirname, 'fixtures', fixture));

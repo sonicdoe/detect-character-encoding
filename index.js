@@ -1,6 +1,6 @@
 'use strict';
 
-var bindings = require('bindings')('icuWrapper.node');
+const bindings = require('bindings')('icuWrapper.node');
 
 module.exports = function(buf) {
 	if(!Buffer.isBuffer(buf)) {

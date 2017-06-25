@@ -16,11 +16,11 @@ $ npm install detect-character-encoding --save
 Use it like this:
 
 ```js
-var fs = require('fs');
-var detectCharacterEncoding = require('detect-character-encoding');
+const fs = require('fs');
+const detectCharacterEncoding = require('detect-character-encoding');
 
-var fileBuffer = fs.readFileSync('file.txt');
-var charsetMatch = detectCharacterEncoding(fileBuffer);
+const fileBuffer = fs.readFileSync('file.txt');
+const charsetMatch = detectCharacterEncoding(fileBuffer);
 
 console.log(charsetMatch);
 // {
