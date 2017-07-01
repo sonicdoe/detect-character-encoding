@@ -10,16 +10,16 @@ function getFixture(fixture) {
 	return fs.readFileSync(path.join(__dirname, 'fixtures', fixture));
 }
 
-it('should return the encoding', function() {
+it('should return the encoding', () => {
 	assert.equal(detectCharacterEncoding(getFixture('utf-8.txt')).encoding, 'UTF-8');
 });
 
-it('should return a confidence value', function() {
+it('should return a confidence value', () => {
 	assert(typeof detectCharacterEncoding(getFixture('utf-8.txt')).confidence === 'number');
 });
 
-it('should throw a TypeError if argument is not a buffer', function() {
-	assert.throws(function() {
+it('should throw a TypeError if argument is not a buffer', () => {
+	assert.throws(() => {
 		detectCharacterEncoding('string');
 	}, TypeError);
 });
