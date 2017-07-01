@@ -8,4 +8,4 @@ module.exports = buf => {
 	}
 
 	return bindings.detectCharacterEncoding(buf);
-}
+};
