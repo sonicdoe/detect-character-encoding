@@ -10,7 +10,7 @@ Detect character encoding using [ICU](http://site.icu-project.org).
 Install using:
 
 ```shell
-$ npm install detect-character-encoding --save
+$ npm install detect-character-encoding
 ```
 
 Use it like this:
