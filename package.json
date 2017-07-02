@@ -1,6 +1,6 @@
 {
 	"name": "detect-character-encoding",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"author": "Jakob Krigovsky <jakob@krigovsky.com>",
 	"description": "Detect character encoding using ICU.",
 	"repository": {
