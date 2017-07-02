@@ -1,3 +1,5 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
 * Copyright (C) 2010-2014, International Business Machines
@@ -21,6 +23,8 @@ U_NAMESPACE_BEGIN
 // Some compilers don't care if constants are defined in the .cpp file.
 // MS Visual C++ does not like it, but gcc requires it. clang does not care.
 #ifndef _MSC_VER
+const uint8_t Collation::LEVEL_SEPARATOR_BYTE;
+const uint8_t Collation::MERGE_SEPARATOR_BYTE;
 const uint32_t Collation::ONLY_TERTIARY_MASK;
 const uint32_t Collation::CASE_AND_TERTIARY_MASK;
 #endif

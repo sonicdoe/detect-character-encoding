@@ -198,6 +198,9 @@
     <ClCompile Include="cpluralrulestest.c">
       <Filter>formatting</Filter>
     </ClCompile>
+    <ClCompile Include="crelativedateformattest.c">
+      <Filter>formatting</Filter>
+    </ClCompile>
     <ClCompile Include="currtest.c">
       <Filter>formatting</Filter>
     </ClCompile>
@@ -208,6 +211,9 @@
       <Filter>formatting</Filter>
     </ClCompile>
     <ClCompile Include="uregiontest.c">
+      <Filter>formatting</Filter>
+    </ClCompile>
+    <ClCompile Include="ulistfmttest.c">
       <Filter>formatting</Filter>
     </ClCompile>
     <ClCompile Include="cldrtest.c">
@@ -296,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="spooftest.c">
       <Filter>spoof</Filter>
+    </ClCompile>
+    <ClCompile Include="cbiditransformtst.c">
+      <Filter>bidi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

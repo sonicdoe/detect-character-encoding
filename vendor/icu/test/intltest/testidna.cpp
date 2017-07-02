@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
  *******************************************************************************
  *
- *   Copyright (C) 2003-2014, International Business Machines
+ *   Copyright (C) 2003-2016, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  *
  *******************************************************************************
@@ -26,6 +28,7 @@
 #include "unicode/ustring.h"
 #include "unicode/usprep.h"
 #include "unicode/uniset.h"
+#include "cmemory.h"
 #include "testidna.h"
 #include "idnaref.h"
 #include "nptrans.h"
@@ -694,7 +697,7 @@ void TestIDNA::testToASCII(const char* testName, TestFunc func){
     int32_t i;
     UChar buf[MAX_DEST_SIZE];
 
-    for(i=0;i< (int32_t)(sizeof(unicodeIn)/sizeof(unicodeIn[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(unicodeIn); i++){
         u_charsToUChars(asciiIn[i],buf, (int32_t)(strlen(asciiIn[i])+1));
         testAPI(unicodeIn[i], buf,testName, FALSE,U_ZERO_ERROR, TRUE, TRUE, func);
         
@@ -706,7 +709,7 @@ void TestIDNA::testToUnicode(const char* testName, TestFunc func){
     int32_t i;
     UChar buf[MAX_DEST_SIZE];
     
-    for(i=0;i< (int32_t)(sizeof(asciiIn)/sizeof(asciiIn[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(asciiIn); i++){
         u_charsToUChars(asciiIn[i],buf, (int32_t)(strlen(asciiIn[i])+1));
         testAPI(buf,unicodeIn[i],testName,FALSE,U_ZERO_ERROR, TRUE, TRUE, func);
     }
@@ -720,7 +723,7 @@ void TestIDNA::testIDNToUnicode(const char* testName, TestFunc func){
     UErrorCode status = U_ZERO_ERROR;
     int32_t bufLen = 0;
     UParseError parseError;
-    for(i=0;i< (int32_t)(sizeof(domainNames)/sizeof(domainNames[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(domainNames); i++){
         bufLen = (int32_t)strlen(domainNames[i]);
         bufLen = u_unescape(domainNames[i],buf, bufLen+1);
         func(buf,bufLen,expected,MAX_DEST_SIZE, UIDNA_ALLOW_UNASSIGNED, &parseError,&status);
@@ -746,7 +749,7 @@ void TestIDNA::testIDNToASCII(const char* testName, TestFunc func){
     UErrorCode status = U_ZERO_ERROR;
     int32_t bufLen = 0;
     UParseError parseError; 
-    for(i=0;i< (int32_t)(sizeof(domainNames)/sizeof(domainNames[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(domainNames); i++){
         bufLen = (int32_t)strlen(domainNames[i]);
         bufLen = u_unescape(domainNames[i],buf, bufLen+1);
         func(buf,bufLen,expected,MAX_DEST_SIZE, UIDNA_ALLOW_UNASSIGNED, &parseError,&status);
@@ -791,7 +794,7 @@ void TestIDNA::testCompare(const char* testName, CompareFunc func){
     ascii1.append(com);
     ascii1.append((UChar)0x0000);
 
-    for(i=0;i< (int32_t)(sizeof(unicodeIn)/sizeof(unicodeIn[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(unicodeIn); i++){
 
         u_charsToUChars(asciiIn[i],buf+4, (int32_t)(strlen(asciiIn[i])+1));
         u_strcat(buf,com);
@@ -874,7 +877,7 @@ void printPunycodeOutput(){
     int32_t labelLen=0;
     UBool caseFlags[MAX_DEST_SIZE];
     
-    for(int32_t i=0;i< sizeof(errorCases)/sizeof(errorCases[0]);i++){
+    for(int32_t i=0;i< UPRV_LENGTHOF(errorCases);i++){
         ErrorCases errorCase = errorCases[i];
         UErrorCode status = U_ZERO_ERROR;
         start = errorCase.unicode;
@@ -900,7 +903,7 @@ void TestIDNA::testErrorCases(const char* IDNToASCIIName, TestFunc IDNToASCII,
     UChar buf[MAX_DEST_SIZE];
     int32_t bufLen=0;
 
-    for(int32_t i=0;i< (int32_t)(sizeof(errorCases)/sizeof(errorCases[0]));i++){
+    for(int32_t i=0;i< UPRV_LENGTHOF(errorCases);i++){
         ErrorCases errorCase = errorCases[i];
         UChar* src =NULL;
         if(errorCase.ascii != NULL){
@@ -941,7 +944,7 @@ void TestIDNA::testConformance(const char* toASCIIName, TestFunc toASCII,
     int32_t srcLen=0;
     UChar expected[MAX_DEST_SIZE];
     int32_t expectedLen = 0;
-    for(int32_t i=0;i< (int32_t)(sizeof(conformanceTestCases)/sizeof(conformanceTestCases[0]));i++){
+    for(int32_t i=0;i< UPRV_LENGTHOF(conformanceTestCases);i++){
         const char* utf8Chars1 = conformanceTestCases[i].in;
         int32_t utf8Chars1Len = (int32_t)strlen(utf8Chars1);
         const char* utf8Chars2 = conformanceTestCases[i].out;
@@ -1152,11 +1155,11 @@ void TestIDNA::testChaining(const char* toASCIIName, TestFunc toASCII,
     int32_t i;
     UChar buf[MAX_DEST_SIZE];
     
-    for(i=0;i< (int32_t)(sizeof(asciiIn)/sizeof(asciiIn[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(asciiIn); i++){
         u_charsToUChars(asciiIn[i],buf, (int32_t)(strlen(asciiIn[i])+1));
         testChaining(buf,5,toUnicodeName, FALSE, FALSE, toUnicode);
     }
-    for(i=0;i< (int32_t)(sizeof(unicodeIn)/sizeof(unicodeIn[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(unicodeIn); i++){
         testChaining(unicodeIn[i], 5,toASCIIName, FALSE, TRUE, toASCII);
     }
 }
@@ -1190,7 +1193,7 @@ void TestIDNA::testRootLabelSeparator(const char* testName, CompareFunc func,
     ascii1.append(com);
     ascii1.append((UChar)0x0000);
 
-    for(i=0;i< (int32_t)(sizeof(unicodeIn)/sizeof(unicodeIn[0])); i++){
+    for(i=0;i< UPRV_LENGTHOF(unicodeIn); i++){
 
         u_charsToUChars(asciiIn[i],buf+4, (int32_t)(strlen(asciiIn[i])+1));
         u_strcat(buf,com);
@@ -1488,7 +1491,7 @@ void TestIDNA::TestIDNAMonkeyTest(){
     }
     
     /* for debugging */
-    for (i=0; i<(int)(sizeof(failures)/sizeof(failures[0])); i++){
+    for (i=0; i<UPRV_LENGTHOF(failures); i++){
         source.truncate(0);
         source.append( UnicodeString(failures[i], -1, US_INV) );
         source = source.unescape();

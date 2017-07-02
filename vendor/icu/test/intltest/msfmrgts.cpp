@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /***********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2011, International Business Machines Corporation
+ * Copyright (c) 1997-2016, International Business Machines Corporation
  * and others. All Rights Reserved.
  ***********************************************************************/
  
@@ -17,6 +19,7 @@
 #include "unicode/numfmt.h"
 #include "unicode/choicfmt.h"
 #include "unicode/gregocal.h"
+#include "cmemory.h"
 #include "putilimp.h"
 
 // *****************************************************************************
@@ -334,7 +337,7 @@ void MessageFormatRegressionTest::Test4104976()
         UnicodeString("xyz"), 
         UnicodeString("abc")
     };
-    int32_t formats_length = (int32_t)(sizeof(formats)/sizeof(formats[0]));
+    int32_t formats_length = UPRV_LENGTHOF(formats);
     UErrorCode status = U_ZERO_ERROR;
     ChoiceFormat *cf = new ChoiceFormat(limits, formats, formats_length);
     failure(status, "new ChoiceFormat");

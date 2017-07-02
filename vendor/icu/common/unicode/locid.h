@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1996-2014, International Business Machines
+*   Copyright (C) 1996-2015, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -493,7 +495,6 @@ public:
      */
     uint32_t        getLCID(void) const;
 
-#ifndef U_HIDE_DRAFT_API
     /**
      * Returns whether this locale's script is written right-to-left.
      * If there is no script subtag, then the likely script is used, see uloc_addLikelySubtags().
@@ -505,10 +506,9 @@ public:
      * Returns TRUE for "ar" and "en-Hebr", FALSE for "zh" and "fa-Cyrl".
      *
      * @return TRUE if the locale's script is written right-to-left
-     * @draft ICU 54
+     * @stable ICU 54
      */
     UBool isRightToLeft() const;
-#endif  /* U_HIDE_DRAFT_API */
 
     /**
      * Fills in "dispLang" with the name of this locale's language in a format suitable for
@@ -750,7 +750,7 @@ private:
     char fullNameBuffer[ULOC_FULLNAME_CAPACITY];
     // name without keywords
     char* baseName;
-    char baseNameBuffer[ULOC_FULLNAME_CAPACITY];
+    void initBaseName(UErrorCode& status);
 
     UBool fIsBogus;
 
@@ -795,7 +795,6 @@ Locale::getScript() const
 inline const char *
 Locale::getVariant() const
 {
-    getBaseName(); // lazy init
     return &baseName[variantBegin];
 }
 

@@ -1,13 +1,12 @@
-﻿// ***************************************************************************
-// *
-// * Copyright (C) 2014 International Business Machines
-// * Corporation and others. All Rights Reserved.
-// * Tool: org.unicode.cldr.icu.NewLdml2IcuConverter
-// * Source File: <path>/common/main/fr_CA.xml
-// *
-// ***************************************************************************
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 fr_CA{
-    Version{"2.1.8.19"}
+    Version{"2.1.27.99"}
+    durationUnits{
+        hm{"h:mm"}
+        hms{"h:mm:ss"}
+        ms{"m:ss"}
+    }
     units{
         acceleration{
             g-force{
@@ -15,9 +14,9 @@ fr_CA{
             }
         }
         angle{
-            arc-minute{
-                one{"{0} minute d’angle"}
-                other{"{0} minutes d’angle"}
+            arc-second{
+                one{"{0} seconde d’angle"}
+                other{"{0} secondes d’angle"}
             }
         }
         area{
@@ -30,6 +29,7 @@ fr_CA{
                 dnam{"milles carrés"}
                 one{"{0} mille carré"}
                 other{"{0} milles carrés"}
+                per{"{0} par mille carré"}
             }
             square-yard{
                 dnam{"verges carrées"}
@@ -37,7 +37,17 @@ fr_CA{
                 other{"{0} verges carrées"}
             }
         }
+        concentr{
+            part-per-million{
+                dnam{"parties par million"}
+                one{"{0} partie par million"}
+                other{"{0} parties par million"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"litres aux 100 kilomètres"}
+            }
             mile-per-gallon{
                 dnam{"milles au gallon"}
                 one{"{0} mille au gallon"}
@@ -47,13 +57,6 @@ fr_CA{
         duration{
             second{
                 per{"{0} à la seconde"}
-            }
-        }
-        energy{
-            foodcalorie{
-                dnam{"kilocalories"}
-                one{"{0} kilocalorie"}
-                other{"{0} kilocalories"}
             }
         }
         length{
@@ -68,14 +71,26 @@ fr_CA{
                 other{"{0} verges"}
             }
         }
+        mass{
+            kilogram{
+                per{"{0} par kilogramme"}
+            }
+        }
         speed{
             kilometer-per-hour{
                 dnam{"kilomètres à l’heure"}
             }
             mile-per-hour{
-                dnam{"milles par heure"}
-                one{"{0} mille par heure"}
-                other{"{0} milles par heure"}
+                dnam{"milles à l’heure"}
+                one{"{0} mille à l’heure"}
+                other{"{0} milles à l’heure"}
+            }
+        }
+        temperature{
+            generic{
+                dnam{"°"}
+                one{"{0}°"}
+                other{"{0}°"}
             }
         }
         volume{
@@ -88,6 +103,12 @@ fr_CA{
                 dnam{"verges cubes"}
                 one{"{0} verge cube"}
                 other{"{0} verges cubes"}
+            }
+            gallon-imperial{
+                dnam{"gallon impérial"}
+                one{"{0} gallon impérial"}
+                other{"{0} gallons impériaux"}
+                per{"{0} par gallon impérial"}
             }
             pint{
                 dnam{"chopine"}
@@ -107,15 +128,17 @@ fr_CA{
         }
     }
     unitsNarrow{
-        duration{
-            month{
-                dnam{"m."}
-            }
-        }
         temperature{
             celsius{
                 one{"{0} °C"}
                 other{"{0} °C"}
+            }
+        }
+        volume{
+            liter{
+                dnam{"L"}
+                one{"{0}L"}
+                other{"{0}L"}
             }
         }
     }
@@ -131,18 +154,27 @@ fr_CA{
                 other{"{0} vg²"}
             }
         }
-        duration{
-            month{
-                dnam{"m."}
-                one{"{0} m."}
-                other{"{0} m."}
+        concentr{
+            karat{
+                dnam{"carats"}
             }
         }
-        energy{
-            foodcalorie{
-                dnam{"kcal"}
-                one{"{0} kcal"}
-                other{"{0} kcal"}
+        consumption{
+            mile-per-gallon-imperial{
+                dnam{"mi/gal Imp"}
+                one{"{0} mi/gal Imp"}
+                other{"{0} mi/gal Imp"}
+            }
+        }
+        digital{
+            gigabit{
+                dnam{"Gb"}
+            }
+            kilobit{
+                dnam{"kb"}
+            }
+            megabit{
+                dnam{"Mb"}
             }
         }
         length{
@@ -153,11 +185,6 @@ fr_CA{
             foot{
                 one{"{0} pi"}
                 other{"{0} pi"}
-            }
-            light-year{
-                dnam{"al"}
-                one{"{0} al"}
-                other{"{0} al"}
             }
             nautical-mile{
                 dnam{"NM"}
@@ -178,33 +205,13 @@ fr_CA{
             }
         }
         pressure{
-            inch-hg{
-                dnam{"po Hg"}
-                one{"{0} po Hg"}
-                other{"{0} po Hg"}
-            }
             pound-per-square-inch{
                 dnam{"psi"}
-                one{"{0} psi"}
+                one{"{0} psi"}
                 other{"{0} psi"}
             }
         }
-        proportion{
-            karat{
-                dnam{"carats"}
-            }
-        }
-        speed{
-            meter-per-second{
-                dnam{"mètres par seconde"}
-            }
-        }
         volume{
-            acre-foot{
-                dnam{"ac-pi"}
-                one{"{0} ac-pi"}
-                other{"{0} ac-pi"}
-            }
             centiliter{
                 dnam{"cL"}
                 one{"{0} cL"}
@@ -229,10 +236,21 @@ fr_CA{
                 one{"{0} oz liq."}
                 other{"{0} oz liq."}
             }
+            gallon-imperial{
+                dnam{"gal Imp"}
+                one{"{0} gal Imp"}
+                other{"{0} gal Imp"}
+                per{"{0}/gal Imp"}
+            }
             hectoliter{
                 dnam{"hL"}
                 one{"{0} hL"}
                 other{"{0} hL"}
+            }
+            liter{
+                dnam{"L"}
+                one{"{0} L"}
+                other{"{0} L"}
             }
             megaliter{
                 dnam{"ML"}

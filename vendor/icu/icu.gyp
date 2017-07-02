@@ -7,7 +7,10 @@
 
 {
   'variables': {
-    'icu_src_derb': [ 'tools/genrb/derb.c' ],
+    'icu_src_derb': [
+        'tools/genrb/derb.c',
+        'tools/genrb/derb.cpp',
+    ],
     'conditions': [
       ['OS == "win"', {
         'os_posix': 0,
@@ -112,47 +115,6 @@
           'sources': [
             '<@(icu_src_i18n)'
           ],
-          'conditions': [
-            [ 'icu_ver_major == 54', { 'sources!': [
-              ## Strip out the following for ICU 54 only.
-              ## add more conditions in the future?
-              ## if your compiler can dead-strip, this will
-              ## make ZERO difference to binary size.
-              ## Made ICU-specific for future-proofing.
-
-              # alphabetic index
-              'i18n/alphaindex.cpp',
-              # BOCSU
-              # misc
-              'i18n/regexcmp.cpp',
-              'i18n/regexcmp.h',
-              'i18n/regexcst.h',
-              'i18n/regeximp.cpp',
-              'i18n/regeximp.h',
-              'i18n/regexst.cpp',
-              'i18n/regexst.h',
-              'i18n/regextxt.cpp',
-              'i18n/regextxt.h',
-              'i18n/region.cpp',
-              'i18n/region_impl.h',
-              'i18n/reldatefmt.cpp',
-              'i18n/reldatefmt.h'
-              'i18n/scientificformathelper.cpp',
-              'i18n/tmunit.cpp',
-              'i18n/tmutamt.cpp',
-              'i18n/tmutfmt.cpp',
-              'i18n/uregex.cpp',
-              'i18n/uregexc.cpp',
-              'i18n/uregion.cpp',
-              'i18n/uspoof.cpp',
-              'i18n/uspoof_build.cpp',
-              'i18n/uspoof_conf.cpp',
-              'i18n/uspoof_conf.h',
-              'i18n/uspoof_impl.cpp',
-              'i18n/uspoof_impl.h',
-              'i18n/uspoof_wsconf.cpp',
-              'i18n/uspoof_wsconf.h',
-            ]}]],
           'include_dirs': [
             'i18n',
           ],
@@ -369,26 +331,6 @@
         '<@(icu_src_common)',
       ],
       'conditions': [
-        [ 'icu_ver_major == 54', { 'sources!': [
-          ## Strip out the following for ICU 54 only.
-          ## add more conditions in the future?
-          ## if your compiler can dead-strip, this will
-          ## make ZERO difference to binary size.
-          ## Made ICU-specific for future-proofing.
-
-          # bidi- not needed (yet!)
-          'common/ubidi.c',
-          'common/ubidiimp.h',
-          'common/ubidiln.c',
-          'common/ubidiwrt.c',
-          #'common/ubidi_props.c',
-          #'common/ubidi_props.h',
-          #'common/ubidi_props_data.h',
-          # and the callers
-          'common/ushape.cpp',
-          'common/usprep.cpp',
-          'common/uts46.cpp',
-        ]}],
         [ 'OS == "solaris"', { 'defines': [
           '_XOPEN_SOURCE_EXTENDED=0',
         ]}],
@@ -424,7 +366,6 @@
         '<@(icu_src_tools)',
         '<@(icu_src_common)',
         '<@(icu_src_i18n)',
-        '<@(icu_src_io)',
         '<@(icu_src_stubdata)',
       ],
       'sources!': [
@@ -436,7 +377,6 @@
       'include_dirs': [
         'common',
         'i18n',
-        'io',
         'tools/toolutil',
       ],
       'defines': [
@@ -456,7 +396,6 @@
         'include_dirs': [
           'common',
           'i18n',
-          'io',
           'tools/toolutil',
         ],
         'conditions': [

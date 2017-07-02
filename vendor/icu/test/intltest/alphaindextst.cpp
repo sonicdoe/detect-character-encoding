@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT:
- * Copyright (c) 2012-2014, International Business Machines Corporation
+ * Copyright (c) 2012-2016, International Business Machines Corporation
  * and others. All Rights Reserved.
  ********************************************************************/
 //
@@ -429,7 +431,7 @@ void AlphabeticIndexTest::HackPinyinTest() {
     AlphabeticIndex aindex(Locale::createFromName("zh"), status);
     TEST_CHECK_STATUS; 
 
-    UnicodeString names[sizeof(pinyinTestData) / sizeof(pinyinTestData[0])];
+    UnicodeString names[UPRV_LENGTHOF(pinyinTestData)];
     int32_t  nameCount;
     for (nameCount=0; pinyinTestData[nameCount] != NULL; nameCount++) {
         names[nameCount] = UnicodeString(pinyinTestData[nameCount], -1, UnicodeString::kInvariant).unescape();
@@ -494,8 +496,9 @@ static const char *localeAndIndexCharactersLists[][2] = {
     /* English*/    {"en", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* Spanish*/    {"es", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:\\u00D1:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* Estonian*/   {"et", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:\\u0160:Z:\\u017D:T:U:V:\\u00D5:\\u00C4:\\u00D6:\\u00DC:X:Y"},
+    /* Basque*/ {"eu", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* Finnish*/    {"fi", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z:\\u00C5:\\u00C4:\\u00D6"},
-    /* Filipino*/   {"fil", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
+    /* Filipino*/   {"fil", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:\\u00D1:Ng:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* French*/ {"fr", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* Hebrew*/ {"he", "\\u05D0:\\u05D1:\\u05D2:\\u05D3:\\u05D4:\\u05D5:\\u05D6:\\u05D7:\\u05D8:\\u05D9:\\u05DB:\\u05DC:\\u05DE:\\u05E0:\\u05E1:\\u05E2:\\u05E4:\\u05E6:\\u05E7:\\u05E8:\\u05E9:\\u05EA"},
     /* Icelandic*/  {"is", "A:\\u00C1:B:C:D:\\u00D0:E:\\u00C9:F:G:H:I:\\u00CD:J:K:L:M:N:O:\\u00D3:P:Q:R:S:T:U:\\u00DA:V:W:X:Y:\\u00DD:Z:\\u00DE:\\u00C6:\\u00D6"},
@@ -519,15 +522,6 @@ static const char *localeAndIndexCharactersLists[][2] = {
     /* Vietnamese*/ {"vi", "A:\\u0102:\\u00C2:B:C:D:\\u0110:E:\\u00CA:F:G:H:I:J:K:L:M:N:O:\\u00D4:\\u01A0:P:Q:R:S:T:U:\\u01AF:V:W:X:Y:Z"},
     /* Chinese*/    {"zh", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
     /* Chinese (Traditional Han)*/  {"zh_Hant", "1\\u5283:2\\u5283:3\\u5283:4\\u5283:5\\u5283:6\\u5283:7\\u5283:8\\u5283:9\\u5283:10\\u5283:11\\u5283:12\\u5283:13\\u5283:14\\u5283:15\\u5283:16\\u5283:17\\u5283:18\\u5283:19\\u5283:20\\u5283:21\\u5283:22\\u5283:23\\u5283:24\\u5283:25\\u5283:26\\u5283:27\\u5283:28\\u5283:29\\u5283:30\\u5283:31\\u5283:32\\u5283:33\\u5283:35\\u5283:36\\u5283:39\\u5283:48\\u5283"},
-
-    // As of ICU 52, ICU does not have collation data for the following language.
-    // Therefore, constructing an AlphabeticIndex for it
-    // ends up with a collator for the default locale
-    // which makes the test unreliable. (see ticket #10277)
-    // It exposes a bigger problem in that it may not be desirable for collation
-    // to fall back to the default locale.
-
-    // /* Basque*/ {"eu", "A:B:C:D:E:F:G:H:I:J:K:L:M:N:O:P:Q:R:S:T:U:V:W:X:Y:Z"},
 };
 
 void AlphabeticIndexTest::TestIndexCharactersList() {
@@ -575,7 +569,7 @@ void AlphabeticIndexTest::TestHaniFirst() {
     bucketIndex = index.getBucketIndex(UnicodeString((UChar)0x03B1), status);
     assertEquals("getBucketIndex(Greek alpha)", 27, bucketIndex);
     // U+50005 is an unassigned code point which sorts at the end, independent of the Hani group.
-    bucketIndex = index.getBucketIndex(UnicodeString(0x50005), status);
+    bucketIndex = index.getBucketIndex(UnicodeString((UChar32)0x50005), status);
     assertEquals("getBucketIndex(U+50005)", 27, bucketIndex);
     bucketIndex = index.getBucketIndex(UnicodeString((UChar)0xFFFF), status);
     assertEquals("getBucketIndex(U+FFFF)", 27, bucketIndex);
@@ -604,7 +598,7 @@ void AlphabeticIndexTest::TestPinyinFirst() {
     bucketIndex = index.getBucketIndex(UnicodeString((UChar)0x03B1), status);
     assertEquals("getBucketIndex(Greek alpha)", (int32_t)27, bucketIndex);
     // U+50005 is an unassigned code point which sorts at the end, independent of the Hani group.
-    bucketIndex = index.getBucketIndex(UnicodeString(0x50005), status);
+    bucketIndex = index.getBucketIndex(UnicodeString((UChar32)0x50005), status);
     assertEquals("getBucketIndex(U+50005)", 27, bucketIndex);
     bucketIndex = index.getBucketIndex(UnicodeString((UChar)0xFFFF), status);
     assertEquals("getBucketIndex(U+FFFF)", 27, bucketIndex);
@@ -725,8 +719,9 @@ void AlphabeticIndexTest::TestChineseUnihan() {
     // bucketIndex = radical number, adjusted for simplified radicals in lower buckets.
     int32_t bucketIndex = index.getBucketIndex(UnicodeString((UChar)0x4e5d), status);
     assertEquals("getBucketIndex(U+4E5D)", 5, bucketIndex);
+    // radical 100, and there is a 90' since Unicode 8
     bucketIndex = index.getBucketIndex(UnicodeString((UChar)0x7527), status);
-    assertEquals("getBucketIndex(U+7527)", 100, bucketIndex);
+    assertEquals("getBucketIndex(U+7527)", 101, bucketIndex);
 }
 
 #endif

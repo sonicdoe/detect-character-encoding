@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 
 /********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2007, International Business Machines Corporation and
+ * Copyright (c) 1997-2015, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************
 **********************************************************************
@@ -18,6 +20,7 @@
 #include "unicode/uniset.h"
 #include "unicode/ucnv_err.h"
 #include "intltest.h"
+#include "cmemory.h"
 
 class UnicodeSetWithStrings;
 
@@ -87,6 +90,8 @@ private:
 
     void TestStringSpan();
 
+    void TestUCAUnsafeBackwards();
+
 private:
 
     UBool toPatternAux(UChar32 start, UChar32 end);
@@ -136,6 +141,8 @@ private:
      * get the same thing back
      */
     void checkRoundTrip(const UnicodeSet& s);
+
+    void checkSerializeRoundTrip(const UnicodeSet& s, UErrorCode &ec);
     
     void copyWithIterator(UnicodeSet& t, const UnicodeSet& s, UBool withRange);
     
@@ -182,6 +189,8 @@ private:
     UConverter *openUTF8Converter();
 
     UConverter *utf8Cnv;
+
+    MaybeStackArray<uint16_t, 16> serializeBuffer;
 
 public:
     static UnicodeString escape(const UnicodeString& s);

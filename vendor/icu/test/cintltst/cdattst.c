@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
- * COPYRIGHT: 
- * Copyright (c) 1997-2014, International Business Machines Corporation and
+ * COPYRIGHT:
+ * Copyright (c) 1997-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 /********************************************************************************
@@ -8,7 +10,7 @@
 * File CDATTST.C
 *
 * Modification History:
-*        Name                     Description            
+*        Name                     Description
 *     Madhu Katragadda               Creation
 *********************************************************************************
 */
@@ -25,6 +27,7 @@
 #include "unicode/ucal.h"
 #include "unicode/unum.h"
 #include "unicode/ustring.h"
+#include "unicode/ufieldpositer.h"
 #include "cintltst.h"
 #include "cdattst.h"
 #include "cformtst.h"
@@ -37,8 +40,8 @@ static void TestAllLocales(void);
 static void TestRelativeCrash(void);
 static void TestContext(void);
 static void TestCalendarDateParse(void);
-
-#define LEN(a) (sizeof(a)/sizeof(a[0]))
+static void TestParseErrorReturnValue(void);
+static void TestFormatForFields(void);
 
 void addDateForTest(TestNode** root);
 
@@ -56,6 +59,8 @@ void addDateForTest(TestNode** root)
     TESTCASE(TestContext);
     TESTCASE(TestCalendarDateParse);
     TESTCASE(TestOverrideNumberFormat);
+    TESTCASE(TestParseErrorReturnValue);
+    TESTCASE(TestFormatForFields);
 }
 /* Testing the DateFormat API */
 static void TestDateFormat()
@@ -87,24 +92,24 @@ static void TestDateFormat()
     fr = udat_open(UDAT_FULL, UDAT_DEFAULT, "fr_FR", NULL,0, NULL, 0,&status);
     if(U_FAILURE(status))
     {
-        log_data_err("FAIL: error in creating the dateformat using full time style with french locale -> %s (Are you missing data?)\n", 
+        log_data_err("FAIL: error in creating the dateformat using full time style with french locale -> %s (Are you missing data?)\n",
             myErrorName(status) );
         return;
     }
-    /* this is supposed to open default date format, but later on it treats it like it is "en_US" 
+    /* this is supposed to open default date format, but later on it treats it like it is "en_US"
        - very bad if you try to run the tests on machine where default locale is NOT "en_US" */
     /* def = udat_open(UDAT_SHORT, UDAT_SHORT, NULL, NULL, 0, &status); */
     def = udat_open(UDAT_SHORT, UDAT_SHORT, "en_US", NULL, 0,NULL, 0, &status);
     if(U_FAILURE(status))
     {
-        log_err("FAIL: error in creating the dateformat using short date and time style\n %s\n", 
+        log_err("FAIL: error in creating the dateformat using short date and time style\n %s\n",
             myErrorName(status) );
         return;
     }
     it = udat_open(UDAT_DEFAULT, UDAT_MEDIUM, "it_IT", NULL, 0, NULL, 0,&status);
     if(U_FAILURE(status))
     {
-        log_err("FAIL: error in creating the dateformat using medium date style with italian locale\n %s\n", 
+        log_err("FAIL: error in creating the dateformat using medium date style with italian locale\n %s\n",
             myErrorName(status) );
         return;
     }
@@ -119,20 +124,20 @@ static void TestDateFormat()
     def1 = udat_open(UDAT_SHORT, UDAT_SHORT, NULL, NULL, 0,NULL, 0, &status);
     if(U_FAILURE(status))
     {
-        log_err("FAIL: error in creating the dateformat using short date and time style\n %s\n", 
+        log_err("FAIL: error in creating the dateformat using short date and time style\n %s\n",
             myErrorName(status) );
         return;
     }
 
 
-    /*Testing udat_getAvailable() and udat_countAvailable()*/ 
+    /*Testing udat_getAvailable() and udat_countAvailable()*/
     log_verbose("\nTesting getAvailableLocales and countAvailable()\n");
     numlocales=udat_countAvailable();
     /* use something sensible w/o hardcoding the count */
     if(numlocales < 0)
         log_data_err("FAIL: error in countAvailable\n");
     log_verbose("The number of locales for which date/time formatting patterns are available is %d\n", numlocales);
-    
+
     for(i=0;i<numlocales;i++) {
       UErrorCode subStatus = U_ZERO_ERROR;
       log_verbose("Testing open of %s\n", udat_getAvailable(i));
@@ -151,7 +156,7 @@ static void TestDateFormat()
     }
     /*if(def != copy)
         log_err("Error in udat_clone");*/ /*how should i check for equality???? */
-    
+
     /*Testing udat_format()*/
     log_verbose("\nTesting the udat_format() function of date format\n");
     u_uastrcpy(temp, "7/10/96, 4:05 PM");
@@ -186,8 +191,8 @@ static void TestDateFormat()
         log_err("FAIL: Date Format for US locale failed using udat_format() - expected %s got %s\n", xbuf, gbuf);
     }
     /*format using fr */
-    
-    u_unescape("10 juil. 1996 16:05:28 heure d\\u2019\\u00E9t\\u00E9 du Pacifique", temp, 50);
+
+    u_unescape("10 juil. 1996 \\u00E0 16:05:28 heure d\\u2019\\u00E9t\\u00E9 du Pacifique", temp, 50);
     if(result != NULL) {
         free(result);
         result = NULL;
@@ -200,12 +205,12 @@ static void TestDateFormat()
 
     /*format using it */
     u_uastrcpy(temp, "10 lug 1996, 16:05:28");
-    
-    { 
+
+    {
         UChar *fmtted;
         char g[100];
         char x[100];
-        
+
         fmtted = myDateFormat(it,d);
         u_austrcpy(g, fmtted);
         u_austrcpy(x, temp);
@@ -215,13 +220,13 @@ static void TestDateFormat()
             log_data_err("FAIL: Date Format for italian locale failed using udat_format() - wanted %s, got %s\n", x, g);
         }
     }
-    
+
     /*Testing parsing using udat_parse()*/
     log_verbose("\nTesting parsing using udat_parse()\n");
     u_uastrcpy(temp,"2/3/76, 2:50 AM");
     parsepos=0;
     status=U_ZERO_ERROR;
-    
+
     d1=udat_parse(def, temp, u_strlen(temp), &parsepos, &status);
     if(U_FAILURE(status))
     {
@@ -230,8 +235,8 @@ static void TestDateFormat()
     else
         log_verbose("PASS: parsing succesful\n");
     /*format it back and check for equality */
-    
-    
+
+
     if(u_strcmp(myDateFormat(def, d1),temp)!=0)
         log_err("FAIL: error in parsing\n");
 
@@ -239,7 +244,7 @@ static void TestDateFormat()
     log_verbose("\nTesting parsing using udat_parse()\n");
     u_uastrcpy(temp,"2/Don't parse this part");
     status=U_ZERO_ERROR;
-    
+
     d1=udat_parse(def, temp, u_strlen(temp), NULL, &status);
     if(status != U_PARSE_ERROR)
     {
@@ -247,9 +252,9 @@ static void TestDateFormat()
     }
     else
         log_verbose("PASS: parsing succesful\n");
-        
-        
-    
+
+
+
     /*Testing udat_openPattern()  */
     status=U_ZERO_ERROR;
     log_verbose("\nTesting the udat_openPattern with a specified pattern\n");
@@ -257,13 +262,13 @@ static void TestDateFormat()
     fr_pat=udat_open(UDAT_PATTERN, UDAT_PATTERN,"fr_FR",NULL,0,temp, u_strlen(temp), &status);
     if(U_FAILURE(status))
     {
-        log_err("FAIL: Error in creating a date format using udat_openPattern \n %s\n", 
+        log_err("FAIL: Error in creating a date format using udat_openPattern \n %s\n",
             myErrorName(status) );
     }
     else
         log_verbose("PASS: creating dateformat using udat_openPattern() succesful\n");
 
-    
+
         /*Testing applyPattern and toPattern */
     log_verbose("\nTesting applyPattern and toPattern()\n");
     udat_applyPattern(def1, FALSE, temp, u_strlen(temp));
@@ -280,25 +285,25 @@ static void TestDateFormat()
     }
     if(U_FAILURE(status))
     {
-        log_err("FAIL: error in extracting the pattern from UNumberFormat\n %s\n", 
+        log_err("FAIL: error in extracting the pattern from UNumberFormat\n %s\n",
             myErrorName(status) );
     }
     if(u_strcmp(result, temp)!=0)
         log_err("FAIL: Error in extracting the pattern\n");
     else
         log_verbose("PASS: applyPattern and toPattern work fine\n");
-    
+
     if(result != NULL) {
-        free(result);    
+        free(result);
         result = NULL;
     }
-    
-    
+
+
     /*Testing getter and setter functions*/
     /*isLenient and setLenient()*/
     log_verbose("\nTesting the isLenient and setLenient properties\n");
     udat_setLenient(fr, udat_isLenient(it));
-    if(udat_isLenient(fr) != udat_isLenient(it)) 
+    if(udat_isLenient(fr) != udat_isLenient(it))
         log_err("ERROR: setLenient() failed\n");
     else
         log_verbose("PASS: setLenient() successful\n");
@@ -329,7 +334,7 @@ static void TestDateFormat()
     else
         log_verbose("PASS: set2DigitYearStart successful\n");
 
-    
+
 
     /*Test getNumberFormat() and setNumberFormat() */
     log_verbose("\nTesting the get and set NumberFormat properties of date format\n");
@@ -340,7 +345,7 @@ static void TestDateFormat()
         log_err("FAIL: error in setNumberFormat or getNumberFormat()\n");
     else
         log_verbose("PASS:setNumberFormat and getNumberFormat succesful\n");
-        
+
     /*Test getNumberFormat() and adoptNumberFormat() */
     log_verbose("\nTesting the get and adopt NumberFormat properties of date format\n");
     adoptNF= unum_open(UNUM_DEFAULT, NULL, 0, NULL, NULL, &status);
@@ -365,18 +370,18 @@ static void TestDateFormat()
     /*Test getCalendar and setCalendar*/
     log_verbose("\nTesting the udat_getCalendar() and udat_setCalendar() properties\n");
     cal=udat_getCalendar(fr_pat);
-    
-    
+
+
     udat_setCalendar(def1, cal);
     if(!ucal_equivalentTo(udat_getCalendar(fr_pat), udat_getCalendar(def1)))
         log_err("FAIL: Error in setting and getting the calendar\n");
     else
         log_verbose("PASS: getting and setting calendar successful\n");
-        
+
     if(result!=NULL) {
         free(result);
     }
-    
+
     /*Closing the UDateForamt */
     udat_close(def);
     udat_close(fr);
@@ -385,7 +390,7 @@ static void TestDateFormat()
     udat_close(def1);
     udat_close(fr_pat);
     udat_close(copy);
-    
+
     ctest_resetTimeZone();
 }
 
@@ -517,7 +522,7 @@ static void TestRelativeDateFormat()
                     log_err("udat_parse timeStyle SHORT dateStyle (%d | UDAT_RELATIVE) fails, error %s, expect approx %.1f, got %.1f, parsePos %d\n",
                             *stylePtr, myErrorName(status), dateToUse, dateResult, parsePos );
                     status = U_ZERO_ERROR;
-                } 
+                }
 
                 udat_format(fmtRelDate, dateToUse, strDate, kDateOrTimeOutMax, NULL, &status);
                 if ( U_FAILURE(status) ) {
@@ -533,7 +538,7 @@ static void TestRelativeDateFormat()
                         log_err("udat_parse timeStyle NONE dateStyle (%d | UDAT_RELATIVE) fails, error %s, expect approx %.1f, got %.1f, parsePos %d\n",
                                 *stylePtr, myErrorName(status), dateToUse, dateResult, parsePos );
                         status = U_ZERO_ERROR;
-                    } 
+                    }
                 }
 
                 udat_format(fmtTime, dateToUse, strTime, kDateOrTimeOutMax, NULL, &status);
@@ -567,31 +572,31 @@ static void TestSymbols()
 {
     UDateFormat *def, *fr, *zhChiCal;
     UErrorCode status = U_ZERO_ERROR;
-    UChar *value=NULL; 
+    UChar *value=NULL;
     UChar *result = NULL;
     int32_t resultlength;
     int32_t resultlengthout;
     UChar *pattern;
-        
+
 
     /*creating a dateformat with french locale */
     log_verbose("\ncreating a date format with french locale\n");
     fr = udat_open(UDAT_FULL, UDAT_DEFAULT, "fr_FR", NULL, 0, NULL, 0, &status);
     if(U_FAILURE(status))
     {
-        log_data_err("error in creating the dateformat using full time style with french locale -> %s (Are you missing data?)\n", 
+        log_data_err("error in creating the dateformat using full time style with french locale -> %s (Are you missing data?)\n",
             myErrorName(status) );
         return;
     }
     /*creating a default dateformat */
     log_verbose("\ncreating a date format with default locale\n");
-    /* this is supposed to open default date format, but later on it treats it like it is "en_US" 
+    /* this is supposed to open default date format, but later on it treats it like it is "en_US"
        - very bad if you try to run the tests on machine where default locale is NOT "en_US" */
     /* def = udat_open(UDAT_DEFAULT,UDAT_DEFAULT ,NULL, NULL, 0, &status); */
     def = udat_open(UDAT_DEFAULT,UDAT_DEFAULT ,"en_US", NULL, 0, NULL, 0, &status);
     if(U_FAILURE(status))
     {
-        log_err("error in creating the dateformat using short date and time style\n %s\n", 
+        log_err("error in creating the dateformat using short date and time style\n %s\n",
             myErrorName(status) );
         return;
     }
@@ -600,16 +605,16 @@ static void TestSymbols()
     zhChiCal = udat_open(UDAT_NONE, UDAT_FULL, "zh@calendar=chinese", NULL, 0, NULL, 0, &status);
     if(U_FAILURE(status))
     {
-        log_data_err("error in creating the dateformat using full date, no time, locale zh@calendar=chinese -> %s (Are you missing data?)\n", 
+        log_data_err("error in creating the dateformat using full date, no time, locale zh@calendar=chinese -> %s (Are you missing data?)\n",
             myErrorName(status) );
         return;
     }
-    
-    
+
+
     /*Testing countSymbols, getSymbols and setSymbols*/
     log_verbose("\nTesting countSymbols\n");
     /*since the month names has the last string empty and week names are 1 based 1.e first string in the weeknames array is empty */
-    if(udat_countSymbols(def, UDAT_ERAS)!=2 || udat_countSymbols(def, UDAT_MONTHS)!=12 || 
+    if(udat_countSymbols(def, UDAT_ERAS)!=2 || udat_countSymbols(def, UDAT_MONTHS)!=12 ||
         udat_countSymbols(def, UDAT_SHORT_MONTHS)!=12 || udat_countSymbols(def, UDAT_WEEKDAYS)!=8 ||
         udat_countSymbols(def, UDAT_SHORT_WEEKDAYS)!=8 || udat_countSymbols(def, UDAT_AM_PMS)!=2 ||
         udat_countSymbols(def, UDAT_QUARTERS) != 4 || udat_countSymbols(def, UDAT_SHORT_QUARTERS) != 4 ||
@@ -637,7 +642,7 @@ static void TestSymbols()
         }
         result=(UChar*)malloc(sizeof(UChar) * resultlength);
         udat_getSymbols(fr, UDAT_WEEKDAYS, 5, result, resultlength, &status);
-        
+
     }
     if(U_FAILURE(status))
     {
@@ -673,15 +678,19 @@ static void TestSymbols()
     VerifygetSymbols(zhChiCal, UDAT_CYCLIC_YEARS_NARROW, 59, "\\u7678\\u4EA5");
     VerifygetSymbols(zhChiCal, UDAT_ZODIAC_NAMES_ABBREVIATED, 0, "\\u9F20");
     VerifygetSymbols(zhChiCal, UDAT_ZODIAC_NAMES_WIDE, 11, "\\u732A");
-    VerifygetSymbols(def,UDAT_LOCALIZED_CHARS, 0, "GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXxr");
+#if UDAT_HAS_PATTERN_CHAR_FOR_TIME_SEPARATOR
+    VerifygetSymbols(def,UDAT_LOCALIZED_CHARS, 0, "GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXxrbB:");
+#else
+    VerifygetSymbols(def,UDAT_LOCALIZED_CHARS, 0, "GyMdkHmsSEDFwWahKzYeugAZvcLQqVUOXxrbB");
+#endif
 
 
     if(result != NULL) {
         free(result);
         result = NULL;
     }
-free(pattern);    
-    
+free(pattern);
+
     log_verbose("\nTesting setSymbols\n");
     /*applying the pattern so that setSymbolss works */
     resultlength=0;
@@ -695,10 +704,10 @@ free(pattern);
     }
     if(U_FAILURE(status))
     {
-        log_err("FAIL: error in extracting the pattern from UNumberFormat\n %s\n", 
+        log_err("FAIL: error in extracting the pattern from UNumberFormat\n %s\n",
             myErrorName(status) );
     }
-    
+
     udat_applyPattern(def, FALSE, pattern, u_strlen(pattern));
     resultlength=0;
     resultlengthout=udat_toPattern(def, FALSE, NULL, resultlength,&status);
@@ -715,7 +724,7 @@ free(pattern);
     }
     if(U_FAILURE(status))
     {
-        log_err("FAIL: error in extracting the pattern from UNumberFormat\n %s\n", 
+        log_err("FAIL: error in extracting the pattern from UNumberFormat\n %s\n",
             myErrorName(status) );
     }
     if(u_strcmp(result, pattern)==0)
@@ -736,12 +745,12 @@ free(pattern);
         }
         result=(UChar*)malloc(sizeof(UChar) * resultlength);
         udat_getSymbols(fr, UDAT_MONTHS, 11, result, resultlength, &status);
-        
+
     }
     if(U_FAILURE(status))
         log_err("FAIL: error in getSymbols() %s\n", myErrorName(status) );
     resultlength=resultlengthout+1;
-    
+
     udat_setSymbols(def, UDAT_MONTHS, 11, result, resultlength, &status);
     if(U_FAILURE(status))
         {
@@ -749,7 +758,7 @@ free(pattern);
         }
     else
         log_verbose("PASS: SetSymbols successful\n");
-    
+
     resultlength=0;
     resultlengthout=udat_getSymbols(def, UDAT_MONTHS, 11, NULL, resultlength, &status);
     if(status==U_BUFFER_OVERFLOW_ERROR){
@@ -760,13 +769,13 @@ free(pattern);
     }
     if(U_FAILURE(status))
         log_err("FAIL: error in retrieving the value using getSymbols i.e roundtrip\n");
-    
+
     if(u_strcmp(result, value)!=0)
         log_data_err("FAIL: Error in settting and getting symbols\n");
     else
         log_verbose("PASS: setSymbols successful\n");
-    
-    
+
+
     /*run series of tests to test setSymbols regressively*/
     log_verbose("\nTesting setSymbols regressively\n");
     VerifysetSymbols(def, UDAT_ERAS, 0, "BeforeChrist");
@@ -805,7 +814,7 @@ free(pattern);
 
 
     /*closing*/
-    
+
     udat_close(fr);
     udat_close(def);
     udat_close(zhChiCal);
@@ -814,7 +823,7 @@ free(pattern);
         result = NULL;
     }
     free(value);
-    
+
 }
 
 /**
@@ -828,13 +837,17 @@ static void TestDateFormatCalendar() {
     int32_t pos;
     UDate when;
     UErrorCode ec = U_ZERO_ERROR;
+    UChar buf1[256];
+    int32_t len1;
+    const char *expected;
+    UChar uExpected[32];
 
     ctest_setTimeZone(NULL, &ec);
 
     /* Create a formatter for date fields. */
     date = udat_open(UDAT_NONE, UDAT_SHORT, "en_US", NULL, 0, NULL, 0, &ec);
     if (U_FAILURE(ec)) {
-        log_data_err("FAIL: udat_open(NONE, SHORT, en_US) failed with %s (Are you missing data?)\n", 
+        log_data_err("FAIL: udat_open(NONE, SHORT, en_US) failed with %s (Are you missing data?)\n",
                 u_errorName(ec));
         goto FAIL;
     }
@@ -842,7 +855,7 @@ static void TestDateFormatCalendar() {
     /* Create a formatter for time fields. */
     time = udat_open(UDAT_SHORT, UDAT_NONE, "en_US", NULL, 0, NULL, 0, &ec);
     if (U_FAILURE(ec)) {
-        log_err("FAIL: udat_open(SHORT, NONE, en_US) failed with %s\n", 
+        log_err("FAIL: udat_open(SHORT, NONE, en_US) failed with %s\n",
                 u_errorName(ec));
         goto FAIL;
     }
@@ -850,7 +863,7 @@ static void TestDateFormatCalendar() {
     /* Create a full format for output */
     full = udat_open(UDAT_FULL, UDAT_FULL, "en_US", NULL, 0, NULL, 0, &ec);
     if (U_FAILURE(ec)) {
-        log_err("FAIL: udat_open(FULL, FULL, en_US) failed with %s\n", 
+        log_err("FAIL: udat_open(FULL, FULL, en_US) failed with %s\n",
                 u_errorName(ec));
         goto FAIL;
     }
@@ -858,7 +871,7 @@ static void TestDateFormatCalendar() {
     /* Create a calendar */
     cal = ucal_open(NULL, 0, "en_US", UCAL_GREGORIAN, &ec);
     if (U_FAILURE(ec)) {
-        log_err("FAIL: ucal_open(en_US) failed with %s\n", 
+        log_err("FAIL: ucal_open(en_US) failed with %s\n",
                 u_errorName(ec));
         goto FAIL;
     }
@@ -874,6 +887,19 @@ static void TestDateFormatCalendar() {
         goto FAIL;
     }
 
+    /* Check if formatCalendar matches the original date */
+    len1 = udat_formatCalendar(date, cal, buf1, UPRV_LENGTHOF(buf1), NULL, &ec);
+    if (U_FAILURE(ec)) {
+        log_err("FAIL: udat_formatCalendar(4/5/2001) failed with %s\n",
+                u_errorName(ec));
+        goto FAIL;
+    }
+    expected = "4/5/01";
+    u_uastrcpy(uExpected, expected);
+    if (u_strlen(uExpected) != len1 || u_strncmp(uExpected, buf1, len1) != 0) {
+        log_err("FAIL: udat_formatCalendar(4/5/2001), expected: %s", expected);
+    }
+
     /* Parse the time */
     u_uastrcpy(buf, "5:45 PM");
     pos = 0;
@@ -883,7 +909,20 @@ static void TestDateFormatCalendar() {
                 pos, u_errorName(ec));
         goto FAIL;
     }
-    
+
+    /* Check if formatCalendar matches the original time */
+    len1 = udat_formatCalendar(time, cal, buf1, UPRV_LENGTHOF(buf1), NULL, &ec);
+    if (U_FAILURE(ec)) {
+        log_err("FAIL: udat_formatCalendar(17:45) failed with %s\n",
+                u_errorName(ec));
+        goto FAIL;
+    }
+    expected = "5:45 PM";
+    u_uastrcpy(uExpected, expected);
+    if (u_strlen(uExpected) != len1 || u_strncmp(uExpected, buf1, len1) != 0) {
+        log_err("FAIL: udat_formatCalendar(17:45), expected: %s", expected);
+    }
+
     /* Check result */
     when = ucal_getMillis(cal, &ec);
     if (U_FAILURE(ec)) {
@@ -903,7 +942,7 @@ static void TestDateFormatCalendar() {
         log_err("FAIL: Parsed result: %s, exp 4/5/2001 5:45 PM\n", cbuf);
     }
 
- FAIL:    
+ FAIL:
     udat_close(date);
     udat_close(time);
     udat_close(full);
@@ -1020,7 +1059,7 @@ static void VerifygetSymbols(UDateFormat* datfor, UDateFormatSymbolType type, in
     UChar *result=NULL;
     int32_t resultlength, resultlengthout;
     int32_t patternSize = strlen(expected) + 1;
-    
+
     pattern=(UChar*)malloc(sizeof(UChar) * patternSize);
     u_unescape(expected, pattern, patternSize);
     resultlength=0;
@@ -1031,7 +1070,7 @@ static void VerifygetSymbols(UDateFormat* datfor, UDateFormatSymbolType type, in
         resultlength=resultlengthout+1;
         result=(UChar*)malloc(sizeof(UChar) * resultlength);
         udat_getSymbols(datfor, type, idx, result, resultlength, &status);
-        
+
     }
     if(U_FAILURE(status))
     {
@@ -1041,7 +1080,7 @@ static void VerifygetSymbols(UDateFormat* datfor, UDateFormatSymbolType type, in
     if(u_strcmp(result, pattern)==0)
         log_verbose("PASS: getSymbols retrieved the right value\n");
     else{
-        log_data_err("FAIL: getSymbols retrieved the wrong value\n Expected %s Got %s\n", expected, 
+        log_data_err("FAIL: getSymbols retrieved the wrong value\n Expected %s Got %s\n", expected,
             aescstrdup(result,-1) );
     }
     free(result);
@@ -1074,11 +1113,11 @@ static void VerifysetSymbols(UDateFormat* datfor, UDateFormatSymbolType type, in
         udat_getSymbols(datfor, type, idx, result, resultlength, &status);
     }
     if(U_FAILURE(status)){
-        log_err("FAIL: error in retrieving the value using getSymbols after setting it previously\n %s\n", 
+        log_err("FAIL: error in retrieving the value using getSymbols after setting it previously\n %s\n",
             myErrorName(status) );
         return;
     }
-    
+
     if(u_strcmp(result, value)!=0){
         log_err("FAIL:Error in setting and then getting symbols\n Expected %s Got %s\n", expected,
             aescstrdup(result,-1) );
@@ -1097,7 +1136,7 @@ static void VerifygetsetSymbols(UDateFormat* from, UDateFormat* to, UDateFormatS
     UChar *value=NULL;
     int32_t resultlength, resultlengthout;
     UErrorCode status = U_ZERO_ERROR;
-    
+
     resultlength=0;
     resultlengthout=udat_getSymbols(from, type, idx , NULL, resultlength, &status);
     if(status==U_BUFFER_OVERFLOW_ERROR){
@@ -1110,7 +1149,7 @@ static void VerifygetsetSymbols(UDateFormat* from, UDateFormat* to, UDateFormatS
         log_err("FAIL: error in getSymbols() %s\n", myErrorName(status) );
         return;
     }
-    
+
     resultlength=resultlengthout+1;
     udat_setSymbols(to, type, idx, result, resultlength, &status);
     if(U_FAILURE(status))
@@ -1128,11 +1167,11 @@ static void VerifygetsetSymbols(UDateFormat* from, UDateFormat* to, UDateFormatS
         udat_getSymbols(to, type, idx, value, resultlength, &status);
     }
     if(U_FAILURE(status)){
-        log_err("FAIL: error in retrieving the value using getSymbols i.e roundtrip\n %s\n", 
+        log_err("FAIL: error in retrieving the value using getSymbols i.e roundtrip\n %s\n",
             myErrorName(status) );
         return;
     }
-    
+
     if(u_strcmp(result, value)!=0){
         log_data_err("FAIL:Error in setting and then getting symbols\n Expected %s Got %s\n", austrdup(result),
             austrdup(value) );
@@ -1150,7 +1189,7 @@ static UChar* myNumformat(const UNumberFormat* numfor, double d)
     UChar *result2=NULL;
     int32_t resultlength, resultlengthneeded;
     UErrorCode status = U_ZERO_ERROR;
-    
+
     resultlength=0;
     resultlengthneeded=unum_formatDouble(numfor, d, NULL, resultlength, NULL, &status);
     if(status==U_BUFFER_OVERFLOW_ERROR)
@@ -1166,7 +1205,7 @@ static UChar* myNumformat(const UNumberFormat* numfor, double d)
         log_err("FAIL: Error in formatting using unum_format(.....) %s\n", myErrorName(status) );
         return 0;
     }
-    
+
     return result2;
 }
 
@@ -1240,7 +1279,7 @@ static void TestExtremeDates() {
 
     /* There is no need to test larger values from 1e+30 to 1e+300;
        the failures occur around 1e+27, and never above 1e+30. */
-    
+
     ec = U_ZERO_ERROR;
     fmt = udat_open(UDAT_LONG, UDAT_LONG, "en_US",
                     0, 0, 0, 0, &ec);
@@ -1249,7 +1288,7 @@ static void TestExtremeDates() {
         return;
     }
 
-    _aux2ExtremeDates(fmt, small, large, buf, LEN(buf), cbuf, 0, &ec);
+    _aux2ExtremeDates(fmt, small, large, buf, UPRV_LENGTHOF(buf), cbuf, 0, &ec);
 
     udat_close(fmt);
 }
@@ -1261,8 +1300,8 @@ static void TestAllLocales(void) {
     };
     localeCount = uloc_countAvailable();
     for (idx = 0; idx < localeCount; idx++) {
-        for (dateIdx = 0; dateIdx < (int32_t)(sizeof(style)/sizeof(style[0])); dateIdx++) {
-            for (timeIdx = 0; timeIdx < (int32_t)(sizeof(style)/sizeof(style[0])); timeIdx++) {
+        for (dateIdx = 0; dateIdx < UPRV_LENGTHOF(style); dateIdx++) {
+            for (timeIdx = 0; timeIdx < UPRV_LENGTHOF(style); timeIdx++) {
                 UErrorCode status = U_ZERO_ERROR;
                 udat_close(udat_open(style[dateIdx], style[timeIdx],
                     uloc_getAvailable(idx), NULL, 0, NULL, 0, &status));
@@ -1290,12 +1329,12 @@ static void TestRelativeCrash(void) {
             UErrorCode subStatus = U_ZERO_ERROR;
             what = "udat_set2DigitYearStart";
             log_verbose("Trying %s on a relative date..\n", what);
-            udat_set2DigitYearStart(icudf, aDate, &subStatus); 
+            udat_set2DigitYearStart(icudf, aDate, &subStatus);
             if(subStatus == expectStatus) {
                 log_verbose("Success: did not crash on %s, but got %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got success %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
         {
             /* clone works polymorphically. try it anyways */
@@ -1309,54 +1348,54 @@ static void TestRelativeCrash(void) {
                 udat_close(oth); /* ? */
             } else {
                 log_err("FAIL: didn't crash on %s, but got  %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
         {
             UErrorCode subStatus = U_ZERO_ERROR;
             what = "udat_get2DigitYearStart";
             log_verbose("Trying %s on a relative date..\n", what);
-            udat_get2DigitYearStart(icudf, &subStatus); 
+            udat_get2DigitYearStart(icudf, &subStatus);
             if(subStatus == expectStatus) {
                 log_verbose("Success: did not crash on %s, but got %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got success %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
         {
             /* Now udat_toPattern works for relative date formatters, unless localized is TRUE */
             UErrorCode subStatus = U_ZERO_ERROR;
             what = "udat_toPattern";
             log_verbose("Trying %s on a relative date..\n", what);
-            udat_toPattern(icudf, TRUE,NULL,0, &subStatus); 
+            udat_toPattern(icudf, TRUE,NULL,0, &subStatus);
             if(subStatus == expectStatus) {
                 log_verbose("Success: did not crash on %s, but got %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got success %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
         {
             UErrorCode subStatus = U_ZERO_ERROR;
             what = "udat_applyPattern";
             log_verbose("Trying %s on a relative date..\n", what);
-            udat_applyPattern(icudf, FALSE,tzName,-1); 
+            udat_applyPattern(icudf, FALSE,tzName,-1);
             subStatus = U_ILLEGAL_ARGUMENT_ERROR; /* what it should be, if this took an errorcode. */
             if(subStatus == expectStatus) {
                 log_verbose("Success: did not crash on %s, but got %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got success %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
         {
             UChar erabuf[32];
             UErrorCode subStatus = U_ZERO_ERROR;
             what = "udat_getSymbols";
             log_verbose("Trying %s on a relative date..\n", what);
-            udat_getSymbols(icudf, UDAT_ERAS,0,erabuf,sizeof(erabuf)/sizeof(erabuf[0]), &subStatus);
+            udat_getSymbols(icudf, UDAT_ERAS,0,erabuf,UPRV_LENGTHOF(erabuf), &subStatus);
             if(subStatus == U_ZERO_ERROR) {
                 log_verbose("Success: %s returned %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got %s instead of U_ZERO_ERROR.\n", what, u_errorName(subStatus));
-            }            
+            }
         }
         {
             UErrorCode subStatus = U_ZERO_ERROR;
@@ -1368,21 +1407,21 @@ static void TestRelativeCrash(void) {
                 log_verbose("Success: did not crash on %s, but got %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got success %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
         {
             UErrorCode subStatus = U_ZERO_ERROR;
             what = "udat_countSymbols";
             log_verbose("Trying %s on a relative date..\n", what);
-            udat_countSymbols(icudf, UDAT_ERAS); 
+            udat_countSymbols(icudf, UDAT_ERAS);
             subStatus = U_ILLEGAL_ARGUMENT_ERROR; /* should have an errorcode. */
             if(subStatus == expectStatus) {
                 log_verbose("Success: did not crash on %s, but got %s.\n", what, u_errorName(subStatus));
             } else {
                 log_err("FAIL: didn't crash on %s, but got success %s instead of %s. \n", what, u_errorName(subStatus), u_errorName(expectStatus));
-            }            
+            }
         }
-        
+
         udat_close(icudf);
     } else {
          log_data_err("FAIL: err calling udat_open() ->%s (Are you missing data?)\n", u_errorName(status));
@@ -1562,9 +1601,9 @@ static void TestContext(void) {
 }
 
 
-// overrideNumberFormat[i][0] is to tell which field to set, 
+// overrideNumberFormat[i][0] is to tell which field to set,
 // overrideNumberFormat[i][1] is the expected result
-static const char * overrideNumberFormat[][2] = { 
+static const char * overrideNumberFormat[][2] = {
         {"", "\\u521D\\u4E03 \\u521D\\u4E8C"},
         {"d", "07 \\u521D\\u4E8C"},
         {"do", "07 \\u521D\\u4E8C"},
@@ -1576,43 +1615,37 @@ static const char * overrideNumberFormat[][2] = {
 static void TestOverrideNumberFormat(void) {
     UErrorCode status = U_ZERO_ERROR;
     UChar pattern[50];
-    UChar* expected;
-    UChar* fields;
+    UChar expected[50];
+    UChar fields[50];
     char bbuf1[kBbufMax];
     char bbuf2[kBbufMax];
     const char* localeString = "zh@numbers=hanidays";
     UDateFormat* fmt;
     const UNumberFormat* getter_result;
     int32_t i;
-    unsigned j;
 
-    expected=(UChar*)malloc(sizeof(UChar) * 10);
-    fields=(UChar*)malloc(sizeof(UChar) * 10);
     u_uastrcpy(fields, "d");
     u_uastrcpy(pattern,"MM d");
 
-    fmt=udat_open(UDAT_PATTERN, UDAT_PATTERN,"en_US",NULL,0,pattern, u_strlen(pattern), &status);
+    fmt=udat_open(UDAT_PATTERN, UDAT_PATTERN, "en_US", zoneGMT, -1, pattern, u_strlen(pattern), &status);
     if (!assertSuccess("udat_open()", &status)) {
         return;
     }
 
-
-    // loop 50 times to check getter/setter
+    // loop 5 times to check getter/setter
     for (i = 0; i < 5; i++){
         UNumberFormat* overrideFmt;
         overrideFmt = unum_open(UNUM_DEFAULT, NULL, 0, localeString, NULL, &status);
         assertSuccess("unum_open()", &status);
-
         udat_adoptNumberFormatForFields(fmt, fields, overrideFmt, &status);
         overrideFmt = NULL; // no longer valid
         assertSuccess("udat_setNumberFormatForField()", &status);
 
-        getter_result = udat_getNumberFormatForField(fmt, 'd');
+        getter_result = udat_getNumberFormatForField(fmt, 0x0064 /*'d'*/);
         if(getter_result == NULL) {
             log_err("FAIL: udat_getNumberFormatForField did not return a valid pointer\n");
         }
     }
-
     {
       UNumberFormat* overrideFmt;
       overrideFmt = unum_open(UNUM_DEFAULT, NULL, 0, localeString, NULL, &status);
@@ -1621,23 +1654,23 @@ static void TestOverrideNumberFormat(void) {
       unum_close(overrideFmt);
     }
     udat_close(fmt);
-    
-    for (j=0; i<sizeof(overrideNumberFormat)/sizeof(overrideNumberFormat[0]); i++){
+
+    for (i=0; i<UPRV_LENGTHOF(overrideNumberFormat); i++){
         UChar ubuf[kUbufMax];
         UDateFormat* fmt2;
         UNumberFormat* overrideFmt2;
 
-        fmt2 =udat_open(UDAT_PATTERN, UDAT_PATTERN,"en_US",NULL,0,pattern, u_strlen(pattern), &status);
+        fmt2 =udat_open(UDAT_PATTERN, UDAT_PATTERN,"en_US", zoneGMT, -1, pattern, u_strlen(pattern), &status);
         assertSuccess("udat_open() with en_US", &status);
 
         overrideFmt2 = unum_open(UNUM_DEFAULT, NULL, 0, localeString, NULL, &status);
         assertSuccess("unum_open() in loop", &status);
 
         u_uastrcpy(fields, overrideNumberFormat[i][0]);
-        u_unescape(overrideNumberFormat[i][1], expected, 50);
+        u_unescape(overrideNumberFormat[i][1], expected, UPRV_LENGTHOF(expected));
 
         if ( strcmp(overrideNumberFormat[i][0], "") == 0 ) { // use the one w/o field
-            udat_setNumberFormat(fmt2, overrideFmt2);
+            udat_adoptNumberFormat(fmt2, overrideFmt2);
         } else if ( strcmp(overrideNumberFormat[i][0], "mixed") == 0 ) { // set 1 field at first but then full override, both(M & d) should be override
             const char* singleLocale = "en@numbers=hebr";
             UNumberFormat* singleOverrideFmt;
@@ -1649,7 +1682,7 @@ static void TestOverrideNumberFormat(void) {
             udat_adoptNumberFormatForFields(fmt2, fields, singleOverrideFmt, &status);
             assertSuccess("udat_setNumberFormatForField() in mixed", &status);
 
-            udat_setNumberFormat(fmt2, overrideFmt2);
+            udat_adoptNumberFormat(fmt2, overrideFmt2);
         } else if ( strcmp(overrideNumberFormat[i][0], "do") == 0 ) { // o is an invalid field
             udat_adoptNumberFormatForFields(fmt2, fields, overrideFmt2, &status);
             if(status == U_INVALID_FORMAT_ERROR) {
@@ -1665,15 +1698,164 @@ static void TestOverrideNumberFormat(void) {
         udat_format(fmt2, july022008, ubuf, kUbufMax, NULL, &status);
         assertSuccess("udat_format() july022008", &status);
 
-        if (u_strncmp(ubuf, expected, kUbufMax) != 0) 
+        if (u_strncmp(ubuf, expected, kUbufMax) != 0)
             log_err("fail: udat_format for locale, expected %s, got %s\n",
                     u_austrncpy(bbuf1,expected,kUbufMax), u_austrncpy(bbuf2,ubuf,kUbufMax) );
 
-        udat_close(overrideFmt2);
         udat_close(fmt2);
     }
-    free(expected);
-    free(fields);
+}
+
+/*
+ * Ticket #11523
+ * udat_parse and udat_parseCalendar should have the same error code when given the same invalid input.
+ */
+static void TestParseErrorReturnValue(void) {
+    UErrorCode status = U_ZERO_ERROR;
+    UErrorCode expectStatus = U_PARSE_ERROR;
+    UDateFormat* df;
+    UCalendar* cal;
+
+    df = udat_open(UDAT_DEFAULT, UDAT_DEFAULT, NULL, NULL, -1, NULL, -1, &status);
+    if (!assertSuccessCheck("udat_open()", &status, TRUE)) {
+        return;
+    }
+
+    cal = ucal_open(NULL, 0, "en_US", UCAL_GREGORIAN, &status);
+    if (!assertSuccess("ucal_open()", &status)) {
+        return;
+    }
+
+    udat_parse(df, NULL, -1, NULL, &status);
+    if (status != expectStatus) {
+        log_err("%s should have been returned by udat_parse when given an invalid input, instead got - %s\n", u_errorName(expectStatus), u_errorName(status));
+    }
+
+    status = U_ZERO_ERROR;
+    udat_parseCalendar(df, cal, NULL, -1, NULL, &status);
+    if (status != expectStatus) {
+        log_err("%s should have been returned by udat_parseCalendar when given an invalid input, instead got - %s\n", u_errorName(expectStatus), u_errorName(status));
+    }
+
+    ucal_close(cal);
+    udat_close(df);
+}
+
+/*
+ * Ticket #11553
+ * Test new udat_formatForFields, udat_formatCalendarForFields (and UFieldPositionIterator)
+ */
+static const char localeForFields[] = "en_US";
+/* zoneGMT[]defined above */
+static const UDate date2015Feb25 = 1424841000000.0; /* Wednesday, February 25, 2015 at 5:10:00 AM GMT */
+static const UChar patNoFields[] = { 0x0027, 0x0078, 0x0078, 0x0078, 0x0027, 0 }; /* "'xxx'" */
+
+typedef struct {
+    int32_t field;
+    int32_t beginPos;
+    int32_t endPos;
+} FieldsData;
+static const FieldsData expectedFields[] = {
+    { UDAT_DAY_OF_WEEK_FIELD /* 9*/,      0,  9 },
+    { UDAT_MONTH_FIELD /* 2*/,           11, 19 },
+    { UDAT_DATE_FIELD /* 3*/,            20, 22 },
+    { UDAT_YEAR_FIELD /* 1*/,            24, 28 },
+    { UDAT_HOUR1_FIELD /*15*/,           32, 33 },
+#if UDAT_HAS_PATTERN_CHAR_FOR_TIME_SEPARATOR
+    { UDAT_TIME_SEPARATOR_FIELD /*35*/,  33, 34 },
+#endif
+    { UDAT_MINUTE_FIELD /* 6*/,          34, 36 },
+#if UDAT_HAS_PATTERN_CHAR_FOR_TIME_SEPARATOR
+    { UDAT_TIME_SEPARATOR_FIELD /*35*/,  36, 37 },
+#endif
+    { UDAT_SECOND_FIELD /* 7*/,          37, 39 },
+    { UDAT_AM_PM_FIELD /*14*/,           40, 42 },
+    { UDAT_TIMEZONE_FIELD /*17*/,        43, 46 },
+    { -1,                                -1, -1 },
+};
+
+enum {kUBufFieldsLen = 128, kBBufFieldsLen = 256 };
+
+static void TestFormatForFields(void) {
+    UErrorCode status = U_ZERO_ERROR;
+    UFieldPositionIterator* fpositer = ufieldpositer_open(&status);
+    if ( U_FAILURE(status) ) {
+        log_err("ufieldpositer_open fails, status %s\n", u_errorName(status));
+    } else {
+        UDateFormat* udfmt = udat_open(UDAT_LONG, UDAT_FULL, localeForFields, zoneGMT, -1, NULL, 0, &status);
+        UCalendar* ucal = ucal_open(zoneGMT, -1, localeForFields, UCAL_DEFAULT, &status);
+        if ( U_FAILURE(status) ) {
+            log_data_err("udat_open or ucal_open fails for locale %s, status %s (Are you missing data?)\n", localeForFields, u_errorName(status));
+        } else {
+            int32_t ulen, field, beginPos, endPos;
+            UChar ubuf[kUBufFieldsLen];
+            const FieldsData * fptr;
+
+            status = U_ZERO_ERROR;
+            ulen = udat_formatForFields(udfmt, date2015Feb25, ubuf, kUBufFieldsLen, fpositer, &status);
+            if ( U_FAILURE(status) ) {
+                log_err("udat_formatForFields fails, status %s\n", u_errorName(status));
+            } else {
+                for (fptr = expectedFields; ; fptr++) {
+                    field = ufieldpositer_next(fpositer, &beginPos, &endPos);
+                    if (field != fptr->field || (field >= 0 && (beginPos != fptr->beginPos || endPos != fptr->endPos))) {
+                        if (fptr->field >= 0) {
+                            log_err("udat_formatForFields as \"%s\"; expect field %d range %d-%d, get field %d range %d-%d\n",
+                                    aescstrdup(ubuf, ulen), fptr->field, fptr->beginPos, fptr->endPos, field, beginPos, endPos);
+                        } else {
+                            log_err("udat_formatForFields as \"%s\"; expect field < 0, get field %d range %d-%d\n",
+                                    aescstrdup(ubuf, ulen), field, beginPos, endPos);
+                        }
+                        break;
+                    }
+                    if (field < 0) {
+                        break;
+                    }
+                }
+            }
+
+            ucal_setMillis(ucal, date2015Feb25, &status);
+            status = U_ZERO_ERROR;
+            ulen = udat_formatCalendarForFields(udfmt, ucal, ubuf, kUBufFieldsLen, fpositer, &status);
+            if ( U_FAILURE(status) ) {
+                log_err("udat_formatCalendarForFields fails, status %s\n", u_errorName(status));
+            } else {
+                for (fptr = expectedFields; ; fptr++) {
+                    field = ufieldpositer_next(fpositer, &beginPos, &endPos);
+                    if (field != fptr->field || (field >= 0 && (beginPos != fptr->beginPos || endPos != fptr->endPos))) {
+                        if (fptr->field >= 0) {
+                            log_err("udat_formatFudat_formatCalendarForFieldsorFields as \"%s\"; expect field %d range %d-%d, get field %d range %d-%d\n",
+                                    aescstrdup(ubuf, ulen), fptr->field, fptr->beginPos, fptr->endPos, field, beginPos, endPos);
+                        } else {
+                            log_err("udat_formatCalendarForFields as \"%s\"; expect field < 0, get field %d range %d-%d\n",
+                                    aescstrdup(ubuf, ulen), field, beginPos, endPos);
+                        }
+                        break;
+                    }
+                    if (field < 0) {
+                        break;
+                    }
+                }
+            }
+
+            udat_applyPattern(udfmt, FALSE, patNoFields, -1);
+            status = U_ZERO_ERROR;
+            ulen = udat_formatForFields(udfmt, date2015Feb25, ubuf, kUBufFieldsLen, fpositer, &status);
+            if ( U_FAILURE(status) ) {
+                log_err("udat_formatForFields with no-field pattern fails, status %s\n", u_errorName(status));
+            } else {
+                field = ufieldpositer_next(fpositer, &beginPos, &endPos);
+                if (field >= 0) {
+                    log_err("udat_formatForFields with no-field pattern as \"%s\"; expect field < 0, get field %d range %d-%d\n",
+                            aescstrdup(ubuf, ulen), field, beginPos, endPos);
+                }
+            }
+
+            ucal_close(ucal);
+            udat_close(udfmt);
+        }
+        ufieldpositer_close(fpositer);
+    }
 }
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

@@ -1,7 +1,13 @@
 /*
  *******************************************************************************
  *
- *   Copyright (C) 1999-2007, International Business Machines
+ *   Copyright (C) 2016 and later: Unicode, Inc. and others.
+ *   License & terms of use: http://www.unicode.org/copyright.html#License
+ *
+ *******************************************************************************
+ *******************************************************************************
+ *
+ *   Copyright (C) 1999-2015, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  *
  *******************************************************************************
@@ -115,6 +121,7 @@ Paragraph::Paragraph(const LEUnicode chars[], int32_t charCount, const FontRuns 
             paragraphLayout = new ParagraphLayout(pStart, pEnd - pStart, &fr, NULL, NULL, locales, fParagraphLevel, FALSE, status);
 
             if (LE_FAILURE(status)) {
+                delete paragraphLayout;
                 break; // return? something else?
             }
 
@@ -163,8 +170,12 @@ Paragraph::~Paragraph()
         delete /*(LineInfo *)*/ fLines[line];
     }
 
+    for (le_int32 paragraph = 0; paragraph < fParagraphCount; paragraph += 1) {
+        delete fParagraphLayout[paragraph];
+    }
+
     LE_DELETE_ARRAY(fLines);
-    delete fParagraphLayout;
+    LE_DELETE_ARRAY(fParagraphLayout);
     LE_DELETE_ARRAY(fChars);
 }
 

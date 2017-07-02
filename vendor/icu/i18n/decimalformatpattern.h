@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 1997-2014, International Business Machines Corporation and    *
+* Copyright (C) 1997-2015, International Business Machines Corporation and    *
 * others. All Rights Reserved.                                                *
 *******************************************************************************
 */
@@ -14,6 +16,7 @@
 #include "unicode/uobject.h"
 #include "unicode/unistr.h"
 #include "digitlst.h"
+#include "affixpatternparser.h"
 
 U_NAMESPACE_BEGIN
 
@@ -27,7 +30,7 @@ enum CurrencySignCount {
 
 class DecimalFormatSymbols;
 
-struct DecimalFormatPattern : UMemory {
+struct DecimalFormatPattern : public UMemory {
   enum EPadPosition {
       kPadBeforePrefix,
       kPadAfterPrefix,
@@ -63,10 +66,14 @@ struct DecimalFormatPattern : UMemory {
   UnicodeString fNegSuffixPattern;
   UnicodeString fPosPrefixPattern;
   UnicodeString fPosSuffixPattern;
+  AffixPattern fNegPrefixAffix; 
+  AffixPattern fNegSuffixAffix; 
+  AffixPattern fPosPrefixAffix; 
+  AffixPattern fPosSuffixAffix; 
   EPadPosition fPadPosition;
 };
 
-class DecimalFormatPatternParser : UMemory {
+class DecimalFormatPatternParser : public UMemory {
   public:
     DecimalFormatPatternParser();
     void useSymbols(const DecimalFormatSymbols& symbols);

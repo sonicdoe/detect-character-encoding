@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1999-2014, International Business Machines
+*   Copyright (C) 1999-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -17,10 +19,8 @@
 #ifndef UBIDIIMP_H
 #define UBIDIIMP_H
 
-/*  set import/export definitions */
-#ifdef U_COMMON_IMPLEMENTATION
-
 #include "unicode/utypes.h"
+#include "unicode/ubidi.h"
 #include "unicode/uchar.h"
 #include "ubidi_props.h"
 
@@ -184,8 +184,8 @@ typedef struct BracketData {
 typedef struct Isolate {
     int32_t startON;
     int32_t start1;
+    int32_t state;
     int16_t stateImp;
-    int16_t state;
 } Isolate;
 
 typedef struct Run {
@@ -466,7 +466,5 @@ ubidi_getMemory(BidiMemoryForAllocation *pMemory, int32_t *pSize, UBool mayAlloc
 #define getInitialIsolatesMemory(pBiDi, length) \
         ubidi_getMemory((BidiMemoryForAllocation *)&(pBiDi)->isolatesMemory, &(pBiDi)->isolatesSize, \
                         TRUE, (length)*sizeof(Isolate))
-
-#endif
 
 #endif

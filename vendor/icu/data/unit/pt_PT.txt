@@ -1,13 +1,7 @@
-﻿// ***************************************************************************
-// *
-// * Copyright (C) 2014 International Business Machines
-// * Corporation and others. All Rights Reserved.
-// * Tool: org.unicode.cldr.icu.NewLdml2IcuConverter
-// * Source File: <path>/common/main/pt_PT.xml
-// *
-// ***************************************************************************
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 pt_PT{
-    Version{"2.1.8.19"}
+    Version{"2.1.29.54"}
     units{
         acceleration{
             g-force{
@@ -26,9 +20,22 @@ pt_PT{
                 dnam{"quilómetros quadrados"}
                 one{"{0} quilómetro quadrado"}
                 other{"{0} quilómetros quadrados"}
+                per{"{0} por quilómetro quadrado"}
+            }
+        }
+        concentr{
+            karat{
+                dnam{"quilates"}
+                one{"{0} quilate"}
+                other{"{0} quilates"}
             }
         }
         consumption{
+            liter-per-100kilometers{
+                dnam{"litros por 100 quilómetros"}
+                one{"{0} litro por 100 quilómetros"}
+                other{"{0} litros por 100 quilómetros"}
+            }
             liter-per-kilometer{
                 dnam{"litros por quilómetro"}
                 one{"{0} litro por quilómetro"}
@@ -36,6 +43,10 @@ pt_PT{
             }
         }
         duration{
+            century{
+                one{"{0} século"}
+                other{"{0} séculos"}
+            }
             hour{
                 per{"{0}/h"}
             }
@@ -60,11 +71,15 @@ pt_PT{
                 dnam{"quilómetros"}
                 one{"{0} quilómetro"}
                 other{"{0} quilómetros"}
+                per{"{0} por quilómetro"}
             }
             micrometer{
                 dnam{"micrómetros"}
                 one{"{0} micrómetro"}
                 other{"{0} micrómetros"}
+            }
+            mile-scandinavian{
+                dnam{"milha escandinava"}
             }
             nanometer{
                 dnam{"nanómetros"}
@@ -75,13 +90,6 @@ pt_PT{
                 dnam{"picómetros"}
                 one{"{0} picómetro"}
                 other{"{0} picómetros"}
-            }
-        }
-        proportion{
-            karat{
-                dnam{"quilates"}
-                one{"{0} quilate"}
-                other{"{0} quilates"}
             }
         }
         speed{
@@ -97,9 +105,24 @@ pt_PT{
                 one{"{0} quilómetro cúbico"}
                 other{"{0} quilómetros cúbicos"}
             }
+            cup{
+                dnam{"chávenas"}
+                one{"{0} chávena"}
+                other{"{0} chávenas"}
+            }
+            cup-metric{
+                one{"{0} chávena métrica"}
+                other{"{0} chávenas métricas"}
+            }
         }
     }
     unitsNarrow{
+        consumption{
+            liter-per-100kilometers{
+                one{"{0}l/100km"}
+                other{"{0}l/100km"}
+            }
+        }
         duration{
             second{
                 dnam{"s"}
@@ -109,12 +132,6 @@ pt_PT{
             foot{
                 one{"{0}′"}
                 other{"{0}′"}
-            }
-        }
-        temperature{
-            celsius{
-                one{"{0}°C"}
-                other{"{0}°C"}
             }
         }
     }
@@ -140,6 +157,9 @@ pt_PT{
                 one{"{0} acre"}
                 other{"{0} acres"}
             }
+            square-centimeter{
+                per{"{0}/cm²"}
+            }
             square-foot{
                 dnam{"pés quadrados"}
             }
@@ -147,9 +167,11 @@ pt_PT{
                 dnam{"in²"}
                 one{"{0} in²"}
                 other{"{0} in²"}
+                per{"{0}/in²"}
             }
             square-meter{
                 dnam{"m²"}
+                per{"{0}/m²"}
             }
             square-mile{
                 dnam{"mi²"}
@@ -158,9 +180,24 @@ pt_PT{
                 dnam{"yd²"}
             }
         }
+        concentr{
+            karat{
+                dnam{"quilates"}
+                one{"{0} kt"}
+                other{"{0} kt"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"l/100km"}
+                one{"{0} l/100km"}
+                other{"{0} l/100km"}
+            }
             mile-per-gallon{
                 dnam{"milhas/galão"}
+            }
+            mile-per-gallon-imperial{
+                dnam{"milhas/gal imp."}
             }
         }
         duration{
@@ -168,7 +205,7 @@ pt_PT{
                 dnam{"minutos"}
             }
             second{
-                dnam{"segundos"}
+                dnam{"s"}
                 one{"{0} s"}
                 other{"{0} s"}
             }
@@ -218,13 +255,6 @@ pt_PT{
                 other{"{0} mb"}
             }
         }
-        proportion{
-            karat{
-                dnam{"quilates"}
-                one{"{0} kt"}
-                other{"{0} kt"}
-            }
-        }
         speed{
             meter-per-second{
                 dnam{"m/s"}
@@ -251,11 +281,6 @@ pt_PT{
                 one{"{0} ac ft"}
                 other{"{0} ac ft"}
             }
-            centiliter{
-                dnam{"cL"}
-                one{"{0} cL"}
-                other{"{0} cL"}
-            }
             cubic-foot{
                 dnam{"ft³"}
             }
@@ -266,6 +291,21 @@ pt_PT{
             }
             cubic-yard{
                 dnam{"yd³"}
+            }
+            cup{
+                dnam{"chávenas"}
+                one{"{0} cháv."}
+                other{"{0} cháv."}
+            }
+            cup-metric{
+                one{"{0} chám"}
+                other{"{0} chám"}
+            }
+            gallon-imperial{
+                dnam{"gal imp."}
+                one{"{0} gal imp."}
+                other{"{0} gal imp."}
+                per{"{0}/gal imp."}
             }
             tablespoon{
                 dnam{"cs"}

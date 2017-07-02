@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
  *******************************************************************************
  *
- *   Copyright (C) 1999-2014, International Business Machines
+ *   Copyright (C) 1999-2015, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  *
  *******************************************************************************
@@ -41,8 +43,9 @@ SimpleFontInstance::~SimpleFontInstance()
     // nothing to do...
 }
 
-const void *SimpleFontInstance::getFontTable(LETag tableTag) const
+const void *SimpleFontInstance::getFontTable(LETag tableTag, size_t &length) const
 {
+  length = -1; // unknown for this test.
 #ifndef USING_ICULEHB
     if (tableTag == LE_GSUB_TABLE_TAG) {
         return CanonShaping::glyphSubstitutionTable;

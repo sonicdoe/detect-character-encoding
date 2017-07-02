@@ -1,16 +1,12 @@
-﻿// ***************************************************************************
-// *
-// * Copyright (C) 2014 International Business Machines
-// * Corporation and others. All Rights Reserved.
-// * Tool: org.unicode.cldr.icu.NewLdml2IcuConverter
-// * Source File: <path>/common/main/id.xml
-// *
-// ***************************************************************************
-/**
- * ICU <specials> source: <path>/common/main/id.xml
- */
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 id{
-    Version{"2.1.8.9"}
+    Version{"2.1.28.79"}
+    durationUnits{
+        hm{"h.mm"}
+        hms{"h.mm.ss"}
+        ms{"m.ss"}
+    }
     units{
         acceleration{
             g-force{
@@ -39,6 +35,10 @@ id{
                 dnam{"radian"}
                 other{"{0} radian"}
             }
+            revolution{
+                dnam{"revolusi"}
+                other{"{0} revolusi"}
+            }
         }
         area{
             acre{
@@ -52,6 +52,7 @@ id{
             square-centimeter{
                 dnam{"sentimeter persegi"}
                 other{"{0} sentimeter persegi"}
+                per{"{0} per sentimeter persegi"}
             }
             square-foot{
                 dnam{"kaki persegi"}
@@ -60,18 +61,22 @@ id{
             square-inch{
                 dnam{"inci persegi"}
                 other{"{0} inci persegi"}
+                per{"{0} per inci persegi"}
             }
             square-kilometer{
                 dnam{"kilometer persegi"}
                 other{"{0} kilometer persegi"}
+                per{"{0} per kilometer persegi"}
             }
             square-meter{
                 dnam{"meter persegi"}
                 other{"{0} meter persegi"}
+                per{"{0} per meter persegi"}
             }
             square-mile{
                 dnam{"mil persegi"}
                 other{"{0} mil persegi"}
+                per{"{0} per mil persegi"}
             }
             square-yard{
                 dnam{"yard persegi"}
@@ -81,7 +86,29 @@ id{
         compound{
             per{"{0} per {1}"}
         }
+        concentr{
+            karat{
+                dnam{"karat"}
+                other{"{0} karat"}
+            }
+            milligram-per-deciliter{
+                dnam{"milligram per desiliter"}
+                other{"{0} milligram per desiliter"}
+            }
+            millimole-per-liter{
+                dnam{"millimole per liter"}
+                other{"{0} millimole per liter"}
+            }
+            part-per-million{
+                dnam{"bagian per juta"}
+                other{"{0} bagian per juta"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"liter per 100 kilometer"}
+                other{"{0} liter per 100 kilometer"}
+            }
             liter-per-kilometer{
                 dnam{"liter per kilometer"}
                 other{"{0} liter per kilometer"}
@@ -90,6 +117,16 @@ id{
                 dnam{"mil per galon"}
                 other{"{0} mil per galon"}
             }
+            mile-per-gallon-imperial{
+                dnam{"mil per galon Imp."}
+                other{"{0} mil per galon Imp."}
+            }
+        }
+        coordinate{
+            east{"{0}T"}
+            north{"{0}U"}
+            south{"{0}S"}
+            west{"{0}B"}
         }
         digital{
             bit{
@@ -134,9 +171,14 @@ id{
             }
         }
         duration{
+            century{
+                dnam{"abad"}
+                other{"{0} abad"}
+            }
             day{
                 dnam{"hari"}
                 other{"{0} hari"}
+                per{"{0} per hari"}
             }
             hour{
                 dnam{"jam"}
@@ -154,10 +196,12 @@ id{
             minute{
                 dnam{"menit"}
                 other{"{0} menit"}
+                per{"{0} per menit"}
             }
             month{
                 dnam{"bulan"}
                 other{"{0} bulan"}
+                per{"{0} per bulan"}
             }
             nanosecond{
                 dnam{"nanodetik"}
@@ -171,10 +215,12 @@ id{
             week{
                 dnam{"minggu"}
                 other{"{0} minggu"}
+                per{"{0} per minggu"}
             }
             year{
                 dnam{"tahun"}
                 other{"{0} tahun"}
+                per{"{0} per tahun"}
             }
         }
         electric{
@@ -247,6 +293,7 @@ id{
             centimeter{
                 dnam{"sentimeter"}
                 other{"{0} sentimeter"}
+                per{"{0} per sentimeter"}
             }
             decimeter{
                 dnam{"desimeter"}
@@ -255,14 +302,17 @@ id{
             foot{
                 dnam{"kaki"}
                 other{"{0} kaki"}
+                per{"{0} per kaki"}
             }
             inch{
                 dnam{"inci"}
                 other{"{0} inci"}
+                per{"{0} per inci"}
             }
             kilometer{
                 dnam{"kilometer"}
                 other{"{0} kilometer"}
+                per{"{0} per kilometer"}
             }
             light-year{
                 dnam{"tahun cahaya"}
@@ -271,6 +321,7 @@ id{
             meter{
                 dnam{"meter"}
                 other{"{0} meter"}
+                per{"{0} per meter"}
             }
             micrometer{
                 dnam{"mikrometer"}
@@ -279,6 +330,10 @@ id{
             mile{
                 dnam{"mil"}
                 other{"{0} mil"}
+            }
+            mile-scandinavian{
+                dnam{"mil skandinavia"}
+                other{"{0} mil skandinavia"}
             }
             millimeter{
                 dnam{"milimeter"}
@@ -319,10 +374,12 @@ id{
             gram{
                 dnam{"gram"}
                 other{"{0} gram"}
+                per{"{0} per gram"}
             }
             kilogram{
                 dnam{"kilogram"}
                 other{"{0} kilogram"}
+                per{"{0} per kilogram"}
             }
             metric-ton{
                 dnam{"metrik ton"}
@@ -339,6 +396,7 @@ id{
             ounce{
                 dnam{"ons"}
                 other{"{0} ons"}
+                per{"{0} per ons"}
             }
             ounce-troy{
                 dnam{"troy ons"}
@@ -347,6 +405,7 @@ id{
             pound{
                 dnam{"pon"}
                 other{"{0} pon"}
+                per{"{0} per pon"}
             }
             ton{
                 dnam{"ton"}
@@ -401,16 +460,14 @@ id{
                 other{"{0} pon per inci persegi"}
             }
         }
-        proportion{
-            karat{
-                dnam{"karat"}
-                other{"{0} karat"}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"kilometer per jam"}
                 other{"{0} kilometer per jam"}
+            }
+            knot{
+                dnam{"knot"}
+                other{"{0} knot"}
             }
             meter-per-second{
                 dnam{"meter per detik"}
@@ -430,6 +487,10 @@ id{
                 dnam{"derajat Fahrenheit"}
                 other{"{0} derajat Fahrenheit"}
             }
+            generic{
+                dnam{"°"}
+                other{"{0}°"}
+            }
             kelvin{
                 dnam{"kelvin"}
                 other{"{0} kelvin"}
@@ -447,6 +508,7 @@ id{
             cubic-centimeter{
                 dnam{"sentimeter kubik"}
                 other{"{0} sentimeter kubik"}
+                per{"{0} per sentimeter kubik"}
             }
             cubic-foot{
                 dnam{"kaki kubik"}
@@ -463,6 +525,7 @@ id{
             cubic-meter{
                 dnam{"meter kubik"}
                 other{"{0} meter kubik"}
+                per{"{0} per meter kubik"}
             }
             cubic-mile{
                 dnam{"mil kubik"}
@@ -476,6 +539,10 @@ id{
                 dnam{"cup"}
                 other{"{0} cup"}
             }
+            cup-metric{
+                dnam{"metric cup"}
+                other{"{0} metric cup"}
+            }
             deciliter{
                 dnam{"desiliter"}
                 other{"{0} desiliter"}
@@ -487,6 +554,12 @@ id{
             gallon{
                 dnam{"galon"}
                 other{"{0} galon"}
+                per{"{0} per galon"}
+            }
+            gallon-imperial{
+                dnam{"galon Imp."}
+                other{"{0} galon Imp."}
+                per{"{0} per galon Imp."}
             }
             hectoliter{
                 dnam{"hektoliter"}
@@ -495,6 +568,7 @@ id{
             liter{
                 dnam{"liter"}
                 other{"{0} liter"}
+                per{"{0} per liter"}
             }
             megaliter{
                 dnam{"megaliter"}
@@ -507,6 +581,10 @@ id{
             pint{
                 dnam{"pint"}
                 other{"{0} pint"}
+            }
+            pint-metric{
+                dnam{"metric pint"}
+                other{"{0} metric pint"}
             }
             quart{
                 dnam{"quart"}
@@ -562,44 +640,56 @@ id{
         compound{
             per{"{0}/{1}"}
         }
+        consumption{
+            liter-per-100kilometers{
+                dnam{"L/100km"}
+                other{"{0}L/100km"}
+            }
+        }
+        coordinate{
+            east{"{0}T"}
+            north{"{0}U"}
+            south{"{0}S"}
+            west{"{0}B"}
+        }
         duration{
             day{
                 dnam{"hari"}
-                other{"{0} hr"}
+                other{"{0}hr"}
             }
             hour{
                 dnam{"jam"}
-                other{"{0} j"}
+                other{"{0}j"}
             }
             millisecond{
-                dnam{"milidetik"}
-                other{"{0} md"}
+                dnam{"milidtk"}
+                other{"{0}md"}
             }
             minute{
                 dnam{"mnt"}
-                other{"{0} mnt"}
+                other{"{0}mnt"}
             }
             month{
                 dnam{"bulan"}
-                other{"{0} bln"}
+                other{"{0}bln"}
             }
             second{
                 dnam{"dtk"}
-                other{"{0} dtk"}
+                other{"{0}dtk"}
             }
             week{
                 dnam{"mgg"}
-                other{"{0} mgg"}
+                other{"{0}mgg"}
             }
             year{
                 dnam{"thn"}
-                other{"{0} thn"}
+                other{"{0}thn"}
             }
         }
         length{
             centimeter{
                 dnam{"cm"}
-                other{"{0} cm"}
+                other{"{0}cm"}
             }
             foot{
                 other{"{0} ft"}
@@ -609,21 +699,21 @@ id{
             }
             kilometer{
                 dnam{"km"}
-                other{"{0} km"}
+                other{"{0}km"}
             }
             light-year{
                 other{"{0} ly"}
             }
             meter{
                 dnam{"meter"}
-                other{"{0} m"}
+                other{"{0}m"}
             }
             mile{
                 other{"{0} mi"}
             }
             millimeter{
                 dnam{"mm"}
-                other{"{0} mm"}
+                other{"{0}mm"}
             }
             picometer{
                 other{"{0} pm"}
@@ -635,11 +725,11 @@ id{
         mass{
             gram{
                 dnam{"gram"}
-                other{"{0} g"}
+                other{"{0}g"}
             }
             kilogram{
                 dnam{"kg"}
-                other{"{0} kg"}
+                other{"{0}kg"}
             }
             ounce{
                 other{"{0} oz"}
@@ -673,7 +763,7 @@ id{
         speed{
             kilometer-per-hour{
                 dnam{"km/jam"}
-                other{"{0} kph"}
+                other{"{0}kph"}
             }
             meter-per-second{
                 other{"{0} m/s"}
@@ -700,7 +790,7 @@ id{
             }
             liter{
                 dnam{"liter"}
-                other{"{0} l"}
+                other{"{0}L"}
             }
         }
     }
@@ -711,8 +801,8 @@ id{
                 other{"{0} G"}
             }
             meter-per-second-squared{
-                dnam{"m/s²"}
-                other{"{0} m/s²"}
+                dnam{"meter/dtk²"}
+                other{"{0} m/dtk²"}
             }
         }
         angle{
@@ -732,6 +822,10 @@ id{
                 dnam{"radian"}
                 other{"{0} rad"}
             }
+            revolution{
+                dnam{"rev"}
+                other{"{0} rev"}
+            }
         }
         area{
             acre{
@@ -745,6 +839,7 @@ id{
             square-centimeter{
                 dnam{"cm²"}
                 other{"{0} cm²"}
+                per{"{0}/cm²"}
             }
             square-foot{
                 dnam{"kaki persegi"}
@@ -753,18 +848,22 @@ id{
             square-inch{
                 dnam{"inci²"}
                 other{"{0} in²"}
+                per{"{0}/in²"}
             }
             square-kilometer{
                 dnam{"km²"}
                 other{"{0} km²"}
+                per{"{0}/km²"}
             }
             square-meter{
                 dnam{"meter²"}
                 other{"{0} m²"}
+                per{"{0}/m²"}
             }
             square-mile{
                 dnam{"mil persegi"}
                 other{"{0} mi²"}
+                per{"{0}/mi²"}
             }
             square-yard{
                 dnam{"yard²"}
@@ -774,15 +873,47 @@ id{
         compound{
             per{"{0}/{1}"}
         }
+        concentr{
+            karat{
+                dnam{"karat"}
+                other{"{0} kt"}
+            }
+            milligram-per-deciliter{
+                dnam{"mg/dL"}
+                other{"{0} mg/dL"}
+            }
+            millimole-per-liter{
+                dnam{"millimol/liter"}
+                other{"{0} mmol/L"}
+            }
+            part-per-million{
+                dnam{"bagian/juta"}
+                other{"{0} ppm"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"L/100km"}
+                other{"{0} L/100km"}
+            }
             liter-per-kilometer{
-                dnam{"L/km"}
+                dnam{"liter/km"}
                 other{"{0} L/km"}
             }
             mile-per-gallon{
-                dnam{"mpg"}
+                dnam{"mil/gal"}
                 other{"{0} mpg"}
             }
+            mile-per-gallon-imperial{
+                dnam{"mil/gal Imp."}
+                other{"{0} mpg Imp."}
+            }
+        }
+        coordinate{
+            east{"{0}T"}
+            north{"{0}U"}
+            south{"{0}S"}
+            west{"{0}B"}
         }
         digital{
             bit{
@@ -798,7 +929,7 @@ id{
                 other{"{0} Gb"}
             }
             gigabyte{
-                dnam{"Gbyte"}
+                dnam{"GByte"}
                 other{"{0} GB"}
             }
             kilobit{
@@ -827,9 +958,14 @@ id{
             }
         }
         duration{
+            century{
+                dnam{"abad"}
+                other{"{0} abad"}
+            }
             day{
                 dnam{"hari"}
                 other{"{0} hr"}
+                per{"{0}/hr"}
             }
             hour{
                 dnam{"jam"}
@@ -847,10 +983,12 @@ id{
             minute{
                 dnam{"mnt"}
                 other{"{0} mnt"}
+                per{"{0}/mnt"}
             }
             month{
                 dnam{"bulan"}
                 other{"{0} bln"}
+                per{"{0}/bln"}
             }
             nanosecond{
                 dnam{"nanodtk"}
@@ -864,10 +1002,12 @@ id{
             week{
                 dnam{"minggu"}
                 other{"{0} mgg"}
+                per{"{0}/mgg"}
             }
             year{
                 dnam{"tahun"}
                 other{"{0} thn"}
+                per{"{0}/thn"}
             }
         }
         electric{
@@ -940,6 +1080,7 @@ id{
             centimeter{
                 dnam{"cm"}
                 other{"{0} cm"}
+                per{"{0}/cm"}
             }
             decimeter{
                 dnam{"dm"}
@@ -948,14 +1089,17 @@ id{
             foot{
                 dnam{"kaki"}
                 other{"{0} ft"}
+                per{"{0}/ft"}
             }
             inch{
                 dnam{"inci"}
                 other{"{0} in"}
+                per{"{0}/in"}
             }
             kilometer{
                 dnam{"km"}
                 other{"{0} km"}
+                per{"{0}/km"}
             }
             light-year{
                 dnam{"thn cahaya"}
@@ -964,6 +1108,7 @@ id{
             meter{
                 dnam{"meter"}
                 other{"{0} m"}
+                per{"{0}/m"}
             }
             micrometer{
                 dnam{"µmeter"}
@@ -972,6 +1117,10 @@ id{
             mile{
                 dnam{"mil"}
                 other{"{0} mi"}
+            }
+            mile-scandinavian{
+                dnam{"smi"}
+                other{"{0} smi"}
             }
             millimeter{
                 dnam{"mm"}
@@ -1012,10 +1161,12 @@ id{
             gram{
                 dnam{"gram"}
                 other{"{0} g"}
+                per{"{0}/g"}
             }
             kilogram{
                 dnam{"kg"}
                 other{"{0} kg"}
+                per{"{0}/kg"}
             }
             metric-ton{
                 dnam{"t"}
@@ -1032,14 +1183,16 @@ id{
             ounce{
                 dnam{"ons"}
                 other{"{0} oz"}
+                per{"{0}/oz"}
             }
             ounce-troy{
-                dnam{"oz t"}
+                dnam{"oz troy"}
                 other{"{0} oz t"}
             }
             pound{
                 dnam{"pon"}
                 other{"{0} lb"}
+                per{"{0}/lb"}
             }
             ton{
                 dnam{"ton"}
@@ -1078,7 +1231,7 @@ id{
                 other{"{0} hPa"}
             }
             inch-hg{
-                dnam{"inci merkuri"}
+                dnam{"in Hg"}
                 other{"{0} inHg"}
             }
             millibar{
@@ -1094,20 +1247,18 @@ id{
                 other{"{0} psi"}
             }
         }
-        proportion{
-            karat{
-                dnam{"karat"}
-                other{"{0} kt"}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"km/jam"}
                 other{"{0} kph"}
             }
+            knot{
+                dnam{"kn"}
+                other{"{0} kn"}
+            }
             meter-per-second{
-                dnam{"m/s"}
-                other{"{0} m/s"}
+                dnam{"meter/dtk"}
+                other{"{0} m/dtk"}
             }
             mile-per-hour{
                 dnam{"mi/h"}
@@ -1122,6 +1273,10 @@ id{
             fahrenheit{
                 dnam{"°F"}
                 other{"{0}°F"}
+            }
+            generic{
+                dnam{"°"}
+                other{"{0}°"}
             }
             kelvin{
                 dnam{"K"}
@@ -1140,6 +1295,7 @@ id{
             cubic-centimeter{
                 dnam{"cm³"}
                 other{"{0} cm³"}
+                per{"{0}/cm³"}
             }
             cubic-foot{
                 dnam{"ft³"}
@@ -1156,6 +1312,7 @@ id{
             cubic-meter{
                 dnam{"m³"}
                 other{"{0} m³"}
+                per{"{0}/m³"}
             }
             cubic-mile{
                 dnam{"mi³"}
@@ -1169,6 +1326,10 @@ id{
                 dnam{"cup"}
                 other{"{0} c"}
             }
+            cup-metric{
+                dnam{"mcup"}
+                other{"{0} mc"}
+            }
             deciliter{
                 dnam{"dL"}
                 other{"{0} dL"}
@@ -1180,6 +1341,12 @@ id{
             gallon{
                 dnam{"gal"}
                 other{"{0} gal"}
+                per{"{0}/gal"}
+            }
+            gallon-imperial{
+                dnam{"gal Imp."}
+                other{"{0} gal Imp."}
+                per{"{0}/gal Imp."}
             }
             hectoliter{
                 dnam{"hL"}
@@ -1188,6 +1355,7 @@ id{
             liter{
                 dnam{"liter"}
                 other{"{0} l"}
+                per{"{0}/l"}
             }
             megaliter{
                 dnam{"ML"}
@@ -1200,6 +1368,10 @@ id{
             pint{
                 dnam{"pint"}
                 other{"{0} pt"}
+            }
+            pint-metric{
+                dnam{"mpt"}
+                other{"{0} mpt"}
             }
             quart{
                 dnam{"qt"}

@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 2007-2013, International Business Machines Corporation and
+ * Copyright (c) 2007-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 
@@ -611,7 +613,7 @@ PluralFormatTest::pluralFormatExtendedParseTest(void) {
     "=0 {Foo} =0.0 {Bar}",
     " = {Foo}",
   };
-  int len = sizeof(failures)/sizeof(failures[0]);
+  int len = UPRV_LENGTHOF(failures);
 
   for (int i = 0; i < len; ++i) {
     UErrorCode status = U_ZERO_ERROR;

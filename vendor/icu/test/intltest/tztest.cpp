@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /***********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2014, International Business Machines Corporation
+ * Copyright (c) 1997-2016, International Business Machines Corporation
  * and others. All Rights Reserved.
  ***********************************************************************/
 
@@ -134,6 +136,13 @@ TimeZoneTest::TestGenericAPI()
          */
         infoln("WARNING: t_timezone may be incorrect. It is not a multiple of 15min.", tzoffset);
     }
+
+    TimeZone* hostZone = TimeZone::detectHostTimeZone();
+    /* Host time zone's offset should match the offset returned by uprv_timezone() */
+    if (hostZone->getRawOffset() != tzoffset * (-1000)) {
+        errln("FAIL: detectHostTimeZone()'s raw offset != host timezone's offset");
+    }
+    delete hostZone;
 
     UErrorCode status = U_ZERO_ERROR;
     const char* tzver = TimeZone::getTZDataVersion(status);
@@ -854,7 +863,7 @@ void TimeZoneTest::TestShortZoneIDs()
         {"ECT", 60, TRUE},    // ICU Link - Europe/Paris
         {"MET", 60, TRUE},    // Olson europe 1:00 C-Eur
         {"CAT", 120, FALSE},  // ICU Link - Africa/Maputo
-        {"ART", 120, TRUE},   // ICU Link - Africa/Cairo
+        {"ART", 120, FALSE},  // ICU Link - Africa/Cairo
         {"EET", 120, TRUE},   // Olson europe 2:00 EU
         {"EAT", 180, FALSE},  // ICU Link - Africa/Addis_Ababa
         {"NET", 240, FALSE},  // ICU Link - Asia/Yerevan
@@ -1320,7 +1329,7 @@ TimeZoneTest::TestAliasedNames()
     int32_t i, j, k, loc;
     UnicodeString fromName, toName;
     TimeZone *from = NULL, *to = NULL;
-    for(i = 0; i < (int32_t)(sizeof(kData)/sizeof(kData[0])); i++) {
+    for(i = 0; i < UPRV_LENGTHOF(kData); i++) {
         from = TimeZone::createTimeZone(kData[i].from);
         to = TimeZone::createTimeZone(kData[i].to);
         if(!from->hasSameRules(*to)) {
@@ -1329,8 +1338,8 @@ TimeZoneTest::TestAliasedNames()
         if(!quick) {
             for(loc = 0; loc < noLoc; loc++) {
                 const char* locale = uloc_getAvailable(loc); 
-                for(j = 0; j < (int32_t)(sizeof(styles)/sizeof(styles[0])); j++) {
-                    for(k = 0; k < (int32_t)(sizeof(useDst)/sizeof(useDst[0])); k++) {
+                for(j = 0; j < UPRV_LENGTHOF(styles); j++) {
+                    for(k = 0; k < UPRV_LENGTHOF(useDst); k++) {
                         fromName.remove();
                         toName.remove();
                         from->getDisplayName(useDst[k], styles[j],locale, fromName);
@@ -1945,14 +1954,14 @@ void TimeZoneTest::TestCanonicalIDAPI() {
     UnicodeString canonicalID;
     UErrorCode ec = U_ZERO_ERROR;
     UnicodeString *pResult = &TimeZone::getCanonicalID(bogus, canonicalID, ec);
-    assertEquals("TimeZone::getCanonicalID(bogus) should fail", U_ILLEGAL_ARGUMENT_ERROR, ec);
+    assertEquals("TimeZone::getCanonicalID(bogus) should fail", (int32_t)U_ILLEGAL_ARGUMENT_ERROR, ec);
     assertTrue("TimeZone::getCanonicalID(bogus) should return the dest string", pResult == &canonicalID);
 
     // U_FAILURE on input.
     UnicodeString berlin("Europe/Berlin");
     ec = U_MEMORY_ALLOCATION_ERROR;
     pResult = &TimeZone::getCanonicalID(berlin, canonicalID, ec);
-    assertEquals("TimeZone::getCanonicalID(failure) should fail", U_MEMORY_ALLOCATION_ERROR, ec);
+    assertEquals("TimeZone::getCanonicalID(failure) should fail", (int32_t)U_MEMORY_ALLOCATION_ERROR, ec);
     assertTrue("TimeZone::getCanonicalID(failure) should return the dest string", pResult == &canonicalID);
 
     // Valid input should un-bogus the dest string.
@@ -1973,6 +1982,8 @@ void TimeZoneTest::TestCanonicalID() {
         const char *alias;
         const char *zone;
     } excluded1[] = {
+        {"Africa/Addis_Ababa", "Africa/Nairobi"},
+        {"Africa/Asmera", "Africa/Nairobi"},
         {"Africa/Bamako", "Africa/Abidjan"},
         {"Africa/Bangui", "Africa/Lagos"},
         {"Africa/Banjul", "Africa/Abidjan"},
@@ -1981,10 +1992,13 @@ void TimeZoneTest::TestCanonicalID() {
         {"Africa/Bujumbura", "Africa/Maputo"},
         {"Africa/Conakry", "Africa/Abidjan"},
         {"Africa/Dakar", "Africa/Abidjan"},
+        {"Africa/Dar_es_Salaam", "Africa/Nairobi"},
+        {"Africa/Djibouti", "Africa/Nairobi"},
         {"Africa/Douala", "Africa/Lagos"},
         {"Africa/Freetown", "Africa/Abidjan"},
         {"Africa/Gaborone", "Africa/Maputo"},
         {"Africa/Harare", "Africa/Maputo"},
+        {"Africa/Kampala", "Africa/Nairobi"},
         {"Africa/Khartoum", "Africa/Juba"},
         {"Africa/Kigali", "Africa/Maputo"},
         {"Africa/Kinshasa", "Africa/Lagos"},
@@ -1996,30 +2010,41 @@ void TimeZoneTest::TestCanonicalID() {
         {"Africa/Maseru", "Africa/Johannesburg"},
         {"Africa/Malabo", "Africa/Lagos"},
         {"Africa/Mbabane", "Africa/Johannesburg"},
+        {"Africa/Mogadishu", "Africa/Nairobi"},
         {"Africa/Niamey", "Africa/Lagos"},
         {"Africa/Nouakchott", "Africa/Abidjan"},
         {"Africa/Ouagadougou", "Africa/Abidjan"},
         {"Africa/Porto-Novo", "Africa/Lagos"},
         {"Africa/Sao_Tome", "Africa/Abidjan"},
+        {"America/Antigua", "America/Port_of_Spain"},
+        {"America/Anguilla", "America/Port_of_Spain"},
         {"America/Curacao", "America/Aruba"},
-        {"America/Dominica", "America/Anguilla"},
-        {"America/Grenada", "America/Anguilla"},
-        {"America/Guadeloupe", "America/Anguilla"},
+        {"America/Dominica", "America/Port_of_Spain"},
+        {"America/Grenada", "America/Port_of_Spain"},
+        {"America/Guadeloupe", "America/Port_of_Spain"},
         {"America/Kralendijk", "America/Aruba"},
         {"America/Lower_Princes", "America/Aruba"},
-        {"America/Marigot", "America/Anguilla"},
-        {"America/Montserrat", "America/Anguilla"},
-        {"America/Port_of_Spain", "America/Anguilla"},
-        {"America/Shiprock", "America/Denver"}, // America/Shiprock is defined as a Link to America/Denver in tzdata
-        {"America/St_Barthelemy", "America/Anguilla"},
-        {"America/St_Kitts", "America/Anguilla"},
-        {"America/St_Lucia", "America/Anguilla"},
-        {"America/St_Thomas", "America/Anguilla"},
-        {"America/St_Vincent", "America/Anguilla"},
-        {"America/Tortola", "America/Anguilla"},
-        {"America/Virgin", "America/Anguilla"},
+        {"America/Marigot", "America/Port_of_Spain"},
+        {"America/Montserrat", "America/Port_of_Spain"},
+        {"America/Panama", "America/Cayman"},
+        {"America/Santa_Isabel", "America/Tijuana"},
+        {"America/Shiprock", "America/Denver"},
+        {"America/St_Barthelemy", "America/Port_of_Spain"},
+        {"America/St_Kitts", "America/Port_of_Spain"},
+        {"America/St_Lucia", "America/Port_of_Spain"},
+        {"America/St_Thomas", "America/Port_of_Spain"},
+        {"America/St_Vincent", "America/Port_of_Spain"},
+        {"America/Toronto", "America/Montreal"},
+        {"America/Tortola", "America/Port_of_Spain"},
+        {"America/Virgin", "America/Port_of_Spain"},
         {"Antarctica/South_Pole", "Antarctica/McMurdo"},
         {"Arctic/Longyearbyen", "Europe/Oslo"},
+        {"Asia/Kuwait", "Asia/Aden"},
+        {"Asia/Muscat", "Asia/Dubai"},
+        {"Asia/Phnom_Penh", "Asia/Bangkok"},
+        {"Asia/Qatar", "Asia/Bahrain"},
+        {"Asia/Riyadh", "Asia/Aden"},
+        {"Asia/Vientiane", "Asia/Bangkok"},
         {"Atlantic/Jan_Mayen", "Europe/Oslo"},
         {"Atlantic/St_Helena", "Africa/Abidjan"},
         {"Europe/Bratislava", "Europe/Prague"},
@@ -2036,8 +2061,13 @@ void TimeZoneTest::TestCanonicalID() {
         {"Europe/Vaduz", "Europe/Zurich"},
         {"Europe/Vatican", "Europe/Rome"},
         {"Europe/Zagreb", "Europe/Belgrade"},
+        {"Indian/Antananarivo", "Africa/Nairobi"},
+        {"Indian/Comoro", "Africa/Nairobi"},
+        {"Indian/Mayotte", "Africa/Nairobi"},
         {"Pacific/Auckland", "Antarctica/McMurdo"},
         {"Pacific/Johnston", "Pacific/Honolulu"},
+        {"Pacific/Midway", "Pacific/Pago_Pago"},
+        {"Pacific/Saipan", "Pacific/Guam"},
         {0, 0}
     };
 
@@ -2379,7 +2409,7 @@ void TimeZoneTest::TestGetWindowsID(void) {
         {"America/Indianapolis",    "US Eastern Standard Time"},            // CLDR canonical name
         {"America/Indiana/Indianapolis",    "US Eastern Standard Time"},    // tzdb canonical name
         {"Asia/Khandyga",           "Yakutsk Standard Time"},
-        {"Australia/Eucla",         ""}, // No Windows ID mapping
+        {"Australia/Eucla",         "Aus Central W. Standard Time"}, // formerly no Windows ID mapping, now has one
         {"Bogus",                   ""},
         {0,                         0},
     };

@@ -1,16 +1,12 @@
-﻿// ***************************************************************************
-// *
-// * Copyright (C) 2014 International Business Machines
-// * Corporation and others. All Rights Reserved.
-// * Tool: org.unicode.cldr.icu.NewLdml2IcuConverter
-// * Source File: <path>/common/main/ka.xml
-// *
-// ***************************************************************************
-/**
- * ICU <specials> source: <path>/common/main/ka.xml
- */
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 ka{
-    Version{"2.1.8.95"}
+    Version{"2.1.29.20"}
+    durationUnits{
+        hm{"h:mm"}
+        hms{"h:mm:ss"}
+        ms{"m:ss"}
+    }
     units{
         acceleration{
             g-force{
@@ -45,6 +41,11 @@ ka{
                 one{"{0} რადიანი"}
                 other{"{0} რადიანი"}
             }
+            revolution{
+                dnam{"ბრუნვა"}
+                one{"{0} ბრუნვა"}
+                other{"{0} ბრუნვა"}
+            }
         }
         area{
             acre{
@@ -61,6 +62,7 @@ ka{
                 dnam{"კვადრატული სანტიმეტრი"}
                 one{"{0} კვადრატული სანტიმეტრი"}
                 other{"{0} კვადრატული სანტიმეტრი"}
+                per{"{0} კვადრატულ სანტიმეტრში"}
             }
             square-foot{
                 dnam{"კვადრატული ფუტი"}
@@ -71,21 +73,25 @@ ka{
                 dnam{"კვადრატული დუიმი"}
                 one{"{0} კვადრატული დუიმი"}
                 other{"{0} კვადრატული დუიმი"}
+                per{"{0} კვადრატულ დუიმში"}
             }
             square-kilometer{
                 dnam{"კვადრატული კილომეტრი"}
                 one{"{0} კვადრატული კილომეტრი"}
                 other{"{0} კვადრატული კილომეტრი"}
+                per{"{0} კვადრატულ კილომეტრში"}
             }
             square-meter{
                 dnam{"კვადრატული მეტრი"}
                 one{"{0} კვადრატული მეტრი"}
                 other{"{0} კვადრატული მეტრი"}
+                per{"{0} კვადრატულ მეტრში"}
             }
             square-mile{
                 dnam{"კვადრატული მილი"}
                 one{"{0} კვადრატული მილი"}
                 other{"{0} კვადრატული მილი"}
+                per{"{0} კვადრატულ მილში"}
             }
             square-yard{
                 dnam{"კვადრატული იარდი"}
@@ -96,7 +102,34 @@ ka{
         compound{
             per{"{0}/{1}"}
         }
+        concentr{
+            karat{
+                dnam{"კარატი"}
+                one{"{0} კარატი"}
+                other{"{0} კარატი"}
+            }
+            milligram-per-deciliter{
+                dnam{"მილიგრამი დეცილიტრზე"}
+                one{"{0} მილიგრამი დეცილიტრზე"}
+                other{"{0} მილიგრამი დეცილიტრზე"}
+            }
+            millimole-per-liter{
+                dnam{"მილიმოლი ლიტრზე"}
+                one{"{0} მილიმოლი ლიტრზე"}
+                other{"{0} მილიმოლი ლიტრზე"}
+            }
+            part-per-million{
+                dnam{"ნაწილი მილიონზე"}
+                one{"{0} ნაწილი მილიონზე"}
+                other{"{0} ნაწილი მილიონზე"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"ლიტრი 100 კილომეტრში"}
+                one{"{0} ლიტრი 100 კილომეტრში"}
+                other{"{0} ლიტრი 100 კილომეტრში"}
+            }
             liter-per-kilometer{
                 dnam{"ლიტრი კილომეტრზე"}
                 one{"{0} ლიტრი კილომეტრზე"}
@@ -107,6 +140,17 @@ ka{
                 one{"{0} მილი გალონზე"}
                 other{"{0} მილი გალონზე"}
             }
+            mile-per-gallon-imperial{
+                dnam{"იმპ. გალონი მილზე"}
+                one{"{0} იმპ. გალონი მილზე"}
+                other{"{0} იმპ. გალონი მილზე"}
+            }
+        }
+        coordinate{
+            east{"{0} აღმოსავლეთით"}
+            north{"{0} ჩრდილოეთით"}
+            south{"{0} სამხრეთით"}
+            west{"{0} დასავლეთით"}
         }
         digital{
             bit{
@@ -161,10 +205,16 @@ ka{
             }
         }
         duration{
+            century{
+                dnam{"საუკუნე"}
+                one{"{0} საუკუნე"}
+                other{"{0} საუკუნე"}
+            }
             day{
                 dnam{"დღე"}
                 one{"{0} დღე"}
                 other{"{0} დღე"}
+                per{"{0} დღეში"}
             }
             hour{
                 dnam{"საათი"}
@@ -186,11 +236,13 @@ ka{
                 dnam{"წუთი"}
                 one{"{0} წუთი"}
                 other{"{0} წუთი"}
+                per{"{0} წუთში"}
             }
             month{
                 dnam{"თვე"}
                 one{"{0} თვე"}
                 other{"{0} თვე"}
+                per{"{0} თვეში"}
             }
             nanosecond{
                 dnam{"ნანოწამი"}
@@ -207,11 +259,13 @@ ka{
                 dnam{"კვირა"}
                 one{"{0} კვირა"}
                 other{"{0} კვირა"}
+                per{"{0} კვირაში"}
             }
             year{
                 dnam{"წელი"}
                 one{"{0} წელი"}
                 other{"{0} წელი"}
+                per{"{0} წელში"}
             }
         }
         electric{
@@ -300,6 +354,7 @@ ka{
                 dnam{"სანტიმეტრი"}
                 one{"{0} სანტიმეტრი"}
                 other{"{0} სანტიმეტრი"}
+                per{"{0} სანტიმეტრში"}
             }
             decimeter{
                 dnam{"დეციმეტრი"}
@@ -310,16 +365,19 @@ ka{
                 dnam{"ფუტი"}
                 one{"{0} ფუტი"}
                 other{"{0} ფუტი"}
+                per{"{0} ფუტში"}
             }
             inch{
                 dnam{"დუიმი"}
                 one{"{0} დუიმი"}
                 other{"{0} დუიმი"}
+                per{"{0} დუიმში"}
             }
             kilometer{
                 dnam{"კილომეტრი"}
                 one{"{0} კილომეტრი"}
                 other{"{0} კილომეტრი"}
+                per{"{0} კილომეტრში"}
             }
             light-year{
                 dnam{"სინათლის წელი"}
@@ -328,8 +386,9 @@ ka{
             }
             meter{
                 dnam{"მეტრი"}
-                one{"{0}მეტრი"}
-                other{"{0}მეტრი"}
+                one{"{0} მეტრი"}
+                other{"{0} მეტრი"}
+                per{"{0} მეტრში"}
             }
             micrometer{
                 dnam{"მიკრომეტრი"}
@@ -340,6 +399,11 @@ ka{
                 dnam{"მილი"}
                 one{"{0} მილი"}
                 other{"{0} მილი"}
+            }
+            mile-scandinavian{
+                dnam{"სკანდინავიური მილი"}
+                one{"{0} სკანდინავიური მილი"}
+                other{"{0} სკანდინავიური მილი"}
             }
             millimeter{
                 dnam{"მილიმეტრი"}
@@ -389,11 +453,13 @@ ka{
                 dnam{"გრამი"}
                 one{"{0} გრამი"}
                 other{"{0} გრამი"}
+                per{"{0} გრამში"}
             }
             kilogram{
                 dnam{"კილოგრამი"}
                 one{"{0} კილოგრამი"}
                 other{"{0} კილოგრამი"}
+                per{"{0} კილოგრამში"}
             }
             metric-ton{
                 dnam{"მეტრული ტონა"}
@@ -414,6 +480,7 @@ ka{
                 dnam{"უნცია"}
                 one{"{0} უნცია"}
                 other{"{0} უნცია"}
+                per{"{0} უნციაში"}
             }
             ounce-troy{
                 dnam{"ტრუას უნცია"}
@@ -424,6 +491,7 @@ ka{
                 dnam{"ფუნტი"}
                 one{"{0} ფუნტი"}
                 other{"{0} ფუნტი"}
+                per{"{0} ფუნტში"}
             }
             ton{
                 dnam{"ტონა"}
@@ -490,18 +558,16 @@ ka{
                 other{"{0} ფუნტი კვადრატულ დუიმზე"}
             }
         }
-        proportion{
-            karat{
-                dnam{"კარატი"}
-                one{"{0} კარატი"}
-                other{"{0} კარატი"}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"კილომეტრი საათში"}
                 one{"{0} კილომეტრი საათში"}
                 other{"{0} კილომეტრი საათში"}
+            }
+            knot{
+                dnam{"კვანძი"}
+                one{"{0} კვანძი"}
+                other{"{0} კვანძი"}
             }
             meter-per-second{
                 dnam{"მეტრი წამში"}
@@ -525,6 +591,11 @@ ka{
                 one{"{0} გრადუსი ფარენჰეიტით"}
                 other{"{0} გრადუსი ფარენჰეიტით"}
             }
+            generic{
+                dnam{"°"}
+                one{"{0}°"}
+                other{"{0}°"}
+            }
             kelvin{
                 dnam{"კელვინის გრადუსი"}
                 one{"{0} კელვინი"}
@@ -546,6 +617,7 @@ ka{
                 dnam{"კუბური სანტიმენტრი"}
                 one{"{0} კუბური სანტიმენტრი"}
                 other{"{0} კუბური სანტიმენტრი"}
+                per{"{0} კუბურ სანტიმეტრში"}
             }
             cubic-foot{
                 dnam{"კუბური ფუტი"}
@@ -566,6 +638,7 @@ ka{
                 dnam{"კუბური მეტრი"}
                 one{"{0} კუბური მეტრი"}
                 other{"{0} კუბური მეტრი"}
+                per{"{0} კუბურ მეტრში"}
             }
             cubic-mile{
                 dnam{"კუბური მილი"}
@@ -582,6 +655,11 @@ ka{
                 one{"{0} ჭიქა"}
                 other{"{0} ჭიქა"}
             }
+            cup-metric{
+                dnam{"მეტრული ჭიქა"}
+                one{"{0} მეტრული ჭიქა"}
+                other{"{0} მეტრული ჭიქა"}
+            }
             deciliter{
                 dnam{"დეცილიტრი"}
                 one{"{0} დეცილიტრი"}
@@ -596,6 +674,13 @@ ka{
                 dnam{"გალონი"}
                 one{"{0} გალონი"}
                 other{"{0} გალონი"}
+                per{"{0} გალონში"}
+            }
+            gallon-imperial{
+                dnam{"იმპ. გალონი"}
+                one{"{0} იმპ. გალონი"}
+                other{"{0} იმპ. გალონი"}
+                per{"{0}/იმპ. გალ."}
             }
             hectoliter{
                 dnam{"ჰექტოლიტრი"}
@@ -606,6 +691,7 @@ ka{
                 dnam{"ლიტრი"}
                 one{"{0} ლიტრი"}
                 other{"{0} ლიტრი"}
+                per{"{0} ლიტრში"}
             }
             megaliter{
                 dnam{"მეგალიტრი"}
@@ -621,6 +707,11 @@ ka{
                 dnam{"პინტა"}
                 one{"{0} პინტა"}
                 other{"{0} პინტა"}
+            }
+            pint-metric{
+                dnam{"მეტრული პინტა"}
+                one{"{0} მეტრული პინტა"}
+                other{"{0} მეტრული პინტა"}
             }
             quart{
                 dnam{"კვარტა"}
@@ -688,6 +779,19 @@ ka{
         }
         compound{
             per{"{0}/{1}"}
+        }
+        consumption{
+            liter-per-100kilometers{
+                dnam{"ლ/100კმ"}
+                one{"{0}ლ/100კმ"}
+                other{"{0}ლ/100კმ"}
+            }
+        }
+        coordinate{
+            east{"{0}აღმ."}
+            north{"{0}ჩრდ."}
+            south{"{0} სამხრ."}
+            west{"{0} დას."}
         }
         duration{
             day{
@@ -901,6 +1005,11 @@ ka{
                 one{"{0} რად."}
                 other{"{0} რად."}
             }
+            revolution{
+                dnam{"ბრნ."}
+                one{"{0} ბრნ."}
+                other{"{0} ბრნ."}
+            }
         }
         area{
             acre{
@@ -917,6 +1026,7 @@ ka{
                 dnam{"სმ²"}
                 one{"{0} სმ²"}
                 other{"{0} სმ²"}
+                per{"{0}/სმ²"}
             }
             square-foot{
                 dnam{"ფუტი²"}
@@ -927,21 +1037,25 @@ ka{
                 dnam{"დუიმი²"}
                 one{"{0} დუიმი²"}
                 other{"{0} დუიმი²"}
+                per{"{0}/დუიმი²"}
             }
             square-kilometer{
                 dnam{"კმ²"}
                 one{"{0} კმ²"}
                 other{"{0} კმ²"}
+                per{"{0}/კმ²"}
             }
             square-meter{
                 dnam{"მ²"}
                 one{"{0} მ²"}
                 other{"{0} მ²"}
+                per{"{0}/მ²"}
             }
             square-mile{
                 dnam{"მილი²"}
                 one{"{0} მილი²"}
                 other{"{0} მილი²"}
+                per{"{0}/მილი²"}
             }
             square-yard{
                 dnam{"იარდი²"}
@@ -952,7 +1066,34 @@ ka{
         compound{
             per{"{0}/{1}"}
         }
+        concentr{
+            karat{
+                dnam{"კარატი"}
+                one{"{0} კარ."}
+                other{"{0} კარ."}
+            }
+            milligram-per-deciliter{
+                dnam{"მგ/დლ"}
+                one{"{0} მგ/დლ"}
+                other{"{0} მგ/დლ"}
+            }
+            millimole-per-liter{
+                dnam{"მმოლ/ლ"}
+                one{"{0} მმოლ/ლ"}
+                other{"{0} მმოლ/ლ"}
+            }
+            part-per-million{
+                dnam{"ნაწილი/მილიონზე"}
+                one{"{0} ppm"}
+                other{"{0} ppm"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"ლ/100კმ"}
+                one{"{0} ლ/100კმ"}
+                other{"{0} ლ/100კმ"}
+            }
             liter-per-kilometer{
                 dnam{"ლიტრი/კმ"}
                 one{"{0} ლ/კმ"}
@@ -963,6 +1104,17 @@ ka{
                 one{"{0} მილი/გალ."}
                 other{"{0} მილი/გალ."}
             }
+            mile-per-gallon-imperial{
+                dnam{"მილი/იმპ. გალონზე"}
+                one{"{0} მილი/იმპ. გალონზე"}
+                other{"{0} მილი/იმპ. გალონზე"}
+            }
+        }
+        coordinate{
+            east{"{0}აღმ."}
+            north{"{0}ჩრდ."}
+            south{"{0} სამხრ."}
+            west{"{0} დას."}
         }
         digital{
             bit{
@@ -1017,10 +1169,16 @@ ka{
             }
         }
         duration{
+            century{
+                dnam{"ს."}
+                one{"{0} ს."}
+                other{"{0} ს."}
+            }
             day{
                 dnam{"დღე"}
                 one{"{0} დღე"}
                 other{"{0} დღე"}
+                per{"{0}/დღე"}
             }
             hour{
                 dnam{"სთ"}
@@ -1042,11 +1200,13 @@ ka{
                 dnam{"წთ"}
                 one{"{0} წთ"}
                 other{"{0} წთ"}
+                per{"{0}/წთ"}
             }
             month{
                 dnam{"თვე"}
                 one{"{0} თვე"}
                 other{"{0} თვე"}
+                per{"{0}/თვე"}
             }
             nanosecond{
                 dnam{"ნწმ"}
@@ -1063,11 +1223,13 @@ ka{
                 dnam{"კვრ"}
                 one{"{0} კვრ"}
                 other{"{0} კვრ"}
+                per{"{0}/კვრ"}
             }
             year{
                 dnam{"წ"}
                 one{"{0} წ"}
                 other{"{0} წ"}
+                per{"{0}/წ"}
             }
         }
         electric{
@@ -1156,6 +1318,7 @@ ka{
                 dnam{"სმ"}
                 one{"{0} სმ"}
                 other{"{0} სმ"}
+                per{"{0}/სმ"}
             }
             decimeter{
                 dnam{"დმ"}
@@ -1166,16 +1329,19 @@ ka{
                 dnam{"ფტ"}
                 one{"{0} ფტ"}
                 other{"{0} ფტ"}
+                per{"{0}/ფტ"}
             }
             inch{
                 dnam{"დუიმი"}
                 one{"{0} დუიმი"}
                 other{"{0} დუიმი"}
+                per{"{0}/დუიმი"}
             }
             kilometer{
                 dnam{"კმ"}
                 one{"{0} კმ"}
                 other{"{0} კმ"}
+                per{"{0}/კმ"}
             }
             light-year{
                 dnam{"სწ"}
@@ -1186,6 +1352,7 @@ ka{
                 dnam{"მ"}
                 one{"{0} მ"}
                 other{"{0} მ"}
+                per{"{0}/მ"}
             }
             micrometer{
                 dnam{"მკმ"}
@@ -1196,6 +1363,11 @@ ka{
                 dnam{"მილი"}
                 one{"{0} მილი"}
                 other{"{0} მილი"}
+            }
+            mile-scandinavian{
+                dnam{"სკანდ. მილი"}
+                one{"{0} სკანდ. მილი"}
+                other{"{0} სკანდ. მილი"}
             }
             millimeter{
                 dnam{"მმ"}
@@ -1245,11 +1417,13 @@ ka{
                 dnam{"გრამი"}
                 one{"{0} გ"}
                 other{"{0} გ"}
+                per{"{0}/გ"}
             }
             kilogram{
                 dnam{"კილოგრამი"}
                 one{"{0} კგ"}
                 other{"{0} კგ"}
+                per{"{0}/კგ"}
             }
             metric-ton{
                 dnam{"მტ"}
@@ -1270,6 +1444,7 @@ ka{
                 dnam{"უნცია"}
                 one{"{0} უნც"}
                 other{"{0} უნც"}
+                per{"{0}/უნც"}
             }
             ounce-troy{
                 dnam{"ტრუას უნცია"}
@@ -1280,6 +1455,7 @@ ka{
                 dnam{"ფუნტი"}
                 one{"{0} ფნტ"}
                 other{"{0} ფნტ"}
+                per{"{0}/ფნტ"}
             }
             ton{
                 dnam{"ტონა"}
@@ -1346,18 +1522,16 @@ ka{
                 other{"{0} ფნტ. კვ. დმ."}
             }
         }
-        proportion{
-            karat{
-                dnam{"კარატი"}
-                one{"{0} კარ."}
-                other{"{0} კარ."}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"კმ/სთ"}
                 one{"{0} კმ/სთ"}
                 other{"{0} კმ/სთ"}
+            }
+            knot{
+                dnam{"კვძ."}
+                one{"{0} კვძ."}
+                other{"{0} კვძ."}
             }
             meter-per-second{
                 dnam{"მ/წმ"}
@@ -1381,6 +1555,11 @@ ka{
                 one{"{0}°F"}
                 other{"{0}°F"}
             }
+            generic{
+                dnam{"°"}
+                one{"{0}°"}
+                other{"{0}°"}
+            }
             kelvin{
                 dnam{"K"}
                 one{"{0} K"}
@@ -1402,6 +1581,7 @@ ka{
                 dnam{"სმ³"}
                 one{"{0} სმ³"}
                 other{"{0} სმ³"}
+                per{"{0}/სმ³"}
             }
             cubic-foot{
                 dnam{"ფუტი³"}
@@ -1422,6 +1602,7 @@ ka{
                 dnam{"მ³"}
                 one{"{0} მ³"}
                 other{"{0} მ³"}
+                per{"{0}/მ³"}
             }
             cubic-mile{
                 dnam{"კუბური მილი"}
@@ -1438,6 +1619,11 @@ ka{
                 one{"{0} ჭიქა"}
                 other{"{0} ჭიქა"}
             }
+            cup-metric{
+                dnam{"მეტრ. ჭიქა"}
+                one{"{0} მეტრ. ჭიქა"}
+                other{"{0} მეტრ. ჭიქა"}
+            }
             deciliter{
                 dnam{"დლ"}
                 one{"{0} დლ"}
@@ -1452,6 +1638,13 @@ ka{
                 dnam{"გალონი"}
                 one{"{0} გალონი"}
                 other{"{0} გალონი"}
+                per{"{0}/გალონი"}
+            }
+            gallon-imperial{
+                dnam{"იმპ. გალ."}
+                one{"{0} იმპ. გალ."}
+                other{"{0} იმპ. გალ."}
+                per{"{0}/იმპ. გალ."}
             }
             hectoliter{
                 dnam{"ჰლ"}
@@ -1462,6 +1655,7 @@ ka{
                 dnam{"ლიტრი"}
                 one{"{0} ლ"}
                 other{"{0} ლ"}
+                per{"{0}/ლ"}
             }
             megaliter{
                 dnam{"მეგალ."}
@@ -1477,6 +1671,11 @@ ka{
                 dnam{"პინტა"}
                 one{"{0} პინტა"}
                 other{"{0} პინტა"}
+            }
+            pint-metric{
+                dnam{"მეტრ. პინტა"}
+                one{"{0} მეტრ. პინტა"}
+                other{"{0} მეტრ. პინტა"}
             }
             quart{
                 dnam{"კვარტა"}

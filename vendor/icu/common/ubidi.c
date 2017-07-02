@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1999-2014, International Business Machines
+*   Copyright (C) 1999-2015, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -2138,7 +2140,7 @@ resolveImplicitLevels(UBiDi *pBiDi,
     /* The isolates[] entries contain enough information to
        resume the bidi algorithm in the same state as it was
        when it was interrupted by an isolate sequence. */
-    if(dirProps[start]==PDI) {
+    if(dirProps[start]==PDI  && pBiDi->isolateCount >= 0) {
         levState.startON=pBiDi->isolates[pBiDi->isolateCount].startON;
         start1=pBiDi->isolates[pBiDi->isolateCount].start1;
         stateImp=pBiDi->isolates[pBiDi->isolateCount].stateImp;
@@ -2340,7 +2342,7 @@ setParaSuccess(UBiDi *pBiDi) {
 static void
 setParaRunsOnly(UBiDi *pBiDi, const UChar *text, int32_t length,
                 UBiDiLevel paraLevel, UErrorCode *pErrorCode) {
-    void *runsOnlyMemory;
+    void *runsOnlyMemory = NULL;
     int32_t *visualMap;
     UChar *visualText;
     int32_t saveLength, saveTrailingWSStart;
@@ -2383,7 +2385,7 @@ setParaRunsOnly(UBiDi *pBiDi, const UChar *text, int32_t length,
      * direction is not MIXED
      */
     levels=ubidi_getLevels(pBiDi, pErrorCode);
-    uprv_memcpy(saveLevels, levels, pBiDi->length*sizeof(UBiDiLevel));
+    uprv_memcpy(saveLevels, levels, (size_t)pBiDi->length*sizeof(UBiDiLevel));
     saveTrailingWSStart=pBiDi->trailingWSStart;
     saveLength=pBiDi->length;
     saveDirection=pBiDi->direction;
@@ -2512,14 +2514,15 @@ setParaRunsOnly(UBiDi *pBiDi, const UChar *text, int32_t length,
     if(saveLength>pBiDi->levelsSize) {
         saveLength=pBiDi->levelsSize;
     }
-    uprv_memcpy(pBiDi->levels, saveLevels, saveLength*sizeof(UBiDiLevel));
+    uprv_memcpy(pBiDi->levels, saveLevels, (size_t)saveLength*sizeof(UBiDiLevel));
     pBiDi->trailingWSStart=saveTrailingWSStart;
-    /* free memory for mapping table and visual text */
-    uprv_free(runsOnlyMemory);
     if(pBiDi->runCount>1) {
         pBiDi->direction=UBIDI_MIXED;
     }
   cleanup3:
+    /* free memory for mapping table and visual text */
+    uprv_free(runsOnlyMemory);
+
     pBiDi->reorderingMode=UBIDI_REORDER_RUNS_ONLY;
 }
 

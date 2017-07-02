@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 2013-2014, International Business Machines Corporation and    *
-* others. All Rights Reserved.                                                *
+* Copyright (C) 2013-2016, International Business Machines Corporation and
+* others. All Rights Reserved.
 *******************************************************************************
 *
 * File RELDATEFMTTEST.CPP
@@ -231,9 +233,9 @@ static WithQuantityExpected kSerbian[] = {
 };
 
 static WithQuantityExpected kSerbianNarrow[] = {
-        {0.0, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, "\\u0437\\u0430 0 \\u043c\\u0435\\u0441."},
-        {1.2, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, "\\u0437\\u0430 1,2 \\u043c\\u0435\\u0441."},
-        {21.0, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, "\\u0437\\u0430 21 \\u043c\\u0435\\u0441."}
+        {0.0, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, "\\u0437\\u0430 0 \\u043c."},
+        {1.2, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, "\\u0437\\u0430 1,2 \\u043c."},
+        {21.0, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, "\\u0437\\u0430 21 \\u043c."}
 };
 
 static WithoutQuantityExpected kEnglishNoQuantity[] = {
@@ -462,7 +464,7 @@ static WithoutQuantityExpected kEnglishNoQuantityNarrow[] = {
 
 static WithoutQuantityExpected kSpanishNoQuantity[] = {
         {UDAT_DIRECTION_NEXT_2, UDAT_ABSOLUTE_DAY, "pasado ma\\u00F1ana"},
-        {UDAT_DIRECTION_LAST_2, UDAT_ABSOLUTE_DAY, "antes de ayer"}
+        {UDAT_DIRECTION_LAST_2, UDAT_ABSOLUTE_DAY, "anteayer"}
 };
 
 class RelativeDateTimeFormatterTest : public IntlTest {
@@ -533,6 +535,7 @@ private:
             const RelativeDateTimeFormatter& fmt,
             UDateDirection direction,
             UDateAbsoluteUnit unit);
+    void TestSidewaysDataLoading(void);
 };
 
 void RelativeDateTimeFormatterTest::runIndexedTest(
@@ -558,6 +561,7 @@ void RelativeDateTimeFormatterTest::runIndexedTest(
     TESTCASE_AUTO(TestGetters);
     TESTCASE_AUTO(TestCombineDateAndTime);
     TESTCASE_AUTO(TestBadDisplayContext);
+    TESTCASE_AUTO(TestSidewaysDataLoading);
     TESTCASE_AUTO_END;
 }
 
@@ -710,10 +714,10 @@ void RelativeDateTimeFormatterTest::TestGetters() {
     // copy and assignment.
     RelativeDateTimeFormatter fmt2(fmt);
     fmt3 = fmt2;
-    assertEquals("style", UDAT_STYLE_NARROW, fmt3.getFormatStyle());
+    assertEquals("style", (int32_t)UDAT_STYLE_NARROW, fmt3.getFormatStyle());
     assertEquals(
             "context",
-            UDISPCTX_CAPITALIZATION_FOR_MIDDLE_OF_SENTENCE,
+            (int32_t)UDISPCTX_CAPITALIZATION_FOR_MIDDLE_OF_SENTENCE,
             fmt3.getCapitalizationContext());
     assertSuccess("", status);
 }
@@ -893,6 +897,49 @@ void RelativeDateTimeFormatterTest::VerifyIllegalArgument(
     if (status != U_ILLEGAL_ARGUMENT_ERROR) {
         errln("Expected U_ILLEGAL_ARGUMENT_ERROR, got %s", u_errorName(status));
     }
+}
+
+/* Add tests to check "sideways" data loading. */
+void RelativeDateTimeFormatterTest::TestSidewaysDataLoading(void) {
+    UErrorCode status = U_ZERO_ERROR;
+    UnicodeString actual;
+    UnicodeString expected;
+    Locale enGbLocale("en_GB");
+
+    RelativeDateTimeFormatter fmt(enGbLocale, NULL, UDAT_STYLE_NARROW,
+                                  UDISPCTX_CAPITALIZATION_NONE, status);
+    if (U_FAILURE(status)) {
+        dataerrln("Unable to create RelativeDateTimeFormatter - %s", u_errorName(status));
+        return;
+    }
+
+    status = U_ZERO_ERROR;
+    actual = "";
+    fmt.format(3.0, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_MONTHS, actual, status);
+    expected = "in 3 mo";
+    assertEquals("narrow in 3 mo", expected, actual);
+
+    fmt.format(3.0, UDAT_DIRECTION_LAST, UDAT_RELATIVE_DAYS, actual.remove(), status);
+    expected = "3 days ago";
+    assertEquals("3 days ago (positive 3.0): ", expected, actual);
+
+    expected = "-3 days ago";
+    fmt.format(-3.0, UDAT_DIRECTION_LAST, UDAT_RELATIVE_DAYS, actual.remove(), status);
+    assertEquals("3 days ago (negative 3.0): ", expected, actual);
+
+    expected = "next yr.";
+    fmt.format(UDAT_DIRECTION_NEXT, UDAT_ABSOLUTE_YEAR, actual.remove(), status);
+    assertEquals("next year: ", expected, actual);
+
+    // Testing the SHORT style
+    RelativeDateTimeFormatter fmtshort(enGbLocale, NULL, UDAT_STYLE_SHORT,
+                                  UDISPCTX_CAPITALIZATION_NONE, status);
+    expected = "now";
+    fmtshort.format(0.0, UDAT_DIRECTION_NEXT, UDAT_RELATIVE_SECONDS, actual.remove(), status);
+
+    expected = "next yr.";
+    fmt.format(UDAT_DIRECTION_NEXT, UDAT_ABSOLUTE_YEAR, actual.remove(), status);
+    assertEquals("next year: ", expected, actual);
 }
 
 static const char *kLast2 = "Last_2";

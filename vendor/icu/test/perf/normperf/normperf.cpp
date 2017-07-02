@@ -1,9 +1,13 @@
 /*
-**********************************************************************
-* Copyright (c) 2002-2014, International Business Machines
+***********************************************************************
+* Copyright (C) 2016 and later: Unicode, Inc. and others.
+* License & terms of use: http://www.unicode.org/copyright.html#License
+***********************************************************************
+***********************************************************************
+* Copyright (c) 2002-2016, International Business Machines
 * Corporation and others.  All Rights Reserved.
-**********************************************************************
-**********************************************************************
+***********************************************************************
+***********************************************************************
 */
 /** 
  * This Program tests the performance of ICU's Normalization engine against Windows
@@ -131,7 +135,7 @@ NormalizerPerformanceTest::NormalizerPerformanceTest(int32_t argc, const char* a
         return;
     }
 
-    _remainingArgc = u_parseArgs(_remainingArgc, (char **)argv, (int32_t)(UPRV_LENGTHOF(cmdLineOptions)), cmdLineOptions);
+    _remainingArgc = u_parseArgs(_remainingArgc, (char **)argv, UPRV_LENGTHOF(cmdLineOptions), cmdLineOptions);
     if(cmdLineOptions[0].doesOccur && cmdLineOptions[0].value!=NULL) {
         options=(int32_t)strtol(cmdLineOptions[0].value, NULL, 16);
     }

@@ -1,12 +1,17 @@
 /*
-**********************************************************************
-* Copyright (c) 2002-2011, International Business Machines
+***********************************************************************
+* Copyright (C) 2016 and later: Unicode, Inc. and others.
+* License & terms of use: http://www.unicode.org/copyright.html#License
+***********************************************************************
+***********************************************************************
+* Copyright (c) 2002-2016, International Business Machines
 * Corporation and others.  All Rights Reserved.
-**********************************************************************
+***********************************************************************
 */
 #ifndef _STRINGPERF_H
 #define _STRINGPERF_H
 
+#include "cmemory.h"
 #include "unicode/utypes.h"
 #include "unicode/unistr.h"
 
@@ -242,7 +247,7 @@ private:
 
         wlines_=new WLine[numLines_];
         wchar_t ws[100];
-        int32_t wcap = sizeof(ws) / sizeof(*ws);
+        int32_t wcap = UPRV_LENGTHOF(ws);
         int32_t wl;
         wchar_t* wcs;
 

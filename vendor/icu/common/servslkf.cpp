@@ -1,3 +1,5 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /**
  *******************************************************************************
  * Copyright (C) 2001-2014, International Business Machines Corporation and    *
@@ -97,9 +99,9 @@ UnicodeString&
 SimpleLocaleKeyFactory::debug(UnicodeString& result) const
 {
     LocaleKeyFactory::debug(result);
-    result.append(", id: ");
+    result.append((UnicodeString)", id: ");
     result.append(_id);
-    result.append(", kind: ");
+    result.append((UnicodeString)", kind: ");
     result.append(_kind);
     return result;
 }
@@ -107,7 +109,7 @@ SimpleLocaleKeyFactory::debug(UnicodeString& result) const
 UnicodeString&
 SimpleLocaleKeyFactory::debugClass(UnicodeString& result) const
 {
-    return result.append("SimpleLocaleKeyFactory");
+    return result.append((UnicodeString)"SimpleLocaleKeyFactory");
 }
 #endif
 

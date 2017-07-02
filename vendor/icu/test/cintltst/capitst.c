@@ -1,5 +1,7 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
- * Copyright (c) 1997-2014, International Business Machines
+ * Copyright (c) 1997-2016, International Business Machines
  * Corporation and others. All Rights Reserved.
  ********************************************************************/
 /*****************************************************************************
@@ -115,7 +117,7 @@ void TestGetSetAttr(void) {
     log_err_status(status, "Unable to open collator. %s\n", u_errorName(status));
     return;
   } 
-  for(i = 0; i<sizeof(attrs)/sizeof(attrs[0]); i++) {
+  for(i = 0; i<UPRV_LENGTHOF(attrs); i++) {
     currAttr = attrs[i].att;
     ucol_setAttribute(coll, currAttr, UCOL_DEFAULT, &status);
     if(U_FAILURE(status)) {
@@ -870,9 +872,9 @@ static void TestBengaliSortKey(void)
   int32_t sortKeyLen2 = 0;
   UErrorCode status = U_ZERO_ERROR;
   char sortKeyStr1[2048];
-  uint32_t sortKeyStrLen1 = sizeof(sortKeyStr1)/sizeof(sortKeyStr1[0]);
+  uint32_t sortKeyStrLen1 = UPRV_LENGTHOF(sortKeyStr1);
   char sortKeyStr2[2048];
-  uint32_t sortKeyStrLen2 = sizeof(sortKeyStr2)/sizeof(sortKeyStr2[0]);
+  uint32_t sortKeyStrLen2 = UPRV_LENGTHOF(sortKeyStr2);
   UCollationResult result;
 
   static UChar preRules[41] = { 0x26, 0x9fa, 0x3c, 0x98c, 0x3c, 0x9e1, 0x3c, 0x98f, 0x3c, 0x990, 0x3c, 0x993, 0x3c, 0x994, 0x3c, 0x9bc, 0x3c, 0x982, 0x3c, 0x983, 0x3c, 0x981, 0x3c, 0x9b0, 0x3c, 0x9b8, 0x3c, 0x9b9, 0x3c, 0x9bd, 0x3c, 0x9be, 0x3c, 0x9bf, 0x3c, 0x9c8, 0x3c, 0x9cb, 0x3d, 0x9cb , 0};
@@ -938,8 +940,8 @@ void TestOpenVsOpenRules(){
     int32_t sortKeyLen1, sortKeyLen2;
     uint8_t *sortKey1 = NULL, *sortKey2 = NULL;
     char sortKeyStr1[512], sortKeyStr2[512];
-    uint32_t sortKeyStrLen1 = sizeof(sortKeyStr1) / sizeof(sortKeyStr1[0]),
-             sortKeyStrLen2 = sizeof(sortKeyStr2) / sizeof(sortKeyStr2[0]);
+    uint32_t sortKeyStrLen1 = UPRV_LENGTHOF(sortKeyStr1),
+             sortKeyStrLen2 = UPRV_LENGTHOF(sortKeyStr2);
     ULocaleData *uld;
     int32_t x, y, z;
     USet *eSet;
@@ -1073,7 +1075,7 @@ void TestSortKey()
     UChar *test1, *test2, *test3;
     UErrorCode status = U_ZERO_ERROR;
     char toStringBuffer[256], *resultP;
-    uint32_t toStringLen=sizeof(toStringBuffer)/sizeof(toStringBuffer[0]);
+    uint32_t toStringLen=UPRV_LENGTHOF(toStringBuffer);
 
 
     uint8_t s1[] = { 0x9f, 0x00 };
@@ -1417,7 +1419,7 @@ void TestGetLocale() {
   };
 
   /* test opening collators for different locales */
-  for(i = 0; i<sizeof(testStruct)/sizeof(testStruct[0]); i++) {
+  for(i = 0; i<UPRV_LENGTHOF(testStruct); i++) {
     status = U_ZERO_ERROR;
     coll = ucol_open(testStruct[i].requestedLocale, &status);
     if(U_FAILURE(status)) {
@@ -1446,7 +1448,7 @@ void TestGetLocale() {
     ucol_close(coll);
   }
 
-  /* completely non-existant locale for collator should get a default collator */
+  /* completely non-existent locale for collator should get a root collator */
   {
     UCollator *defaultColl = ucol_open(NULL, &status);
     coll = ucol_open("blahaha", &status);
@@ -1455,15 +1457,13 @@ void TestGetLocale() {
       if(strcmp(ucol_getLocaleByType(coll, ULOC_REQUESTED_LOCALE, &status), "blahaha")) {
         log_err("Nonexisting locale didn't preserve the requested locale\n");
       } */
-      if(strcmp(ucol_getLocaleByType(coll, ULOC_VALID_LOCALE, &status),
-        ucol_getLocaleByType(defaultColl, ULOC_VALID_LOCALE, &status))) {
-        log_err("Valid locale for nonexisting locale locale collator differs "
-          "from valid locale for default collator\n");
+      const char *name = ucol_getLocaleByType(coll, ULOC_VALID_LOCALE, &status);
+      if(*name != 0 && strcmp(name, "root") != 0) {
+        log_err("Valid locale for nonexisting-locale collator is \"%s\" not root\n", name);
       }
-      if(strcmp(ucol_getLocaleByType(coll, ULOC_ACTUAL_LOCALE, &status),
-        ucol_getLocaleByType(defaultColl, ULOC_ACTUAL_LOCALE, &status))) {
-        log_err("Actual locale for nonexisting locale locale collator differs "
-          "from actual locale for default collator\n");
+      name = ucol_getLocaleByType(coll, ULOC_ACTUAL_LOCALE, &status);
+      if(*name != 0 && strcmp(name, "root") != 0) {
+        log_err("Actual locale for nonexisting-locale collator is \"%s\" not root\n", name);
       }
       ucol_close(coll);
       ucol_close(defaultColl);
@@ -1607,7 +1607,7 @@ void TestBounds() {
 
 
     int32_t i = 0, j = 0, k = 0, buffSize = 0, skSize = 0, lowerSize = 0, upperSize = 0;
-    int32_t arraySize = sizeof(tests)/sizeof(tests[0]);
+    int32_t arraySize = UPRV_LENGTHOF(tests);
 
     if(U_SUCCESS(status) && coll) {
         for(i = 0; i<arraySize; i++) {
@@ -1658,12 +1658,12 @@ void TestBounds() {
 
 
 
-        for(i = 0; i<sizeof(test)/sizeof(test[0]); i++) {
+        for(i = 0; i<UPRV_LENGTHOF(test); i++) {
             buffSize = u_unescape(test[i], buffer, 512);
             skSize = ucol_getSortKey(coll, buffer, buffSize, sortkey, 512);
             lowerSize = ucol_getBound(sortkey, skSize, UCOL_BOUND_LOWER, 1, lower, 512, &status);
             upperSize = ucol_getBound(sortkey, skSize, UCOL_BOUND_UPPER_LONG, 1, upper, 512, &status);
-            for(j = i+1; j<sizeof(test)/sizeof(test[0]); j++) {
+            for(j = i+1; j<UPRV_LENGTHOF(test); j++) {
                 buffSize = u_unescape(test[j], buffer, 512);
                 skSize = ucol_getSortKey(coll, buffer, buffSize, sortkey, 512);
                 if(strcmp((const char *)lower, (const char *)sortkey) > 0) {
@@ -1906,7 +1906,7 @@ void TestMergeSortKeys(void) {
          "abcd",
          "abcde"
      };
-     uint32_t casesSize = sizeof(cases)/sizeof(cases[0]);
+     uint32_t casesSize = UPRV_LENGTHOF(cases);
      const char* prefix = "foo";
      const char* suffix = "egg";
      char outBuff1[256], outBuff2[256];
@@ -2063,7 +2063,7 @@ static void TestShortString(void)
     const char* locale = NULL;
 
 
-    for(i = 0; i < sizeof(testCases)/sizeof(testCases[0]); i++) {
+    for(i = 0; i < UPRV_LENGTHOF(testCases); i++) {
         status = U_ZERO_ERROR;
         if(testCases[i].locale) {
             locale = testCases[i].locale;
@@ -2219,7 +2219,7 @@ TestGetContractionsAndUnsafes(void)
     UChar buffer[65536];
     int32_t setLen = 0;
 
-    for(i = 0; i < sizeof(tests)/sizeof(tests[0]); i++) {
+    for(i = 0; i < UPRV_LENGTHOF(tests); i++) {
         log_verbose("Testing locale: %s\n", tests[i].locale);
         coll = ucol_open(tests[i].locale, &status);
         if (coll == NULL || U_FAILURE(status)) {
@@ -2334,11 +2334,11 @@ TestOpenBinary(void)
     }
 #endif
 
-    genericOrderingTest(coll, wUCA, sizeof(wUCA)/sizeof(wUCA[0]));
+    genericOrderingTest(coll, wUCA, UPRV_LENGTHOF(wUCA));
 
-    genericOrderingTest(cloneWUCA, wUCA, sizeof(wUCA)/sizeof(wUCA[0]));
+    genericOrderingTest(cloneWUCA, wUCA, UPRV_LENGTHOF(wUCA));
 #if OPEN_BINARY_ACCEPTS_NULL_BASE
-    genericOrderingTest(cloneNOUCA, noUCA, sizeof(noUCA)/sizeof(noUCA[0]));
+    genericOrderingTest(cloneNOUCA, noUCA, UPRV_LENGTHOF(noUCA));
 #endif
 
     if(image != imageBuffer) {
@@ -2424,14 +2424,13 @@ static void TestGetKeywordValuesForLocale(void) {
 
     UErrorCode status = U_ZERO_ERROR;
     UEnumeration *keywordValues = NULL;
-    int32_t i, n, size, valueLength;
+    int32_t i, n, size;
     const char *locale = NULL, *value = NULL;
     UBool errorOccurred = FALSE;
 
     for (i = 0; i < UPRV_LENGTHOF(PREFERRED) && !errorOccurred; i++) {
         locale = PREFERRED[i][0];
         value = NULL;
-        valueLength = 0;
         size = 0;
 
         keywordValues = ucol_getKeywordValuesForLocale("collation", locale, TRUE, &status);
@@ -2440,6 +2439,7 @@ static void TestGetKeywordValuesForLocale(void) {
             break;
         }
         size = uenum_count(keywordValues, &status);
+        (void)size;
 
         for (n = 0; (value = PREFERRED[i][n+1]) != NULL; n++) {
             if (!uenum_contains(keywordValues, value, &status)) {

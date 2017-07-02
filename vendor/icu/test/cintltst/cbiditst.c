@@ -1,3 +1,5 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT:
  * Copyright (c) 1997-2014, International Business Machines Corporation and
@@ -4376,7 +4378,7 @@ static const char* inverseBasic(UBiDi *pBiDi, const char *srcChars, int32_t srcL
     int32_t destLen;
     UChar src[MAXLEN], dest2[MAXLEN];
 
-    if (pBiDi == NULL || src == NULL) {
+    if (pBiDi == NULL || srcChars == NULL) {
         return NULL;
     }
     ubidi_setReorderingOptions(pBiDi, option);

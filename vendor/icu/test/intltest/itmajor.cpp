@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT:
- * Copyright (c) 1998-2009, International Business Machines Corporation and
+ * Copyright (c) 1998-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 
@@ -109,7 +111,7 @@ void MajorTestLevel::runIndexedTest( int32_t index, UBool exec, const char* &nam
                 break;
 
         case 6: name = "rbbi";
-#if !UCONFIG_NO_BREAK_ITERATION
+#if !UCONFIG_NO_BREAK_ITERATION && !UCONFIG_NO_REGULAR_EXPRESSIONS
                 if (exec) {
                     logln("TestSuite RuleBasedBreakIterator---"); logln();
                     IntlTestRBBI test;

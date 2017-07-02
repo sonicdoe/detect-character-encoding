@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 2013-2014, International Business Machines
+* Copyright (C) 2013-2016, International Business Machines
 * Corporation and others.  All Rights Reserved.
 *******************************************************************************
 * collationfastlatinbuilder.h
@@ -16,6 +18,7 @@
 
 #if !UCONFIG_NO_COLLATION
 
+#include "unicode/ucol.h"
 #include "unicode/unistr.h"
 #include "unicode/uobject.h"
 #include "collation.h"
@@ -39,6 +42,9 @@ public:
     int32_t lengthOfTable() const { return result.length(); }
 
 private:
+    // space, punct, symbol, currency (not digit)
+    enum { NUM_SPECIAL_GROUPS = UCOL_REORDER_CODE_CURRENCY - UCOL_REORDER_CODE_FIRST + 1 };
+
     UBool loadGroups(const CollationData &data, UErrorCode &errorCode);
     UBool inSameGroup(uint32_t p, uint32_t q) const;
 
@@ -73,7 +79,8 @@ private:
     /** One 16-bit mini CE per unique CE. */
     uint16_t *miniCEs;
 
-    // These are constant for a given list of CollationData.scripts.
+    // These are constant for a given root collator.
+    uint32_t lastSpecialPrimaries[NUM_SPECIAL_GROUPS];
     uint32_t firstDigitPrimary;
     uint32_t firstLatinPrimary;
     uint32_t lastLatinPrimary;

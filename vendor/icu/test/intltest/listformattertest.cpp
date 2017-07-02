@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
 *
-*   Copyright (C) 2012-2014, International Business Machines
+*   Copyright (C) 2012-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 *******************************************************************************
@@ -181,7 +183,7 @@ void ListFormatterTest::TestMalayalam() {
 void ListFormatterTest::TestZulu() {
     UnicodeString results[4] = {
         one,
-        "I-" + one + " ne-" + two,
+        one + " ne-" + two,
         one + ", " + two + ", ne-" + three,
         one + ", " + two + ", " + three + ", ne-" + four
     };
@@ -197,9 +199,10 @@ void ListFormatterTest::TestOutOfOrderPatterns() {
         four + " in the last after " + three + " after " + two + " after the first " + one
     };
 
+    UErrorCode errorCode = U_ZERO_ERROR;
     ListFormatData data("{1} after {0}", "{1} after the first {0}",
                         "{1} after {0}", "{1} in the last after {0}");
-    ListFormatter formatter(data);
+    ListFormatter formatter(data, errorCode);
 
     UnicodeString input1[] = {one};
     CheckFormatting(&formatter, input1, 1, results[0]);

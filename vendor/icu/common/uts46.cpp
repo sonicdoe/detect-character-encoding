@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-*   Copyright (C) 2010-2014, International Business Machines
+*   Copyright (C) 2010-2015, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  uts46.cpp
@@ -68,7 +70,7 @@ isASCIIOkBiDi(const char *s, int32_t length);
 IDNA::~IDNA() {}
 
 void
-IDNA::labelToASCII_UTF8(const StringPiece &label, ByteSink &dest,
+IDNA::labelToASCII_UTF8(StringPiece label, ByteSink &dest,
                         IDNAInfo &info, UErrorCode &errorCode) const {
     if(U_SUCCESS(errorCode)) {
         UnicodeString destString;
@@ -78,7 +80,7 @@ IDNA::labelToASCII_UTF8(const StringPiece &label, ByteSink &dest,
 }
 
 void
-IDNA::labelToUnicodeUTF8(const StringPiece &label, ByteSink &dest,
+IDNA::labelToUnicodeUTF8(StringPiece label, ByteSink &dest,
                          IDNAInfo &info, UErrorCode &errorCode) const {
     if(U_SUCCESS(errorCode)) {
         UnicodeString destString;
@@ -88,7 +90,7 @@ IDNA::labelToUnicodeUTF8(const StringPiece &label, ByteSink &dest,
 }
 
 void
-IDNA::nameToASCII_UTF8(const StringPiece &name, ByteSink &dest,
+IDNA::nameToASCII_UTF8(StringPiece name, ByteSink &dest,
                        IDNAInfo &info, UErrorCode &errorCode) const {
     if(U_SUCCESS(errorCode)) {
         UnicodeString destString;
@@ -98,7 +100,7 @@ IDNA::nameToASCII_UTF8(const StringPiece &name, ByteSink &dest,
 }
 
 void
-IDNA::nameToUnicodeUTF8(const StringPiece &name, ByteSink &dest,
+IDNA::nameToUnicodeUTF8(StringPiece name, ByteSink &dest,
                         IDNAInfo &info, UErrorCode &errorCode) const {
     if(U_SUCCESS(errorCode)) {
         UnicodeString destString;
@@ -131,19 +133,19 @@ public:
                   IDNAInfo &info, UErrorCode &errorCode) const;
 
     virtual void
-    labelToASCII_UTF8(const StringPiece &label, ByteSink &dest,
+    labelToASCII_UTF8(StringPiece label, ByteSink &dest,
                       IDNAInfo &info, UErrorCode &errorCode) const;
 
     virtual void
-    labelToUnicodeUTF8(const StringPiece &label, ByteSink &dest,
+    labelToUnicodeUTF8(StringPiece label, ByteSink &dest,
                        IDNAInfo &info, UErrorCode &errorCode) const;
 
     virtual void
-    nameToASCII_UTF8(const StringPiece &name, ByteSink &dest,
+    nameToASCII_UTF8(StringPiece name, ByteSink &dest,
                      IDNAInfo &info, UErrorCode &errorCode) const;
 
     virtual void
-    nameToUnicodeUTF8(const StringPiece &name, ByteSink &dest,
+    nameToUnicodeUTF8(StringPiece name, ByteSink &dest,
                       IDNAInfo &info, UErrorCode &errorCode) const;
 
 private:
@@ -154,7 +156,7 @@ private:
             IDNAInfo &info, UErrorCode &errorCode) const;
 
     void
-    processUTF8(const StringPiece &src,
+    processUTF8(StringPiece src,
                 UBool isLabel, UBool toASCII,
                 ByteSink &dest,
                 IDNAInfo &info, UErrorCode &errorCode) const;
@@ -180,7 +182,7 @@ private:
     int32_t
     markBadACELabel(UnicodeString &dest,
                     int32_t labelStart, int32_t labelLength,
-                    UBool toASCII, IDNAInfo &info) const;
+                    UBool toASCII, IDNAInfo &info, UErrorCode &errorCode) const;
 
     void
     checkLabelBiDi(const UChar *label, int32_t labelLength, IDNAInfo &info) const;
@@ -251,25 +253,25 @@ UTS46::nameToUnicode(const UnicodeString &name, UnicodeString &dest,
 }
 
 void
-UTS46::labelToASCII_UTF8(const StringPiece &label, ByteSink &dest,
+UTS46::labelToASCII_UTF8(StringPiece label, ByteSink &dest,
                          IDNAInfo &info, UErrorCode &errorCode) const {
     processUTF8(label, TRUE, TRUE, dest, info, errorCode);
 }
 
 void
-UTS46::labelToUnicodeUTF8(const StringPiece &label, ByteSink &dest,
+UTS46::labelToUnicodeUTF8(StringPiece label, ByteSink &dest,
                           IDNAInfo &info, UErrorCode &errorCode) const {
     processUTF8(label, TRUE, FALSE, dest, info, errorCode);
 }
 
 void
-UTS46::nameToASCII_UTF8(const StringPiece &name, ByteSink &dest,
+UTS46::nameToASCII_UTF8(StringPiece name, ByteSink &dest,
                         IDNAInfo &info, UErrorCode &errorCode) const {
     processUTF8(name, FALSE, TRUE, dest, info, errorCode);
 }
 
 void
-UTS46::nameToUnicodeUTF8(const StringPiece &name, ByteSink &dest,
+UTS46::nameToUnicodeUTF8(StringPiece name, ByteSink &dest,
                          IDNAInfo &info, UErrorCode &errorCode) const {
     processUTF8(name, FALSE, FALSE, dest, info, errorCode);
 }
@@ -401,7 +403,7 @@ UTS46::process(const UnicodeString &src,
 }
 
 void
-UTS46::processUTF8(const StringPiece &src,
+UTS46::processUTF8(StringPiece src,
                    UBool isLabel, UBool toASCII,
                    ByteSink &dest,
                    IDNAInfo &info, UErrorCode &errorCode) const {
@@ -587,6 +589,9 @@ UTS46::processUnicode(const UnicodeString &src,
 int32_t
 UTS46::mapDevChars(UnicodeString &dest, int32_t labelStart, int32_t mappingStart,
                    UErrorCode &errorCode) const {
+    if(U_FAILURE(errorCode)) {
+        return 0;
+    }
     int32_t length=dest.length();
     UChar *s=dest.getBuffer(dest[mappingStart]==0xdf ? length+1 : length);
     if(s==NULL) {
@@ -644,6 +649,9 @@ UTS46::mapDevChars(UnicodeString &dest, int32_t labelStart, int32_t mappingStart
         uts46Norm2.normalize(dest.tempSubString(labelStart), normalized, errorCode);
         if(U_SUCCESS(errorCode)) {
             dest.replace(labelStart, 0x7fffffff, normalized);
+            if(dest.isBogus()) {
+                errorCode=U_MEMORY_ALLOCATION_ERROR;
+            }
             return dest.length();
         }
     }
@@ -665,9 +673,16 @@ isNonASCIIDisallowedSTD3Valid(UChar32 c) {
 // Returns labelLength (= the new label length).
 static int32_t
 replaceLabel(UnicodeString &dest, int32_t destLabelStart, int32_t destLabelLength,
-             const UnicodeString &label, int32_t labelLength) {
+             const UnicodeString &label, int32_t labelLength, UErrorCode &errorCode) {
+    if(U_FAILURE(errorCode)) {
+        return 0;
+    }
     if(&label!=&dest) {
         dest.replace(destLabelStart, destLabelLength, label);
+        if(dest.isBogus()) {
+            errorCode=U_MEMORY_ALLOCATION_ERROR;
+            return 0;
+        }
     }
     return labelLength;
 }
@@ -677,6 +692,9 @@ UTS46::processLabel(UnicodeString &dest,
                     int32_t labelStart, int32_t labelLength,
                     UBool toASCII,
                     IDNAInfo &info, UErrorCode &errorCode) const {
+    if(U_FAILURE(errorCode)) {
+        return 0;
+    }
     UnicodeString fromPunycode;
     UnicodeString *labelString;
     const UChar *label=dest.getBuffer()+labelStart;
@@ -711,7 +729,7 @@ UTS46::processLabel(UnicodeString &dest,
         fromPunycode.releaseBuffer(unicodeLength);
         if(U_FAILURE(punycodeErrorCode)) {
             info.labelErrors|=UIDNA_ERROR_PUNYCODE;
-            return markBadACELabel(dest, labelStart, labelLength, toASCII, info);
+            return markBadACELabel(dest, labelStart, labelLength, toASCII, info, errorCode);
         }
         // Check for NFC, and for characters that are not
         // valid or deviation characters according to the normalizer.
@@ -726,7 +744,7 @@ UTS46::processLabel(UnicodeString &dest,
         }
         if(!isValid) {
             info.labelErrors|=UIDNA_ERROR_INVALID_ACE_LABEL;
-            return markBadACELabel(dest, labelStart, labelLength, toASCII, info);
+            return markBadACELabel(dest, labelStart, labelLength, toASCII, info, errorCode);
         }
         labelString=&fromPunycode;
         label=fromPunycode.getBuffer();
@@ -739,7 +757,8 @@ UTS46::processLabel(UnicodeString &dest,
     // Validity check
     if(labelLength==0) {
         info.labelErrors|=UIDNA_ERROR_EMPTY_LABEL;
-        return replaceLabel(dest, destLabelStart, destLabelLength, *labelString, labelLength);
+        return replaceLabel(dest, destLabelStart, destLabelLength,
+                            *labelString, labelLength, errorCode);
     }
     // labelLength>0
     if(labelLength>=4 && label[2]==0x2d && label[3]==0x2d) {
@@ -861,7 +880,7 @@ UTS46::processLabel(UnicodeString &dest,
                     info.labelErrors|=UIDNA_ERROR_LABEL_TOO_LONG;
                 }
                 return replaceLabel(dest, destLabelStart, destLabelLength,
-                                    punycode, punycodeLength);
+                                    punycode, punycodeLength, errorCode);
             } else {
                 // all-ASCII label
                 if(labelLength>63) {
@@ -874,10 +893,11 @@ UTS46::processLabel(UnicodeString &dest,
         // then leave it but make sure it does not look valid.
         if(wasPunycode) {
             info.labelErrors|=UIDNA_ERROR_INVALID_ACE_LABEL;
-            return markBadACELabel(dest, destLabelStart, destLabelLength, toASCII, info);
+            return markBadACELabel(dest, destLabelStart, destLabelLength, toASCII, info, errorCode);
         }
     }
-    return replaceLabel(dest, destLabelStart, destLabelLength, *labelString, labelLength);
+    return replaceLabel(dest, destLabelStart, destLabelLength,
+                        *labelString, labelLength, errorCode);
 }
 
 // Make sure an ACE label does not look valid.
@@ -886,7 +906,10 @@ UTS46::processLabel(UnicodeString &dest,
 int32_t
 UTS46::markBadACELabel(UnicodeString &dest,
                        int32_t labelStart, int32_t labelLength,
-                       UBool toASCII, IDNAInfo &info) const {
+                       UBool toASCII, IDNAInfo &info, UErrorCode &errorCode) const {
+    if(U_FAILURE(errorCode)) {
+        return 0;
+    }
     UBool disallowNonLDHDot=(options&UIDNA_USE_STD3_RULES)!=0;
     UBool isASCII=TRUE;
     UBool onlyLDH=TRUE;
@@ -914,6 +937,10 @@ UTS46::markBadACELabel(UnicodeString &dest,
     } while(++s<limit);
     if(onlyLDH) {
         dest.insert(labelStart+labelLength, (UChar)0xfffd);
+        if(dest.isBogus()) {
+            errorCode=U_MEMORY_ALLOCATION_ERROR;
+            return 0;
+        }
         ++labelLength;
     } else {
         if(toASCII && isASCII && labelLength>63) {

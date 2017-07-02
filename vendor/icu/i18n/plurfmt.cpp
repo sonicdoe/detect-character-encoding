@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 2009-2014, International Business Machines Corporation and
+* Copyright (C) 2009-2015, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -19,6 +21,8 @@
 #include "plurrule_impl.h"
 #include "uassert.h"
 #include "uhash.h"
+#include "precision.h"
+#include "visibledigits.h"
 
 #if !UCONFIG_NO_FORMATTING
 
@@ -214,14 +218,14 @@ PluralFormat::format(const Formattable& obj,
 
 UnicodeString
 PluralFormat::format(int32_t number, UErrorCode& status) const {
-    FieldPosition fpos(0);
+    FieldPosition fpos(FieldPosition::DONT_CARE);
     UnicodeString result;
     return format(Formattable(number), number, result, fpos, status);
 }
 
 UnicodeString
 PluralFormat::format(double number, UErrorCode& status) const {
-    FieldPosition fpos(0);
+    FieldPosition fpos(FieldPosition::DONT_CARE);
     UnicodeString result;
     return format(Formattable(number), number, result, fpos, status);
 }
@@ -259,18 +263,37 @@ PluralFormat::format(const Formattable& numberObject, double number,
     double numberMinusOffset = number - offset;
     UnicodeString numberString;
     FieldPosition ignorePos;
-    FixedDecimal dec(numberMinusOffset);
+    FixedPrecision fp;
+    VisibleDigitsWithExponent dec;
+    fp.initVisibleDigitsWithExponent(numberMinusOffset, dec, status);
+    if (U_FAILURE(status)) {
+        return appendTo;
+    }
     if (offset == 0) {
-        numberFormat->format(numberObject, numberString, ignorePos, status);  // could be BigDecimal etc.
         DecimalFormat *decFmt = dynamic_cast<DecimalFormat *>(numberFormat);
         if(decFmt != NULL) {
-            dec = decFmt->getFixedDecimal(numberObject, status);
+            decFmt->initVisibleDigitsWithExponent(
+                    numberObject, dec, status);
+            if (U_FAILURE(status)) {
+                return appendTo;
+            }
+            decFmt->format(dec, numberString, ignorePos, status);
+        } else {
+            numberFormat->format(
+                    numberObject, numberString, ignorePos, status);  // could be BigDecimal etc.
         }
     } else {
-        numberFormat->format(numberMinusOffset, numberString, ignorePos, status);
         DecimalFormat *decFmt = dynamic_cast<DecimalFormat *>(numberFormat);
         if(decFmt != NULL) {
-            dec = decFmt->getFixedDecimal(numberMinusOffset, status);
+            decFmt->initVisibleDigitsWithExponent(
+                    numberMinusOffset, dec, status);
+            if (U_FAILURE(status)) {
+                return appendTo;
+            }
+            decFmt->format(dec, numberString, ignorePos, status);
+        } else {
+            numberFormat->format(
+                    numberMinusOffset, numberString, ignorePos, status);
         }
     }
     int32_t partIndex = findSubMessage(msgPattern, 0, pluralRulesWrapper, &dec, number, status);
@@ -533,7 +556,7 @@ void PluralFormat::parseType(const UnicodeString& source, const NFRule *rbnfLeni
             currMatchIndex = rbnfLenientScanner->findTextLenient(source, currArg, startingAt, &length);
         }
         else {
-            currMatchIndex = source.indexOf(currArg);
+            currMatchIndex = source.indexOf(currArg, startingAt);
         }
         if (currMatchIndex >= 0 && currMatchIndex >= matchedIndex && currArg.length() > matchedWord.length()) {
             matchedIndex = currMatchIndex;
@@ -562,8 +585,7 @@ PluralFormat::PluralSelectorAdapter::~PluralSelectorAdapter() {
 UnicodeString PluralFormat::PluralSelectorAdapter::select(void *context, double number,
                                                           UErrorCode& /*ec*/) const {
     (void)number;  // unused except in the assertion
-    FixedDecimal *dec=static_cast<FixedDecimal *>(context);
-    U_ASSERT(dec->source==number);
+    VisibleDigitsWithExponent *dec=static_cast<VisibleDigitsWithExponent *>(context);
     return pluralRules->select(*dec);
 }
 

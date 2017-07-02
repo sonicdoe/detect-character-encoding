@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
-* Copyright (C) 1998-2001, International Business Machines Corporation 
+* Copyright (C) 1998-2016, International Business Machines Corporation 
 * and others.  All Rights Reserved.
 **********************************************************************
 ************************************************************************
@@ -16,7 +18,7 @@
 
 #include "unicode/utypes.h"
 
-#if !UCONFIG_NO_BREAK_ITERATION
+#if !UCONFIG_NO_BREAK_ITERATION && !UCONFIG_NO_REGULAR_EXPRESSIONS
 
 #include "intltest.h"
 
@@ -26,6 +28,6 @@ public:
     void runIndexedTest( int32_t index, UBool exec, const char* &name, char* par = NULL );
 };
 
-#endif /* #if !UCONFIG_NO_BREAK_ITERATION */
+#endif /* #if !UCONFIG_NO_BREAK_ITERATION && !UCONFIG_NO_REGULAR_EXPRESSIONS */
 
 #endif

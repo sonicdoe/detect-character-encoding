@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 2013-2014, International Business Machines
+* Copyright (C) 2013-2015, International Business Machines
 * Corporation and others.  All Rights Reserved.
 *******************************************************************************
 * collationruleparser.cpp
@@ -706,17 +708,7 @@ CollationRuleParser::parseReordering(const UnicodeString &raw, UErrorCode &error
         if(U_FAILURE(errorCode)) { return; }
         i = limit;
     }
-    int32_t length = reorderCodes.size();
-    if(length == 1 && reorderCodes.elementAti(0) == UCOL_REORDER_CODE_NONE) {
-        settings->resetReordering();
-        return;
-    }
-    uint8_t table[256];
-    baseData->makeReorderTable(reorderCodes.getBuffer(), length, table, errorCode);
-    if(U_FAILURE(errorCode)) { return; }
-    if(!settings->setReordering(reorderCodes.getBuffer(), length, table)) {
-        errorCode = U_MEMORY_ALLOCATION_ERROR;
-    }
+    settings->setReordering(*baseData, reorderCodes.getBuffer(), reorderCodes.size(), errorCode);
 }
 
 static const char *const gSpecialReorderCodes[] = {
@@ -798,7 +790,7 @@ CollationRuleParser::readWords(int32_t i, UnicodeString &raw) const {
             return i;
         }
         if(PatternProps::isWhiteSpace(c)) {
-            raw.append(0x20);
+            raw.append(sp);
             i = skipWhiteSpace(i + 1);
         } else {
             raw.append(c);
