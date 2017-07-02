@@ -77,6 +77,12 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## Release history
 
+- v0.4.0 (2017-07-02):
+  - Update to ICU 58.1
+  - Add support for Node.js v8
+  - Add support for Ubuntu 16.04 and drop support for Ubuntu 12.04
+  - Add support for Debian 8 and drop support for Debian 7
+  - Drop support for macOS versions older than macOS Sierra 10.12
 - v0.3.1 (2017-03-10):
   - Fix continuing execution even after an error occurred.
   - Fix memory leak by properly closing ICU’s charset detector.
