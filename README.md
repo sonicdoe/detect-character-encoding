@@ -36,7 +36,7 @@ detect-character-encoding should work fine on:
 - Ubuntu 12.04 x64
 - Ubuntu 14.04 x64
 - Debian 7 x64
-- OS X 10.9
+- macOS 10.12
 
 You may currently encounter issues on 32-bit systems and Windows.
 
