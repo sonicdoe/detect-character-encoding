@@ -34,6 +34,7 @@ console.log(charsetMatch);
 detect-character-encoding should work fine on:
 
 - Ubuntu 14.04 x64
+- Ubuntu 16.04 x64
 - Debian 8
 - macOS 10.12
 
