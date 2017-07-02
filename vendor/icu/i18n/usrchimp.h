@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
-*   Copyright (C) 2001-2014 IBM and others. All rights reserved.
+*   Copyright (C) 2001-2015 IBM and others. All rights reserved.
 **********************************************************************
 *   Date        Name        Description
 *  08/13/2001   synwee      Creation.
@@ -69,8 +71,8 @@ struct PCEBuffer
     ~PCEBuffer();
 
     void  reset();
-    UBool empty() const;
-    void  put(uint64_t ce, int32_t ixLow, int32_t ixHigh);
+    UBool isEmpty() const;
+    void  put(uint64_t ce, int32_t ixLow, int32_t ixHigh, UErrorCode &errorCode);
     const PCEI *get();
 };
 

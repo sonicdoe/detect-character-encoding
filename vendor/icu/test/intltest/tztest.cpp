@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /***********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2015, International Business Machines Corporation
+ * Copyright (c) 1997-2016, International Business Machines Corporation
  * and others. All Rights Reserved.
  ***********************************************************************/
 
@@ -861,7 +863,7 @@ void TimeZoneTest::TestShortZoneIDs()
         {"ECT", 60, TRUE},    // ICU Link - Europe/Paris
         {"MET", 60, TRUE},    // Olson europe 1:00 C-Eur
         {"CAT", 120, FALSE},  // ICU Link - Africa/Maputo
-        {"ART", 120, TRUE},   // ICU Link - Africa/Cairo
+        {"ART", 120, FALSE},  // ICU Link - Africa/Cairo
         {"EET", 120, TRUE},   // Olson europe 2:00 EU
         {"EAT", 180, FALSE},  // ICU Link - Africa/Addis_Ababa
         {"NET", 240, FALSE},  // ICU Link - Asia/Yerevan
@@ -1327,7 +1329,7 @@ TimeZoneTest::TestAliasedNames()
     int32_t i, j, k, loc;
     UnicodeString fromName, toName;
     TimeZone *from = NULL, *to = NULL;
-    for(i = 0; i < (int32_t)(sizeof(kData)/sizeof(kData[0])); i++) {
+    for(i = 0; i < UPRV_LENGTHOF(kData); i++) {
         from = TimeZone::createTimeZone(kData[i].from);
         to = TimeZone::createTimeZone(kData[i].to);
         if(!from->hasSameRules(*to)) {
@@ -1336,8 +1338,8 @@ TimeZoneTest::TestAliasedNames()
         if(!quick) {
             for(loc = 0; loc < noLoc; loc++) {
                 const char* locale = uloc_getAvailable(loc); 
-                for(j = 0; j < (int32_t)(sizeof(styles)/sizeof(styles[0])); j++) {
-                    for(k = 0; k < (int32_t)(sizeof(useDst)/sizeof(useDst[0])); k++) {
+                for(j = 0; j < UPRV_LENGTHOF(styles); j++) {
+                    for(k = 0; k < UPRV_LENGTHOF(useDst); k++) {
                         fromName.remove();
                         toName.remove();
                         from->getDisplayName(useDst[k], styles[j],locale, fromName);
@@ -1952,14 +1954,14 @@ void TimeZoneTest::TestCanonicalIDAPI() {
     UnicodeString canonicalID;
     UErrorCode ec = U_ZERO_ERROR;
     UnicodeString *pResult = &TimeZone::getCanonicalID(bogus, canonicalID, ec);
-    assertEquals("TimeZone::getCanonicalID(bogus) should fail", U_ILLEGAL_ARGUMENT_ERROR, ec);
+    assertEquals("TimeZone::getCanonicalID(bogus) should fail", (int32_t)U_ILLEGAL_ARGUMENT_ERROR, ec);
     assertTrue("TimeZone::getCanonicalID(bogus) should return the dest string", pResult == &canonicalID);
 
     // U_FAILURE on input.
     UnicodeString berlin("Europe/Berlin");
     ec = U_MEMORY_ALLOCATION_ERROR;
     pResult = &TimeZone::getCanonicalID(berlin, canonicalID, ec);
-    assertEquals("TimeZone::getCanonicalID(failure) should fail", U_MEMORY_ALLOCATION_ERROR, ec);
+    assertEquals("TimeZone::getCanonicalID(failure) should fail", (int32_t)U_MEMORY_ALLOCATION_ERROR, ec);
     assertTrue("TimeZone::getCanonicalID(failure) should return the dest string", pResult == &canonicalID);
 
     // Valid input should un-bogus the dest string.
@@ -2025,12 +2027,14 @@ void TimeZoneTest::TestCanonicalID() {
         {"America/Marigot", "America/Port_of_Spain"},
         {"America/Montserrat", "America/Port_of_Spain"},
         {"America/Panama", "America/Cayman"},
+        {"America/Santa_Isabel", "America/Tijuana"},
         {"America/Shiprock", "America/Denver"},
         {"America/St_Barthelemy", "America/Port_of_Spain"},
         {"America/St_Kitts", "America/Port_of_Spain"},
         {"America/St_Lucia", "America/Port_of_Spain"},
         {"America/St_Thomas", "America/Port_of_Spain"},
         {"America/St_Vincent", "America/Port_of_Spain"},
+        {"America/Toronto", "America/Montreal"},
         {"America/Tortola", "America/Port_of_Spain"},
         {"America/Virgin", "America/Port_of_Spain"},
         {"Antarctica/South_Pole", "Antarctica/McMurdo"},
@@ -2405,7 +2409,7 @@ void TimeZoneTest::TestGetWindowsID(void) {
         {"America/Indianapolis",    "US Eastern Standard Time"},            // CLDR canonical name
         {"America/Indiana/Indianapolis",    "US Eastern Standard Time"},    // tzdb canonical name
         {"Asia/Khandyga",           "Yakutsk Standard Time"},
-        {"Australia/Eucla",         ""}, // No Windows ID mapping
+        {"Australia/Eucla",         "Aus Central W. Standard Time"}, // formerly no Windows ID mapping, now has one
         {"Bogus",                   ""},
         {0,                         0},
     };

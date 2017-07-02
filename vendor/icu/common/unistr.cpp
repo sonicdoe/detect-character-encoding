@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
-* Copyright (C) 1999-2014, International Business Machines Corporation and
+* Copyright (C) 1999-2016, International Business Machines Corporation and
 * others. All Rights Reserved.
 ******************************************************************************
 *
@@ -82,7 +84,7 @@ us_arrayCopy(const UChar *src, int32_t srcStart,
          UChar *dst, int32_t dstStart, int32_t count)
 {
   if(count>0) {
-    uprv_memmove(dst+dstStart, src+srcStart, (size_t)(count*sizeof(*src)));
+    uprv_memmove(dst+dstStart, src+srcStart, (size_t)count*sizeof(*src));
   }
 }
 
@@ -151,41 +153,39 @@ UnicodeString::UnicodeString(int32_t capacity, UChar32 c, int32_t count) {
   if(count <= 0 || (uint32_t)c > 0x10ffff) {
     // just allocate and do not do anything else
     allocate(capacity);
-  } else {
-    // count > 0, allocate and fill the new string with count c's
-    int32_t unitCount = U16_LENGTH(c), length = count * unitCount;
+  } else if(c <= 0xffff) {
+    int32_t length = count;
     if(capacity < length) {
       capacity = length;
     }
     if(allocate(capacity)) {
       UChar *array = getArrayStart();
-      int32_t i = 0;
-
-      // fill the new string with c
-      if(unitCount == 1) {
-        // fill with length UChars
-        while(i < length) {
-          array[i++] = (UChar)c;
-        }
-      } else {
-        // get the code units for c
-        UChar units[U16_MAX_LENGTH];
-        U16_APPEND_UNSAFE(units, i, c);
-
-        // now it must be i==unitCount
-        i = 0;
-
-        // for Unicode, unitCount can only be 1, 2, 3, or 4
-        // 1 is handled above
-        while(i < length) {
-          int32_t unitIdx = 0;
-          while(unitIdx < unitCount) {
-            array[i++]=units[unitIdx++];
-          }
-        }
+      UChar unit = (UChar)c;
+      for(int32_t i = 0; i < length; ++i) {
+        array[i] = unit;
       }
+      setLength(length);
     }
-    setLength(length);
+  } else {  // supplementary code point, write surrogate pairs
+    if(count > (INT32_MAX / 2)) {
+      // We would get more than 2G UChars.
+      allocate(capacity);
+      return;
+    }
+    int32_t length = count * 2;
+    if(capacity < length) {
+      capacity = length;
+    }
+    if(allocate(capacity)) {
+      UChar *array = getArrayStart();
+      UChar lead = U16_LEAD(c);
+      UChar trail = U16_TRAIL(c);
+      for(int32_t i = 0; i < length; i += 2) {
+        array[i] = lead;
+        array[i + 1] = trail;
+      }
+      setLength(length);
+    }
   }
 }
 
@@ -208,13 +208,13 @@ UnicodeString::UnicodeString(UChar32 ch) {
 
 UnicodeString::UnicodeString(const UChar *text) {
   fUnion.fFields.fLengthAndFlags = kShortString;
-  doReplace(0, 0, text, 0, -1);
+  doAppend(text, 0, -1);
 }
 
 UnicodeString::UnicodeString(const UChar *text,
                              int32_t textLength) {
   fUnion.fFields.fLengthAndFlags = kShortString;
-  doReplace(0, 0, text, 0, textLength);
+  doAppend(text, 0, textLength);
 }
 
 UnicodeString::UnicodeString(UBool isTerminated,
@@ -306,6 +306,13 @@ UnicodeString::UnicodeString(const UnicodeString& that) {
   copyFrom(that);
 }
 
+#if U_HAVE_RVALUE_REFERENCES
+UnicodeString::UnicodeString(UnicodeString &&src) U_NOEXCEPT {
+  fUnion.fFields.fLengthAndFlags = kShortString;
+  moveFrom(src);
+}
+#endif
+
 UnicodeString::UnicodeString(const UnicodeString& that,
                              int32_t srcStart) {
   fUnion.fFields.fLengthAndFlags = kShortString;
@@ -335,40 +342,99 @@ UnicodeString::clone() const {
 // array allocation
 //========================================
 
+namespace {
+
+const int32_t kGrowSize = 128;
+
+// The number of bytes for one int32_t reference counter and capacity UChars
+// must fit into a 32-bit size_t (at least when on a 32-bit platform).
+// We also add one for the NUL terminator, to avoid reallocation in getTerminatedBuffer(),
+// and round up to a multiple of 16 bytes.
+// This means that capacity must be at most (0xfffffff0 - 4) / 2 - 1 = 0x7ffffff5.
+// (With more complicated checks we could go up to 0x7ffffffd without rounding up,
+// but that does not seem worth it.)
+const int32_t kMaxCapacity = 0x7ffffff5;
+
+int32_t getGrowCapacity(int32_t newLength) {
+  int32_t growSize = (newLength >> 2) + kGrowSize;
+  if(growSize <= (kMaxCapacity - newLength)) {
+    return newLength + growSize;
+  } else {
+    return kMaxCapacity;
+  }
+}
+
+}  // namespace
+
 UBool
 UnicodeString::allocate(int32_t capacity) {
   if(capacity <= US_STACKBUF_SIZE) {
     fUnion.fFields.fLengthAndFlags = kShortString;
-  } else {
-    // count bytes for the refCounter and the string capacity, and
-    // round up to a multiple of 16; then divide by 4 and allocate int32_t's
-    // to be safely aligned for the refCount
-    // the +1 is for the NUL terminator, to avoid reallocation in getTerminatedBuffer()
-    int32_t words = (int32_t)(((sizeof(int32_t) + (capacity + 1) * U_SIZEOF_UCHAR + 15) & ~15) >> 2);
-    int32_t *array = (int32_t*) uprv_malloc( sizeof(int32_t) * words );
-    if(array != 0) {
+    return TRUE;
+  }
+  if(capacity <= kMaxCapacity) {
+    ++capacity;  // for the NUL
+    // Switch to size_t which is unsigned so that we can allocate up to 4GB.
+    // Reference counter + UChars.
+    size_t numBytes = sizeof(int32_t) + (size_t)capacity * U_SIZEOF_UCHAR;
+    // Round up to a multiple of 16.
+    numBytes = (numBytes + 15) & ~15;
+    int32_t *array = (int32_t *) uprv_malloc(numBytes);
+    if(array != NULL) {
       // set initial refCount and point behind the refCount
       *array++ = 1;
+      numBytes -= sizeof(int32_t);
 
       // have fArray point to the first UChar
       fUnion.fFields.fArray = (UChar *)array;
-      fUnion.fFields.fCapacity = (int32_t)((words - 1) * (sizeof(int32_t) / U_SIZEOF_UCHAR));
+      fUnion.fFields.fCapacity = (int32_t)(numBytes / U_SIZEOF_UCHAR);
       fUnion.fFields.fLengthAndFlags = kLongString;
-    } else {
-      fUnion.fFields.fLengthAndFlags = kIsBogus;
-      fUnion.fFields.fArray = 0;
-      fUnion.fFields.fCapacity = 0;
-      return FALSE;
+      return TRUE;
     }
   }
-  return TRUE;
+  fUnion.fFields.fLengthAndFlags = kIsBogus;
+  fUnion.fFields.fArray = 0;
+  fUnion.fFields.fCapacity = 0;
+  return FALSE;
 }
 
 //========================================
 // Destructor
 //========================================
+
+#ifdef UNISTR_COUNT_FINAL_STRING_LENGTHS
+static u_atomic_int32_t finalLengthCounts[0x400];  // UnicodeString::kMaxShortLength+1
+static u_atomic_int32_t beyondCount(0);
+
+U_CAPI void unistr_printLengths() {
+  int32_t i;
+  for(i = 0; i <= 59; ++i) {
+    printf("%2d,  %9d\n", i, (int32_t)finalLengthCounts[i]);
+  }
+  int32_t beyond = beyondCount;
+  for(; i < UPRV_LENGTHOF(finalLengthCounts); ++i) {
+    beyond += finalLengthCounts[i];
+  }
+  printf(">59, %9d\n", beyond);
+}
+#endif
+
 UnicodeString::~UnicodeString()
 {
+#ifdef UNISTR_COUNT_FINAL_STRING_LENGTHS
+  // Count lengths of strings at the end of their lifetime.
+  // Useful for discussion of a desirable stack buffer size.
+  // Count the contents length, not the optional NUL terminator nor further capacity.
+  // Ignore open-buffer strings and strings which alias external storage.
+  if((fUnion.fFields.fLengthAndFlags&(kOpenGetBuffer|kReadonlyAlias|kWritableAlias)) == 0) {
+    if(hasShortLength()) {
+      umtx_atomic_inc(finalLengthCounts + getShortLength());
+    } else {
+      umtx_atomic_inc(&beyondCount);
+    }
+  }
+#endif
+
   releaseArray();
 }
 
@@ -376,7 +442,7 @@ UnicodeString::~UnicodeString()
 // Factory methods
 //========================================
 
-UnicodeString UnicodeString::fromUTF8(const StringPiece &utf8) {
+UnicodeString UnicodeString::fromUTF8(StringPiece utf8) {
   UnicodeString result;
   result.setToUTF8(utf8);
   return result;
@@ -482,15 +548,17 @@ UnicodeString::copyFrom(const UnicodeString &src, UBool fastCopy) {
     }
     // else if(!fastCopy) fall through to case kWritableAlias
     // -> allocate a new buffer and copy the contents
+    U_FALLTHROUGH;
   case kWritableAlias: {
     // src is a writable alias; we make a copy of that instead
     int32_t srcLength = src.length();
     if(allocate(srcLength)) {
-      uprv_memcpy(getArrayStart(), src.getArrayStart(), srcLength * U_SIZEOF_UCHAR);
+      u_memcpy(getArrayStart(), src.getArrayStart(), srcLength);
       setLength(srcLength);
       break;
     }
     // if there is not enough memory, then fall through to setting to bogus
+    U_FALLTHROUGH;
   }
   default:
     // if src is bogus, set ourselves to bogus
@@ -504,12 +572,60 @@ UnicodeString::copyFrom(const UnicodeString &src, UBool fastCopy) {
   return *this;
 }
 
+UnicodeString &UnicodeString::moveFrom(UnicodeString &src) U_NOEXCEPT {
+  // No explicit check for self move assignment, consistent with standard library.
+  // Self move assignment causes no crash nor leak but might make the object bogus.
+  releaseArray();
+  copyFieldsFrom(src, TRUE);
+  return *this;
+}
+
+// Same as moveFrom() except without memory management.
+void UnicodeString::copyFieldsFrom(UnicodeString &src, UBool setSrcToBogus) U_NOEXCEPT {
+  int16_t lengthAndFlags = fUnion.fFields.fLengthAndFlags = src.fUnion.fFields.fLengthAndFlags;
+  if(lengthAndFlags & kUsingStackBuffer) {
+    // Short string using the stack buffer, copy the contents.
+    // Check for self assignment to prevent "overlap in memcpy" warnings,
+    // although it should be harmless to copy a buffer to itself exactly.
+    if(this != &src) {
+      uprv_memcpy(fUnion.fStackFields.fBuffer, src.fUnion.fStackFields.fBuffer,
+                  getShortLength() * U_SIZEOF_UCHAR);
+    }
+  } else {
+    // In all other cases, copy all fields.
+    fUnion.fFields.fArray = src.fUnion.fFields.fArray;
+    fUnion.fFields.fCapacity = src.fUnion.fFields.fCapacity;
+    if(!hasShortLength()) {
+      fUnion.fFields.fLength = src.fUnion.fFields.fLength;
+    }
+    if(setSrcToBogus) {
+      // Set src to bogus without releasing any memory.
+      src.fUnion.fFields.fLengthAndFlags = kIsBogus;
+      src.fUnion.fFields.fArray = NULL;
+      src.fUnion.fFields.fCapacity = 0;
+    }
+  }
+}
+
+void UnicodeString::swap(UnicodeString &other) U_NOEXCEPT {
+  UnicodeString temp;  // Empty short string: Known not to need releaseArray().
+  // Copy fields without resetting source values in between.
+  temp.copyFieldsFrom(*this, FALSE);
+  this->copyFieldsFrom(other, FALSE);
+  other.copyFieldsFrom(temp, FALSE);
+  // Set temp to an empty string so that other's memory is not released twice.
+  temp.fUnion.fFields.fLengthAndFlags = kShortString;
+}
+
 //========================================
 // Miscellaneous operations
 //========================================
 
 UnicodeString UnicodeString::unescape() const {
     UnicodeString result(length(), (UChar32)0, (int32_t)0); // construct with capacity
+    if (result.isBogus()) {
+        return result;
+    }
     const UChar *array = getBuffer();
     int32_t len = length();
     int32_t prev = 0;
@@ -766,7 +882,7 @@ UnicodeString::extract(UChar *dest, int32_t destCapacity,
     } else {
       const UChar *array = getArrayStart();
       if(len>0 && len<=destCapacity && array!=dest) {
-        uprv_memcpy(dest, array, len*U_SIZEOF_UCHAR);
+        u_memcpy(dest, array, len);
       }
       return u_terminateUChars(dest, destCapacity, len, &errorCode);
     }
@@ -1128,7 +1244,7 @@ UnicodeString::getTerminatedBuffer() {
       return array;
     }
   }
-  if(cloneArrayIfNeeded(len+1)) {
+  if(len<INT32_MAX && cloneArrayIfNeeded(len+1)) {
     array = getArrayStart();
     array[len] = 0;
     return array;
@@ -1210,7 +1326,7 @@ UnicodeString::setTo(UChar *buffer,
   return *this;
 }
 
-UnicodeString &UnicodeString::setToUTF8(const StringPiece &utf8) {
+UnicodeString &UnicodeString::setToUTF8(StringPiece utf8) {
   unBogus();
   int32_t length = utf8.length();
   int32_t capacity;
@@ -1273,8 +1389,8 @@ UnicodeString::append(UChar32 srcChar) {
   UBool isError = FALSE;
   U16_APPEND(buffer, _length, U16_MAX_LENGTH, srcChar, isError);
   // We test isError so that the compiler does not complain that we don't.
-  // If isError then _length==0 which turns the doReplace() into a no-op anyway.
-  return isError ? *this : doReplace(length(), 0, buffer, 0, _length);
+  // If isError then _length==0 which turns the doAppend() into a no-op anyway.
+  return isError ? *this : doAppend(buffer, 0, _length);
 }
 
 UnicodeString&
@@ -1284,17 +1400,12 @@ UnicodeString::doReplace( int32_t start,
               int32_t srcStart,
               int32_t srcLength)
 {
-  if(!src.isBogus()) {
-    // pin the indices to legal values
-    src.pinIndices(srcStart, srcLength);
+  // pin the indices to legal values
+  src.pinIndices(srcStart, srcLength);
 
-    // get the characters from src
-    // and replace the range in ourselves with them
-    return doReplace(start, length, src.getArrayStart(), srcStart, srcLength);
-  } else {
-    // remove the range
-    return doReplace(start, length, 0, 0, 0);
-  }
+  // get the characters from src
+  // and replace the range in ourselves with them
+  return doReplace(start, length, src.getArrayStart(), srcStart, srcLength);
 }
 
 UnicodeString&
@@ -1330,6 +1441,10 @@ UnicodeString::doReplace(int32_t start,
     }
   }
 
+  if(start == oldLength) {
+    return doAppend(srcChars, srcStart, srcLength);
+  }
+
   if(srcChars == 0) {
     srcStart = srcLength = 0;
   } else if(srcLength < 0) {
@@ -1337,42 +1452,19 @@ UnicodeString::doReplace(int32_t start,
     srcLength = u_strlen(srcChars + srcStart);
   }
 
-  // calculate the size of the string after the replace
-  int32_t newLength;
+  // pin the indices to legal values
+  pinIndices(start, length);
 
-  // optimize append() onto a large-enough, owned string
-  if(start >= oldLength) {
-    if(srcLength == 0) {
-      return *this;
-    }
-    newLength = oldLength + srcLength;
-    if(newLength <= getCapacity() && isBufferWritable()) {
-      UChar *oldArray = getArrayStart();
-      // Do not copy characters when
-      //   UChar *buffer=str.getAppendBuffer(...);
-      // is followed by
-      //   str.append(buffer, length);
-      // or
-      //   str.appendString(buffer, length)
-      // or similar.
-      if(srcChars + srcStart != oldArray + start || start > oldLength) {
-        us_arrayCopy(srcChars, srcStart, oldArray, oldLength, srcLength);
-      }
-      setLength(newLength);
-      return *this;
-    } else {
-      // pin the indices to legal values
-      start = oldLength;
-      length = 0;
-    }
-  } else {
-    // pin the indices to legal values
-    pinIndices(start, length);
-
-    newLength = oldLength - length + srcLength;
+  // Calculate the size of the string after the replace.
+  // Avoid int32_t overflow.
+  int32_t newLength = oldLength - length;
+  if(srcLength > (INT32_MAX - newLength)) {
+    setToBogus();
+    return *this;
   }
+  newLength += srcLength;
 
-  // the following may change fArray but will not copy the current contents;
+  // cloneArrayIfNeeded(doCopyArray=FALSE) may change fArray but will not copy the current contents;
   // therefore we need to keep the current fArray
   UChar oldStackBuffer[US_STACKBUF_SIZE];
   UChar *oldArray;
@@ -1387,7 +1479,7 @@ UnicodeString::doReplace(int32_t start,
 
   // clone our array and allocate a bigger array if needed
   int32_t *bufferToDelete = 0;
-  if(!cloneArrayIfNeeded(newLength, newLength + (newLength >> 2) + kGrowSize,
+  if(!cloneArrayIfNeeded(newLength, getGrowCapacity(newLength),
                          FALSE, &bufferToDelete)
   ) {
     return *this;
@@ -1420,6 +1512,54 @@ UnicodeString::doReplace(int32_t start,
     uprv_free(bufferToDelete);
   }
 
+  return *this;
+}
+
+// Versions of doReplace() only for append() variants.
+// doReplace() and doAppend() optimize for different cases.
+
+UnicodeString&
+UnicodeString::doAppend(const UnicodeString& src, int32_t srcStart, int32_t srcLength) {
+  if(srcLength == 0) {
+    return *this;
+  }
+
+  // pin the indices to legal values
+  src.pinIndices(srcStart, srcLength);
+  return doAppend(src.getArrayStart(), srcStart, srcLength);
+}
+
+UnicodeString&
+UnicodeString::doAppend(const UChar *srcChars, int32_t srcStart, int32_t srcLength) {
+  if(!isWritable() || srcLength == 0 || srcChars == NULL) {
+    return *this;
+  }
+
+  if(srcLength < 0) {
+    // get the srcLength if necessary
+    if((srcLength = u_strlen(srcChars + srcStart)) == 0) {
+      return *this;
+    }
+  }
+
+  int32_t oldLength = length();
+  int32_t newLength = oldLength + srcLength;
+  // optimize append() onto a large-enough, owned string
+  if((newLength <= getCapacity() && isBufferWritable()) ||
+      cloneArrayIfNeeded(newLength, getGrowCapacity(newLength))) {
+    UChar *newArray = getArrayStart();
+    // Do not copy characters when
+    //   UChar *buffer=str.getAppendBuffer(...);
+    // is followed by
+    //   str.append(buffer, length);
+    // or
+    //   str.appendString(buffer, length)
+    // or similar.
+    if(srcChars + srcStart != newArray + oldLength) {
+      us_arrayCopy(srcChars, srcStart, newArray, oldLength, srcLength);
+    }
+    setLength(newLength);
+  }
   return *this;
 }
 
@@ -1722,7 +1862,7 @@ UnicodeStringAppendable::~UnicodeStringAppendable() {}
 
 UBool
 UnicodeStringAppendable::appendCodeUnit(UChar c) {
-  return str.doReplace(str.length(), 0, &c, 0, 1).isWritable();
+  return str.doAppend(&c, 0, 1).isWritable();
 }
 
 UBool
@@ -1731,12 +1871,12 @@ UnicodeStringAppendable::appendCodePoint(UChar32 c) {
   int32_t cLength = 0;
   UBool isError = FALSE;
   U16_APPEND(buffer, cLength, U16_MAX_LENGTH, c, isError);
-  return !isError && str.doReplace(str.length(), 0, buffer, 0, cLength).isWritable();
+  return !isError && str.doAppend(buffer, 0, cLength).isWritable();
 }
 
 UBool
 UnicodeStringAppendable::appendString(const UChar *s, int32_t length) {
-  return str.doReplace(str.length(), 0, s, 0, length).isWritable();
+  return str.doAppend(s, 0, length).isWritable();
 }
 
 UBool
@@ -1754,7 +1894,9 @@ UnicodeStringAppendable::getAppendBuffer(int32_t minCapacity,
     return NULL;
   }
   int32_t oldLength = str.length();
-  if(str.cloneArrayIfNeeded(oldLength + minCapacity, oldLength + desiredCapacityHint)) {
+  if(minCapacity <= (kMaxCapacity - oldLength) &&
+      desiredCapacityHint <= (kMaxCapacity - oldLength) &&
+      str.cloneArrayIfNeeded(oldLength + minCapacity, oldLength + desiredCapacityHint)) {
     *resultCapacity = str.getCapacity() - oldLength;
     return str.getArrayStart() + oldLength;
   }

@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
- * COPYRIGHT: 
- * Copyright (c) 2009-2014, International Business Machines Corporation and
+ * COPYRIGHT:
+ * Copyright (c) 2009-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 /********************************************************************************
@@ -27,6 +29,7 @@
 #include "unicode/ustring.h"
 #include "unicode/uset.h"
 #include "cintltst.h"
+#include "cmemory.h"
 
 #define TEST_ASSERT_SUCCESS(status) {if (U_FAILURE(status)) { \
     log_err_status(status, "Failure at file %s, line %d, error = %s\n", __FILE__, __LINE__, u_errorName(status));}}
@@ -62,7 +65,7 @@ log_err("Test Failure at file %s, line %d: \"%s\" is false.\n", __FILE__, __LINE
     uspoof_close(sc);  \
 }
 
-
+static void TestOpenFromSource(void);
 static void TestUSpoofCAPI(void);
 
 void addUSpoofTest(TestNode** root);
@@ -70,8 +73,9 @@ void addUSpoofTest(TestNode** root);
 void addUSpoofTest(TestNode** root)
 {
 #if !UCONFIG_NO_FILE_IO
-    addTest(root, &TestUSpoofCAPI, "uspoof/TestUSpoofCAPI");
+    addTest(root, &TestOpenFromSource, "uspoof/TestOpenFromSource");
 #endif
+    addTest(root, &TestUSpoofCAPI, "uspoof/TestUSpoofCAPI");
 }
 
 /*
@@ -102,33 +106,12 @@ const UChar han_Hiragana[] = {(UChar)0x3086, (UChar)0x308A, (UChar)0x0020, (UCha
 
 /* Provide better code coverage */
 const char goodLatinUTF8[]    = {0x75, 0x77, 0};
-/*
- *   Spoof Detction C API Tests
- */
-static void TestUSpoofCAPI(void) {
 
-    /*
-     *  basic uspoof_open().
-     */
-    {
-        USpoofChecker *sc;
-        UErrorCode  status = U_ZERO_ERROR;
-        sc = uspoof_open(&status);
-        TEST_ASSERT_SUCCESS(status);
-        if (U_FAILURE(status)) {
-            /* If things are so broken that we can't even open a default spoof checker,  */
-            /*   don't even try the rest of the tests.  They would all fail.             */
-            return;
-        }
-        uspoof_close(sc);
-    }
-
-    
-        
-    /*
-     *  Test Open from source rules.
-    */
-    TEST_SETUP
+// Test open from source rules.
+// Run this in isolation to verify initialization.
+static void TestOpenFromSource() {
+    // No TEST_SETUP because that calls uspoof_open().
+    UErrorCode status = U_ZERO_ERROR;
     const char *dataSrcDir;
     char       *fileName;
     char       *confusables;
@@ -138,8 +121,9 @@ static void TestUSpoofCAPI(void) {
     FILE       *f;
     UParseError pe;
     int32_t     errType;
+    int32_t     checkResults;
     USpoofChecker *rsc;
-    
+
     dataSrcDir = ctest_dataSrcDir();
     fileName = malloc(strlen(dataSrcDir) + 100);
     strcpy(fileName, dataSrcDir);
@@ -163,17 +147,43 @@ static void TestUSpoofCAPI(void) {
     }
 
     rsc = uspoof_openFromSource(confusables, confusablesLength,
-                                              confusablesWholeScript, confusablesWholeScriptLength,
-                                              &errType, &pe, &status);
+                                confusablesWholeScript, confusablesWholeScriptLength,
+                                &errType, &pe, &status);
     TEST_ASSERT_SUCCESS(status);
+
+    // Ticket #11860: uspoof_openFromSource() did not initialize for use.
+    // Verify that the spoof checker does not crash.
+    checkResults = uspoof_check(rsc, goodLatin, -1, NULL, &status);
+    TEST_ASSERT_SUCCESS(status);
+    TEST_ASSERT_EQ(0, checkResults);
 
     free(confusablesWholeScript);
     free(confusables);
     free(fileName);
     uspoof_close(rsc);
     /*  printf("ParseError Line is %d\n", pe.line);  */
-    TEST_TEARDOWN;
+}
 
+/*
+ *   Spoof Detection C API Tests
+ */
+static void TestUSpoofCAPI(void) {
+
+    /*
+     *  basic uspoof_open().
+     */
+    {
+        USpoofChecker *sc;
+        UErrorCode  status = U_ZERO_ERROR;
+        sc = uspoof_open(&status);
+        TEST_ASSERT_SUCCESS(status);
+        if (U_FAILURE(status)) {
+            /* If things are so broken that we can't even open a default spoof checker,  */
+            /*   don't even try the rest of the tests.  They would all fail.             */
+            return;
+        }
+        uspoof_close(sc);
+    }
 
     /*
      * openFromSerialized and serialize
@@ -212,7 +222,7 @@ static void TestUSpoofCAPI(void) {
 
         checkResults = uspoof_check(sc2, scMixed, -1, NULL, &status);
         TEST_ASSERT_SUCCESS(status);
-        TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT | USPOOF_MIXED_SCRIPT_CONFUSABLE, checkResults);
+        TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT, checkResults);
 
         uspoof_close(sc2);
         free(buf);
@@ -289,7 +299,7 @@ static void TestUSpoofCAPI(void) {
 
         checkResults = uspoof_check(clone2, scMixed, -1, NULL, &status);
         TEST_ASSERT_SUCCESS(status);
-        TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT | USPOOF_MIXED_SCRIPT_CONFUSABLE, checkResults);
+        TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT, checkResults);
         uspoof_close(clone2);
     TEST_TEARDOWN;
 
@@ -308,7 +318,7 @@ static void TestUSpoofCAPI(void) {
 
          result = uspoof_check(sc, scMixed, -1, NULL, &status);
          TEST_ASSERT_SUCCESS(status);
-         TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT | USPOOF_MIXED_SCRIPT_CONFUSABLE, result);
+         TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT, result);
      TEST_TEARDOWN
 
 
@@ -418,7 +428,7 @@ static void TestUSpoofCAPI(void) {
 
         checkResults = uspoof_check(sc, goodGreek, -1, NULL, &status);
         TEST_ASSERT_SUCCESS(status);
-        TEST_ASSERT_EQ(USPOOF_WHOLE_SCRIPT_CONFUSABLE, checkResults);
+        TEST_ASSERT_EQ(0, checkResults);
     TEST_TEARDOWN;
 
     /*
@@ -426,7 +436,7 @@ static void TestUSpoofCAPI(void) {
      */
     TEST_SETUP
         char    utf8buf[200];
-        int32_t checkResults;
+        int32_t checkResults, checkResults2;
         int32_t position;
 
         u_strToUTF8(utf8buf, sizeof(utf8buf), NULL, goodLatin, -1, &status);
@@ -447,10 +457,59 @@ static void TestUSpoofCAPI(void) {
         TEST_ASSERT_SUCCESS(status);
         position = 666;
         checkResults = uspoof_checkUTF8(sc, utf8buf, -1, &position, &status);
+        checkResults2 = uspoof_check(sc, scMixed, -1, NULL, &status);
         TEST_ASSERT_SUCCESS(status);
-        TEST_ASSERT_EQ(USPOOF_MIXED_SCRIPT_CONFUSABLE | USPOOF_SINGLE_SCRIPT , checkResults);
+        TEST_ASSERT_EQ(USPOOF_SINGLE_SCRIPT , checkResults);
         TEST_ASSERT_EQ(0, position);
+        TEST_ASSERT_EQ(checkResults , checkResults2);
 
+    TEST_TEARDOWN;
+
+    /*
+     * uspoof_check2 variants
+     */
+    TEST_SETUP
+        int32_t result1, result2;
+        char utf8buf[200];
+        uspoof_setChecks(sc, USPOOF_ALL_CHECKS | USPOOF_AUX_INFO, &status);
+        USpoofCheckResult* checkResult = uspoof_openCheckResult(&status);
+        TEST_ASSERT_SUCCESS(status);
+
+        const UChar* tests[] = { goodLatin, scMixed, scLatin,
+                goodCyrl, goodGreek, lll_Latin_a, lll_Latin_b, han_Hiragana };
+
+        for (int32_t i=0; i<UPRV_LENGTHOF(tests); i++) {
+            const UChar* str = tests[i];
+
+            // Basic test
+            result1 = uspoof_check(sc, str, -1, NULL, &status);
+            result2 = uspoof_check2(sc, str, -1, NULL, &status);
+            TEST_ASSERT_SUCCESS(status);
+            TEST_ASSERT_EQ(result1, result2);
+
+            // With check result parameter
+            result1 = uspoof_check(sc, str, -1, NULL, &status);
+            result2 = uspoof_check2(sc, str, -1, checkResult, &status);
+            TEST_ASSERT_SUCCESS(status);
+            TEST_ASSERT_EQ(result1, result2);
+
+            // Checks from checkResult should be same as those from bitmask
+            TEST_ASSERT_EQ(result1 & USPOOF_ALL_CHECKS, uspoof_getCheckResultChecks(checkResult, &status));
+
+            // Restriction level from checkResult should be same as that from bitmask
+            URestrictionLevel restrictionLevel = uspoof_getCheckResultRestrictionLevel(checkResult, &status);
+            TEST_ASSERT_EQ(result1 & restrictionLevel, restrictionLevel);
+
+            // UTF8 endpoint
+            u_strToUTF8(utf8buf, sizeof(utf8buf), NULL, goodLatin, -1, &status);
+            TEST_ASSERT_SUCCESS(status);
+            result1 = uspoof_checkUTF8(sc, utf8buf, -1, NULL, &status);
+            result2 = uspoof_check2UTF8(sc, utf8buf, -1, NULL, &status);
+            TEST_ASSERT_SUCCESS(status);
+            TEST_ASSERT_EQ(result1, result2);
+        }
+
+        uspoof_closeCheckResult(checkResult);
     TEST_TEARDOWN;
 
     /*
@@ -514,13 +573,13 @@ static void TestUSpoofCAPI(void) {
         UChar dest[100];
         int32_t   skelLength;
 
-        skelLength = uspoof_getSkeleton(sc, USPOOF_ANY_CASE, lll_Latin_a, -1, dest, sizeof(dest)/sizeof(UChar), &status);
+        skelLength = uspoof_getSkeleton(sc, USPOOF_ANY_CASE, lll_Latin_a, -1, dest, UPRV_LENGTHOF(dest), &status);
         TEST_ASSERT_SUCCESS(status);
         TEST_ASSERT_EQ(0, u_strcmp(lll_Skel, dest));
         TEST_ASSERT_EQ(u_strlen(lll_Skel), skelLength);
 
         skelLength = uspoof_getSkeletonUTF8(sc, USPOOF_ANY_CASE, goodLatinUTF8, -1, (char*)dest, 
-                                            sizeof(dest)/sizeof(UChar), &status);
+                                            UPRV_LENGTHOF(dest), &status);
         TEST_ASSERT_SUCCESS(status);
 
         skelLength = uspoof_getSkeleton(sc, USPOOF_ANY_CASE, lll_Latin_a, -1, NULL, 0, &status);

@@ -1,7 +1,8 @@
-
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2011, International Business Machines Corporation and
+ * Copyright (c) 1997-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 
@@ -49,7 +50,7 @@ TestChoiceFormat::TestSimpleExample( void )
     UnicodeString str;
     UnicodeString res1, res2;
     UErrorCode status;
-    FieldPosition fpos(0);
+    FieldPosition fpos(FieldPosition::DONT_CARE);
     Formattable f;
     int32_t ix;
     //for (double i = 0.0; i <= 8.0; ++i) {
@@ -181,7 +182,7 @@ TestChoiceFormat::TestComplexExample( void )
         it_errln("***  ChoiceFormat to Pattern result!");
     }
 
-    FieldPosition fpos(0);
+    FieldPosition fpos(FieldPosition::DONT_CARE);
 
     UnicodeString checkstr[] = { 
         "There are corrupted files on Disk_A",
@@ -636,7 +637,7 @@ void TestChoiceFormat::TestChoiceFormatToPatternOverflow()
 {
     static const double limits[] = {0.1e-78, 1e13, 0.1e78};
     UnicodeString monthNames[] = { "one", "two", "three" };
-    ChoiceFormat fmt(limits, monthNames, sizeof(limits)/sizeof(limits[0]));
+    ChoiceFormat fmt(limits, monthNames, UPRV_LENGTHOF(limits));
     UnicodeString patStr, expectedPattern1("1e-79#one|10000000000000#two|1e+77#three"), 
         expectedPattern2("1e-079#one|10000000000000#two|1e+077#three");
     fmt.toPattern(patStr);

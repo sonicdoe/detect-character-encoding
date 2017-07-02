@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-*   Copyright (C) 2013-2014, International Business Machines
+*   Copyright (C) 2013-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  uscript_props.cpp
@@ -43,12 +45,12 @@ const int32_t SCRIPT_PROPS[] = {
     // Begin copy-paste output from
     // tools/trunk/unicode/py/parsescriptmetadata.py
     0x0040 | RECOMMENDED,  // Zyyy
-    0x0308 | UNKNOWN,  // Zinh
+    0x0308 | RECOMMENDED,  // Zinh
     0x0628 | RECOMMENDED | RTL,  // Arab
     0x0531 | RECOMMENDED | CASED,  // Armn
     0x0995 | RECOMMENDED,  // Beng
     0x3105 | RECOMMENDED | LB_LETTERS,  // Bopo
-    0x13C4 | LIMITED_USE,  // Cher
+    0x13C4 | LIMITED_USE | CASED,  // Cher
     0x03E2 | EXCLUSION | CASED,  // Copt
     0x042F | RECOMMENDED | CASED,  // Cyrl
     0x10414 | EXCLUSION | CASED,  // Dsrt
@@ -88,7 +90,7 @@ const int32_t SCRIPT_PROPS[] = {
     0x1723 | EXCLUSION,  // Hano
     0x1743 | EXCLUSION,  // Buhd
     0x1763 | EXCLUSION,  // Tagb
-    0x2800 | UNKNOWN,  // Brai
+    0x280E | UNKNOWN,  // Brai
     0x10800 | EXCLUSION | RTL,  // Cprt
     0x1900 | LIMITED_USE,  // Limb
     0x10000 | EXCLUSION,  // Linb
@@ -118,7 +120,7 @@ const int32_t SCRIPT_PROPS[] = {
     0x5B57 | RECOMMENDED | LB_LETTERS,  // Hans
     0x5B57 | RECOMMENDED | LB_LETTERS,  // Hant
     0x16B1C | EXCLUSION,  // Hmng
-    0,
+    0x10CA1 | EXCLUSION | RTL | CASED,  // Hung
     0,
     0xA984 | LIMITED_USE,  // Java
     0xA90A | LIMITED_USE,  // Kali
@@ -154,7 +156,7 @@ const int32_t SCRIPT_PROPS[] = {
     0x1C5A | LIMITED_USE,  // Olck
     0xA930 | EXCLUSION,  // Rjng
     0xA882 | LIMITED_USE,  // Saur
-    0,
+    0x1D850 | EXCLUSION,  // Sgnw
     0x1B83 | LIMITED_USE,  // Sund
     0,
     0xABC0 | LIMITED_USE,  // Mtei
@@ -196,19 +198,27 @@ const int32_t SCRIPT_PROPS[] = {
     0x11183 | EXCLUSION,  // Shrd
     0x110D0 | EXCLUSION,  // Sora
     0x11680 | EXCLUSION,  // Takr
+    0x18229 | EXCLUSION | LB_LETTERS,  // Tang
     0,
-    0,
-    0,
+    0x14400 | EXCLUSION,  // Hluw
     0x11208 | EXCLUSION,  // Khoj
     0x11484 | EXCLUSION,  // Tirh
     0x10537 | EXCLUSION,  // Aghb
     0x11152 | EXCLUSION,  // Mahj
-    0,
-    0,
+    0x11717 | EXCLUSION | LB_LETTERS,  // Ahom
+    0x108F4 | EXCLUSION | RTL,  // Hatr
     0x1160E | EXCLUSION,  // Modi
-    0,
+    0x1128F | EXCLUSION,  // Mult
     0x11AC0 | EXCLUSION,  // Pauc
     0x1158E | EXCLUSION,  // Sidd
+    0x1E909 | LIMITED_USE | RTL | CASED,  // Adlm
+    0x11C0E | EXCLUSION,  // Bhks
+    0x11C72 | EXCLUSION,  // Marc
+    0x11412 | LIMITED_USE,  // Newa
+    0x104B5 | LIMITED_USE | CASED,  // Osge
+    0x5B57 | RECOMMENDED | LB_LETTERS,  // Hanb
+    0x1112 | RECOMMENDED,  // Jamo
+    0,
     // End copy-paste from parsescriptmetadata.py
 };
 

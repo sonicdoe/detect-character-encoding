@@ -1,12 +1,15 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2012, International Business Machines Corporation and
+ * Copyright (c) 1997-2015, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 
 #ifndef UNICODESTRINGTEST_H
 #define UNICODESTRINGTEST_H
 
+#include "unicode/locid.h"
 #include "unicode/unistr.h"
 #include "intltest.h"
 
@@ -88,11 +91,12 @@ public:
     void TestAppendable();
     void TestUnicodeStringImplementsAppendable();
     void TestSizeofUnicodeString();
+    void TestMoveSwap();
 };
 
 class StringCaseTest: public IntlTest {
 public:
-    StringCaseTest() {}
+    StringCaseTest();
     virtual ~StringCaseTest();
 
     void runIndexedTest(int32_t index, UBool exec, const char *&name, char *par=0);
@@ -105,6 +109,14 @@ public:
                         void *iter, const char *localeID, uint32_t options);
     void TestCasing();
     void TestFullCaseFoldingIterator();
+    void TestGreekUpper();
+    void TestLongUpper();
+    void TestMalformedUTF8();
+
+private:
+    void assertGreekUpper(const char *s, const char *expected);
+
+    Locale GREEK_LOCALE_;
 };
 
 #endif

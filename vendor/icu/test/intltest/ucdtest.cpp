@@ -1,6 +1,7 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
- * COPYRIGHT: 
- * Copyright (c) 1997-2014, International Business Machines Corporation and
+ * Copyright (c) 1997-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 
@@ -60,6 +61,7 @@ void UnicodeTest::runIndexedTest( int32_t index, UBool exec, const char* &name, 
     TESTCASE_AUTO(TestPatternProperties);
     TESTCASE_AUTO(TestScriptMetadata);
     TESTCASE_AUTO(TestBidiPairedBracketType);
+    TESTCASE_AUTO(TestEmojiProperties);
     TESTCASE_AUTO_END;
 }
 
@@ -418,13 +420,17 @@ namespace {
  */
 UScriptCode getCharScript(UScriptCode script) {
     switch(script) {
+    case USCRIPT_HAN_WITH_BOPOMOFO:
     case USCRIPT_SIMPLIFIED_HAN:
     case USCRIPT_TRADITIONAL_HAN:
         return USCRIPT_HAN;
     case USCRIPT_JAPANESE:
         return USCRIPT_HIRAGANA;
+    case USCRIPT_JAMO:
     case USCRIPT_KOREAN:
         return USCRIPT_HANGUL;
+    case USCRIPT_SYMBOLS_EMOJI:
+        return USCRIPT_SYMBOLS;
     default:
         return script;
     }
@@ -441,7 +447,7 @@ void UnicodeTest::TestScriptMetadata() {
     for(int32_t sci = 0; sci < USCRIPT_CODE_LIMIT; ++sci) {
         UScriptCode sc = (UScriptCode)sci;
         // Run the test with -v to see which script has failures:
-        // .../intltest$ make && ./intltest utility/UnicodeTest/TestScriptMetadata -v | grep -C 3 FAIL
+        // .../intltest$ make && ./intltest utility/UnicodeTest/TestScriptMetadata -v | grep -C 6 FAIL
         logln(uscript_getShortName(sc));
         UScriptUsage usage = uscript_getUsage(sc);
         UnicodeString sample = uscript_getSampleUnicodeString(sc);
@@ -506,4 +512,19 @@ void UnicodeTest::TestBidiPairedBracketType() {
     UnicodeSet pe("[:Pe:]", errorCode);
     assertTrue("bpt=Open is a subset of Ps", ps.containsAll(bpt_open));
     assertTrue("bpt=Close is a subset of Pe", pe.containsAll(bpt_close));
+}
+
+void UnicodeTest::TestEmojiProperties() {
+    assertFalse("space is not Emoji", u_hasBinaryProperty(0x20, UCHAR_EMOJI));
+    assertTrue("shooting star is Emoji", u_hasBinaryProperty(0x1F320, UCHAR_EMOJI));
+    IcuTestErrorCode errorCode(*this, "TestEmojiProperties()");
+    UnicodeSet emoji("[:Emoji:]", errorCode);
+    assertTrue("lots of Emoji", emoji.size() > 700);
+
+    assertTrue("shooting star is Emoji_Presentation",
+               u_hasBinaryProperty(0x1F320, UCHAR_EMOJI_PRESENTATION));
+    assertTrue("Fitzpatrick 6 is Emoji_Modifier",
+               u_hasBinaryProperty(0x1F3FF, UCHAR_EMOJI_MODIFIER));
+    assertTrue("happy person is Emoji_Modifier_Base",
+               u_hasBinaryProperty(0x1F64B, UCHAR_EMOJI_MODIFIER_BASE));
 }

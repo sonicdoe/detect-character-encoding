@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT:
- * Copyright (c) 1997-2015, International Business Machines Corporation and
+ * Copyright (c) 1997-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 //===============================================================================
@@ -1554,9 +1556,9 @@ void CollationAPITest::TestVariableTopSetting() {
                (int64_t)newVarTop2, (int64_t)newVarTop);
 
   coll->setAttribute(UCOL_ALTERNATE_HANDLING, UCOL_SHIFTED, status);
-  assertEquals("empty==dollar", UCOL_EQUAL, coll->compare(UnicodeString(), dollar));
-  assertEquals("empty==euro", UCOL_EQUAL, coll->compare(UnicodeString(), euro));
-  assertEquals("dollar<zero", UCOL_LESS, coll->compare(dollar, UnicodeString((UChar)0x30)));
+  assertEquals("empty==dollar", (int32_t)UCOL_EQUAL, (int32_t)coll->compare(UnicodeString(), dollar));
+  assertEquals("empty==euro", (int32_t)UCOL_EQUAL, (int32_t)coll->compare(UnicodeString(), euro));
+  assertEquals("dollar<zero", (int32_t)UCOL_LESS, (int32_t)coll->compare(dollar, UnicodeString((UChar)0x30)));
 
   coll->setVariableTop(oldVarTop, status);
 
@@ -1591,9 +1593,9 @@ void CollationAPITest::TestMaxVariable() {
   }
 
   coll->setAttribute(UCOL_ALTERNATE_HANDLING, UCOL_SHIFTED, errorCode);
-  assertEquals("empty==dollar", UCOL_EQUAL, coll->compare(UnicodeString(), UnicodeString((UChar)0x24)));
-  assertEquals("empty==euro", UCOL_EQUAL, coll->compare(UnicodeString(), UnicodeString((UChar)0x20AC)));
-  assertEquals("dollar<zero", UCOL_LESS, coll->compare(UnicodeString((UChar)0x24), UnicodeString((UChar)0x30)));
+  assertEquals("empty==dollar", (int32_t)UCOL_EQUAL, (int32_t)coll->compare(UnicodeString(), UnicodeString((UChar)0x24)));
+  assertEquals("empty==euro", (int32_t)UCOL_EQUAL, (int32_t)coll->compare(UnicodeString(), UnicodeString((UChar)0x20AC)));
+  assertEquals("dollar<zero", (int32_t)UCOL_LESS, (int32_t)coll->compare(UnicodeString((UChar)0x24), UnicodeString((UChar)0x30)));
 }
 
 void CollationAPITest::TestGetLocale() {
@@ -1650,7 +1652,7 @@ void CollationAPITest::TestGetLocale() {
   u_unescape(rules, rlz, 256);
 
   /* test opening collators for different locales */
-  for(i = 0; i<(int32_t)UPRV_LENGTHOF(testStruct); i++) {
+  for(i = 0; i<UPRV_LENGTHOF(testStruct); i++) {
     status = U_ZERO_ERROR;
     coll = Collator::createInstance(testStruct[i].requestedLocale, status);
     if(U_FAILURE(status)) {
@@ -1838,7 +1840,7 @@ void CollationAPITest::TestBounds(void) {
 
 
     int32_t i = 0, j = 0, k = 0, buffSize = 0, skSize = 0, lowerSize = 0, upperSize = 0;
-    int32_t arraySize = sizeof(tests)/sizeof(tests[0]);
+    int32_t arraySize = UPRV_LENGTHOF(tests);
 
     (void)lowerSize;  // Suppress unused variable warnings.
     (void)upperSize;
@@ -1866,12 +1868,12 @@ void CollationAPITest::TestBounds(void) {
     }
 
 
-    for(i = 0; i<(int32_t)(sizeof(test)/sizeof(test[0])); i++) {
+    for(i = 0; i<UPRV_LENGTHOF(test); i++) {
         buffSize = u_unescape(test[i], buffer, 512);
         skSize = coll->getSortKey(buffer, buffSize, sortkey, 512);
         lowerSize = ucol_getBound(sortkey, skSize, UCOL_BOUND_LOWER, 1, lower, 512, &status);
         upperSize = ucol_getBound(sortkey, skSize, UCOL_BOUND_UPPER_LONG, 1, upper, 512, &status);
-        for(j = i+1; j<(int32_t)(sizeof(test)/sizeof(test[0])); j++) {
+        for(j = i+1; j<UPRV_LENGTHOF(test); j++) {
             buffSize = u_unescape(test[j], buffer, 512);
             skSize = coll->getSortKey(buffer, buffSize, sortkey, 512);
             if(strcmp((const char *)lower, (const char *)sortkey) > 0) {
@@ -2352,7 +2354,7 @@ void CollationAPITest::TestCloneBinary() {
     rbc->setAttribute(UCOL_STRENGTH, UCOL_PRIMARY, errorCode);
     UnicodeString uUmlaut((UChar)0xfc);
     UnicodeString ue = UNICODE_STRING_SIMPLE("ue");
-    assertEquals("rbc/primary: u-umlaut==ue", UCOL_EQUAL, rbc->compare(uUmlaut, ue, errorCode));
+    assertEquals("rbc/primary: u-umlaut==ue", (int32_t)UCOL_EQUAL, rbc->compare(uUmlaut, ue, errorCode));
     uint8_t bin[25000];
     int32_t binLength = rbc->cloneBinary(bin, UPRV_LENGTHOF(bin), errorCode);
     if(errorCode.logDataIfFailureAndReset("rbc->cloneBinary()")) {
@@ -2364,8 +2366,8 @@ void CollationAPITest::TestCloneBinary() {
     if(errorCode.logDataIfFailureAndReset("RuleBasedCollator(rbc binary)")) {
         return;
     }
-    assertEquals("rbc2.strength==primary", UCOL_PRIMARY, rbc2.getAttribute(UCOL_STRENGTH, errorCode));
-    assertEquals("rbc2: u-umlaut==ue", UCOL_EQUAL, rbc2.compare(uUmlaut, ue, errorCode));
+    assertEquals("rbc2.strength==primary", (int32_t)UCOL_PRIMARY, rbc2.getAttribute(UCOL_STRENGTH, errorCode));
+    assertEquals("rbc2: u-umlaut==ue", (int32_t)UCOL_EQUAL, rbc2.compare(uUmlaut, ue, errorCode));
     assertTrue("rbc==rbc2", *rbc == rbc2);
     uint8_t bin2[25000];
     int32_t bin2Length = rbc2.cloneBinary(bin2, UPRV_LENGTHOF(bin2), errorCode);
@@ -2376,8 +2378,8 @@ void CollationAPITest::TestCloneBinary() {
     if(errorCode.logDataIfFailureAndReset("RuleBasedCollator(rbc binary, length<0)")) {
         return;
     }
-    assertEquals("rbc3.strength==primary", UCOL_PRIMARY, rbc3.getAttribute(UCOL_STRENGTH, errorCode));
-    assertEquals("rbc3: u-umlaut==ue", UCOL_EQUAL, rbc3.compare(uUmlaut, ue, errorCode));
+    assertEquals("rbc3.strength==primary", (int32_t)UCOL_PRIMARY, rbc3.getAttribute(UCOL_STRENGTH, errorCode));
+    assertEquals("rbc3: u-umlaut==ue", (int32_t)UCOL_EQUAL, rbc3.compare(uUmlaut, ue, errorCode));
     assertTrue("rbc==rbc3", *rbc == rbc3);
 }
 

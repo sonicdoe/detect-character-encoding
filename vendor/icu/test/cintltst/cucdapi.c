@@ -1,5 +1,7 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
- * Copyright (c) 1997-2014, International Business Machines
+ * Copyright (c) 1997-2016, International Business Machines
  * Corporation and others. All Rights Reserved.
  ********************************************************************/
 
@@ -125,11 +127,11 @@ void TestUScriptCodeAPI(){
             err = U_ZERO_ERROR;
             capacity = 10;
             num = uscript_getCode("ja",script,capacity, &err);
-            if(num!=(sizeof(jaCode)/sizeof(UScriptCode))){
+            if(num!=UPRV_LENGTHOF(jaCode)){
                 log_err("Errors uscript_getScriptCode() for Japanese locale: num=%d, expected %d \n",
-                        num, (sizeof(jaCode)/sizeof(UScriptCode)));
+                        num, UPRV_LENGTHOF(jaCode));
             }
-            for(j=0;j<sizeof(jaCode)/sizeof(UScriptCode);j++) {
+            for(j=0;j<UPRV_LENGTHOF(jaCode);j++) {
                 if(script[j]!=jaCode[j]) {
                     log_err("Japanese locale: code #%d was %d (%s) but expected %d (%s)\n", j,
                             script[j], uscript_getName(script[j]),
@@ -204,7 +206,7 @@ void TestUScriptCodeAPI(){
              NULL
         };
         i=0;
-        while(i<sizeof(testAbbr)/sizeof(UScriptCode)){
+        while(i<UPRV_LENGTHOF(testAbbr)){
             const char* name = uscript_getName(testAbbr[i]);
              if(name == NULL) {
                log_data_err("Couldn't get script name\n");
@@ -243,7 +245,7 @@ void TestUScriptCodeAPI(){
              NULL
         };
         i=0;
-        while(i<sizeof(testAbbr)/sizeof(UScriptCode)){
+        while(i<UPRV_LENGTHOF(testAbbr)){
             const char* name = uscript_getShortName(testAbbr[i]);
             numErrors=0;
             if(strcmp(expectedAbbr[i],name)!=0){
@@ -381,13 +383,13 @@ void TestUScriptCodeAPI(){
         static const char* expectedLong[] = {
             "Balinese", "Batak", "Blis", "Brahmi", "Cham", "Cirt", "Cyrs",
             "Egyd", "Egyh", "Egyptian_Hieroglyphs",
-            "Geok", "Hans", "Hant", "Pahawh_Hmong", "Hung", "Inds",
+            "Geok", "Hans", "Hant", "Pahawh_Hmong", "Old_Hungarian", "Inds",
             "Javanese", "Kayah_Li", "Latf", "Latg",
             "Lepcha", "Linear_A", "Mandaic", "Maya", "Meroitic_Hieroglyphs",
             "Nko", "Old_Turkic", "Old_Permic", "Phags_Pa", "Phoenician", 
             "Miao", "Roro", "Sara", "Syre", "Syrj", "Syrn", "Teng", "Vai", "Visp", "Cuneiform", 
             "Zxxx", "Unknown",
-            "Carian", "Jpan", "Tai_Tham", "Lycian", "Lydian", "Ol_Chiki", "Rejang", "Saurashtra", "Sgnw", "Sundanese",
+            "Carian", "Jpan", "Tai_Tham", "Lycian", "Lydian", "Ol_Chiki", "Rejang", "Saurashtra", "SignWriting", "Sundanese",
             "Moon", "Meetei_Mayek",
             /* new in ICU 4.0 */
             "Imperial_Aramaic", "Avestan", "Chakma", "Kore",
@@ -401,13 +403,15 @@ void TestUScriptCodeAPI(){
             "Loma", "Mende_Kikakui", "Meroitic_Cursive",
             "Old_North_Arabian", "Nabataean", "Palmyrene", "Khudawadi", "Warang_Citi",
             /* new in ICU 4.8 */
-            "Afak", "Jurc", "Mro", "Nshu", "Sharada", "Sora_Sompeng", "Takri", "Tang", "Wole",
+            "Afak", "Jurc", "Mro", "Nshu", "Sharada", "Sora_Sompeng", "Takri", "Tangut", "Wole",
             /* new in ICU 49 */
-            "Hluw", "Khojki", "Tirhuta",
+            "Anatolian_Hieroglyphs", "Khojki", "Tirhuta",
             /* new in ICU 52 */
             "Caucasian_Albanian", "Mahajani",
             /* new in ICU 54 */
-            "Ahom", "Hatr", "Modi", "Mult", "Pau_Cin_Hau", "Siddham"
+            "Ahom", "Hatran", "Modi", "Multani", "Pau_Cin_Hau", "Siddham",
+            // new in ICU 58
+            "Adlam", "Bhaiksuki", "Marchen", "Newa", "Osage", "Hanb", "Jamo", "Zsye"
         };
         static const char* expectedShort[] = {
             "Bali", "Batk", "Blis", "Brah", "Cham", "Cirt", "Cyrs", "Egyd", "Egyh", "Egyp",
@@ -433,7 +437,9 @@ void TestUScriptCodeAPI(){
             /* new in ICU 52 */
             "Aghb", "Mahj",
             /* new in ICU 54 */
-            "Ahom", "Hatr", "Modi", "Mult", "Pauc", "Sidd"
+            "Ahom", "Hatr", "Modi", "Mult", "Pauc", "Sidd",
+            // new in ICU 58
+            "Adlm", "Bhks", "Marc", "Newa", "Osge", "Hanb", "Jamo", "Zsye"
         };
         int32_t j = 0;
         if(UPRV_LENGTHOF(expectedLong)!=(USCRIPT_CODE_LIMIT-USCRIPT_BALINESE)) {
@@ -528,7 +534,7 @@ void TestHasScript() {
     }
 }
 
-static UBool scriptsContain(int32_t scripts[], int32_t length, int32_t script) {
+static UBool scriptsContain(UScriptCode scripts[], int32_t length, UScriptCode script) {
     UBool contain=FALSE;
     int32_t prev=-1, i;
     for(i=0; i<length; ++i) {

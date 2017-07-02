@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
-* Copyright (c) 2010-2011,International Business Machines
+* Copyright (c) 2010-2016,International Business Machines
 * Corporation and others.  All Rights Reserved.
 **********************************************************************
 **********************************************************************
@@ -18,6 +20,7 @@
 #include "unicode/smpdtfmt.h"
 #include "unicode/uchar.h"
 #include "unicode/basictz.h"
+#include "cmemory.h"
 #include "cstring.h"
 
 #include "unicode/uperf.h"
@@ -29,7 +32,7 @@
 #include "util.h"
 
 static const char* PATTERNS[] = {"z", "zzzz", "Z", "ZZZZ", "v", "vvvv", "V", "VVVV"};
-static const int NUM_PATTERNS = sizeof(PATTERNS)/sizeof(const char*);
+static const int NUM_PATTERNS = UPRV_LENGTHOF(PATTERNS);
 
 #include <iostream>
 #include <stdlib.h>
@@ -98,8 +101,8 @@ public:
         }
 
         // Set up test dates
-        UDate DATES[(sizeof(testDateData)/sizeof(int32_t))/3];
-        const int32_t nDates = (sizeof(testDateData)/sizeof(int32_t))/3;
+        UDate DATES[UPRV_LENGTHOF(testDateData)/3];
+        const int32_t nDates = UPRV_LENGTHOF(testDateData)/3;
         cal->clear();
         for (int32_t i = 0; i < nDates; i++) {
             cal->set(testDateData[i][0], testDateData[i][1], testDateData[i][2]);
@@ -164,7 +167,7 @@ public:
 
                     for (int32_t datidx = 0; datidx < nDates; datidx++) {
                         UnicodeString tzstr;
-                        FieldPosition fpos(0);
+                        FieldPosition fpos(FieldPosition::DONT_CARE);
 
                         // Format
                         sdf->setTimeZone(*tz);

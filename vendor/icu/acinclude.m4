@@ -1,4 +1,6 @@
-# Copyright (c) 1999-2014, International Business Machines Corporation and
+# Copyright (C) 2016 and later: Unicode, Inc. and others.
+# License & terms of use: http://www.unicode.org/copyright.html
+# Copyright (c) 1999-2016, International Business Machines Corporation and
 # others. All Rights Reserved.
 # acinclude.m4 for ICU
 # Don't edit aclocal.m4, do edit acinclude.m4
@@ -87,15 +89,6 @@ esac
 		]
 	)
 ])
-
-# ICU_CONDITIONAL - similar example taken from Automake 1.4
-AC_DEFUN([ICU_CONDITIONAL],
-[AC_SUBST($1_TRUE)
-if $2; then
-  $1_TRUE=
-else
-  $1_TRUE='#'
-fi])
 
 # ICU_PROG_LINK - Make sure that the linker is usable
 AC_DEFUN([ICU_PROG_LINK],
@@ -470,6 +463,9 @@ AC_DEFUN([AC_CHECK_STRICT_COMPILE],
         if test "$GCC" = yes
         then
             case "${host}" in
+            *-*-solaris*)
+                # Don't use -std=c99 on Solaris because of timezone check fails
+                ;;
             *)
                 # Do not use -ansi. It limits us to C90, and it breaks some platforms.
                 # We use -std=c99 to disable the gnu99 defaults and its associated warnings

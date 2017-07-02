@@ -198,6 +198,9 @@
     <ClCompile Include="cpluralrulestest.c">
       <Filter>formatting</Filter>
     </ClCompile>
+    <ClCompile Include="crelativedateformattest.c">
+      <Filter>formatting</Filter>
+    </ClCompile>
     <ClCompile Include="currtest.c">
       <Filter>formatting</Filter>
     </ClCompile>
@@ -299,6 +302,9 @@
     </ClCompile>
     <ClCompile Include="spooftest.c">
       <Filter>spoof</Filter>
+    </ClCompile>
+    <ClCompile Include="cbiditransformtst.c">
+      <Filter>bidi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,7 @@
-﻿// ***************************************************************************
-// *
-// * Copyright (C) 2015 International Business Machines
-// * Corporation and others. All Rights Reserved.
-// * Tool: org.unicode.cldr.icu.NewLdml2IcuConverter
-// * Source File: <path>/common/main/ja.xml
-// *
-// ***************************************************************************
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html#License
 ja{
-    Version{"2.1.12.94"}
+    Version{"2.1.28.79"}
     durationUnits{
         hm{"h:mm"}
         hms{"h:mm:ss"}
@@ -16,8 +10,8 @@ ja{
     units{
         acceleration{
             g-force{
-                dnam{"G フォース"}
-                other{"{0} G フォース"}
+                dnam{"重力加速度"}
+                other{"{0} G"}
             }
             meter-per-second-squared{
                 dnam{"メートル毎秒毎秒"}
@@ -41,6 +35,10 @@ ja{
                 dnam{"ラジアン"}
                 other{"{0} ラジアン"}
             }
+            revolution{
+                dnam{"回転"}
+                other{"{0} 回転"}
+            }
         }
         area{
             acre{
@@ -54,6 +52,7 @@ ja{
             square-centimeter{
                 dnam{"平方センチメートル"}
                 other{"{0} 平方センチメートル"}
+                per{"{0}/平方センチメートル"}
             }
             square-foot{
                 dnam{"平方フィート"}
@@ -62,18 +61,22 @@ ja{
             square-inch{
                 dnam{"平方インチ"}
                 other{"{0} 平方インチ"}
+                per{"{0}/平方インチ"}
             }
             square-kilometer{
                 dnam{"平方キロメートル"}
                 other{"{0} 平方キロメートル"}
+                per{"{0}/平方キロメートル"}
             }
             square-meter{
                 dnam{"平方メートル"}
                 other{"{0} 平方メートル"}
+                per{"{0}/平方メートル"}
             }
             square-mile{
                 dnam{"平方マイル"}
                 other{"{0} 平方マイル"}
+                per{"{0}/平方マイル"}
             }
             square-yard{
                 dnam{"平方ヤード"}
@@ -81,9 +84,31 @@ ja{
             }
         }
         compound{
-            per{"毎{1} {0}"}
+            per{"{0}毎{1}"}
+        }
+        concentr{
+            karat{
+                dnam{"金"}
+                other{"{0} 金"}
+            }
+            milligram-per-deciliter{
+                dnam{"ミリグラム毎デシリットル"}
+                other{"{0} ミリグラム毎デシリットル"}
+            }
+            millimole-per-liter{
+                dnam{"ミリモル毎リットル"}
+                other{"{0} ミリモル毎リットル"}
+            }
+            part-per-million{
+                dnam{"ppm"}
+                other{"{0} ppm"}
+            }
         }
         consumption{
+            liter-per-100kilometers{
+                dnam{"リットル毎100キロメートル"}
+                other{"{0} リットル毎100キロメートル"}
+            }
             liter-per-kilometer{
                 dnam{"リットル毎キロメートル"}
                 other{"{0} リットル毎キロメートル"}
@@ -92,6 +117,16 @@ ja{
                 dnam{"マイル毎ガロン"}
                 other{"{0} マイル毎ガロン"}
             }
+            mile-per-gallon-imperial{
+                dnam{"マイル毎英ガロン"}
+                other{"{0} マイル毎英ガロン"}
+            }
+        }
+        coordinate{
+            east{"東経{0}"}
+            north{"北緯{0}"}
+            south{"南緯{0}"}
+            west{"西経{0}"}
         }
         digital{
             bit{
@@ -136,9 +171,14 @@ ja{
             }
         }
         duration{
+            century{
+                dnam{"世紀"}
+                other{"{0} 世紀"}
+            }
             day{
                 dnam{"日"}
                 other{"{0} 日"}
+                per{"{0}/日"}
             }
             hour{
                 dnam{"時間"}
@@ -156,10 +196,12 @@ ja{
             minute{
                 dnam{"分"}
                 other{"{0} 分"}
+                per{"{0}/分"}
             }
             month{
                 dnam{"か月"}
                 other{"{0} か月"}
+                per{"{0}/月"}
             }
             nanosecond{
                 dnam{"ナノ秒"}
@@ -173,10 +215,12 @@ ja{
             week{
                 dnam{"週間"}
                 other{"{0} 週間"}
+                per{"{0}/週"}
             }
             year{
                 dnam{"年"}
                 other{"{0} 年"}
+                per{"{0}/年"}
             }
         }
         electric{
@@ -199,8 +243,8 @@ ja{
         }
         energy{
             calorie{
-                dnam{"熱力学カロリー"}
-                other{"{0} 熱力学カロリー"}
+                dnam{"カロリー"}
+                other{"{0} カロリー"}
             }
             foodcalorie{
                 dnam{"カロリー"}
@@ -249,6 +293,7 @@ ja{
             centimeter{
                 dnam{"センチメートル"}
                 other{"{0} センチメートル"}
+                per{"{0}/センチメートル"}
             }
             decimeter{
                 dnam{"デシメートル"}
@@ -261,6 +306,7 @@ ja{
             foot{
                 dnam{"フィート"}
                 other{"{0} フィート"}
+                per{"{0}/フィート"}
             }
             furlong{
                 dnam{"ハロン"}
@@ -269,10 +315,12 @@ ja{
             inch{
                 dnam{"インチ"}
                 other{"{0} インチ"}
+                per{"{0}/インチ"}
             }
             kilometer{
                 dnam{"キロメートル"}
                 other{"{0} キロメートル"}
+                per{"{0}/キロメートル"}
             }
             light-year{
                 dnam{"光年"}
@@ -281,6 +329,7 @@ ja{
             meter{
                 dnam{"メートル"}
                 other{"{0} メートル"}
+                per{"{0}/メートル"}
             }
             micrometer{
                 dnam{"マイクロメートル"}
@@ -289,6 +338,10 @@ ja{
             mile{
                 dnam{"マイル"}
                 other{"{0} マイル"}
+            }
+            mile-scandinavian{
+                dnam{"スカンジナビアマイル"}
+                other{"{0} スカンジナビアマイル"}
             }
             millimeter{
                 dnam{"ミリメートル"}
@@ -329,14 +382,16 @@ ja{
             gram{
                 dnam{"グラム"}
                 other{"{0} グラム"}
+                per{"{0}/グラム"}
             }
             kilogram{
                 dnam{"キログラム"}
                 other{"{0} キログラム"}
+                per{"{0}/キログラム"}
             }
             metric-ton{
-                dnam{"メトリックトン"}
-                other{"{0} メトリックトン"}
+                dnam{"トン"}
+                other{"{0} トン"}
             }
             microgram{
                 dnam{"マイクログラム"}
@@ -349,6 +404,7 @@ ja{
             ounce{
                 dnam{"オンス"}
                 other{"{0} オンス"}
+                per{"{0}/オンス"}
             }
             ounce-troy{
                 dnam{"トロイオンス"}
@@ -357,14 +413,15 @@ ja{
             pound{
                 dnam{"ポンド"}
                 other{"{0} ポンド"}
+                per{"{0}/ポンド"}
             }
             stone{
                 dnam{"ストーン"}
                 other{"{0} ストーン"}
             }
             ton{
-                dnam{"トン"}
-                other{"{0} トン"}
+                dnam{"米トン"}
+                other{"{0} 米トン"}
             }
         }
         power{
@@ -415,16 +472,14 @@ ja{
                 other{"{0} 重量ポンド毎平方インチ"}
             }
         }
-        proportion{
-            karat{
-                dnam{"金"}
-                other{"{0} 金"}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"キロメートル毎時"}
                 other{"時速 {0} キロメートル"}
+            }
+            knot{
+                dnam{"ノット"}
+                other{"{0} ノット"}
             }
             meter-per-second{
                 dnam{"メートル毎秒"}
@@ -443,6 +498,10 @@ ja{
             fahrenheit{
                 dnam{"華氏"}
                 other{"華氏 {0} 度"}
+            }
+            generic{
+                dnam{"度"}
+                other{"{0}度"}
             }
             kelvin{
                 dnam{"ケルビン"}
@@ -465,6 +524,7 @@ ja{
             cubic-centimeter{
                 dnam{"立方センチメートル"}
                 other{"{0} 立方センチメートル"}
+                per{"{0}/立方センチメートル"}
             }
             cubic-foot{
                 dnam{"立方フィート"}
@@ -481,6 +541,7 @@ ja{
             cubic-meter{
                 dnam{"立方メートル"}
                 other{"{0} 立方メートル"}
+                per{"{0}/立方メートル"}
             }
             cubic-mile{
                 dnam{"立方マイル"}
@@ -494,6 +555,10 @@ ja{
                 dnam{"カップ"}
                 other{"{0} カップ"}
             }
+            cup-metric{
+                dnam{"メトリックカップ"}
+                other{"{0} メトリックカップ"}
+            }
             deciliter{
                 dnam{"デシリットル"}
                 other{"{0} デシリットル"}
@@ -505,6 +570,12 @@ ja{
             gallon{
                 dnam{"ガロン"}
                 other{"{0} ガロン"}
+                per{"{0}/ガロン"}
+            }
+            gallon-imperial{
+                dnam{"英ガロン"}
+                other{"{0} 英ガロン"}
+                per{"{0}/英ガロン"}
             }
             hectoliter{
                 dnam{"ヘクトリットル"}
@@ -513,6 +584,7 @@ ja{
             liter{
                 dnam{"リットル"}
                 other{"{0} リットル"}
+                per{"{0}/リットル"}
             }
             megaliter{
                 dnam{"メガリットル"}
@@ -525,6 +597,10 @@ ja{
             pint{
                 dnam{"パイント"}
                 other{"{0} パイント"}
+            }
+            pint-metric{
+                dnam{"メトリックパイント"}
+                other{"{0} メトリックパイント"}
             }
             quart{
                 dnam{"クォート"}
@@ -595,7 +671,16 @@ ja{
         compound{
             per{"{0}/{1}"}
         }
+        concentr{
+            karat{
+                other{"{0}K"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"L/100km"}
+                other{"{0}L/100km"}
+            }
             liter-per-kilometer{
                 other{"{0}L/km"}
             }
@@ -638,11 +723,11 @@ ja{
         duration{
             day{
                 dnam{"日"}
-                other{"{0}日"}
+                other{"{0}d"}
             }
             hour{
                 dnam{"時間"}
-                other{"{0}時間"}
+                other{"{0}h"}
             }
             microsecond{
                 dnam{"µs"}
@@ -654,11 +739,11 @@ ja{
             }
             minute{
                 dnam{"分"}
-                other{"{0}分"}
+                other{"{0}m"}
             }
             month{
                 dnam{"か月"}
-                other{"{0}か月"}
+                other{"{0}m"}
             }
             nanosecond{
                 dnam{"ns"}
@@ -666,15 +751,15 @@ ja{
             }
             second{
                 dnam{"秒"}
-                other{"{0}秒"}
+                other{"{0}s"}
             }
             week{
                 dnam{"週間"}
-                other{"{0}週間"}
+                other{"{0}w"}
             }
             year{
                 dnam{"年"}
-                other{"{0}年"}
+                other{"{0}y"}
             }
         }
         electric{
@@ -868,11 +953,6 @@ ja{
                 other{"{0}psi"}
             }
         }
-        proportion{
-            karat{
-                other{"{0}K"}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"km/h"}
@@ -888,7 +968,7 @@ ja{
         temperature{
             celsius{
                 dnam{"°C"}
-                other{"{0}°"}
+                other{"{0}°C"}
             }
             fahrenheit{
                 other{"{0}°F"}
@@ -946,8 +1026,8 @@ ja{
                 other{"{0}hL"}
             }
             liter{
-                dnam{"l"}
-                other{"{0}l"}
+                dnam{"L"}
+                other{"{0}L"}
             }
             megaliter{
                 other{"{0}ML"}
@@ -972,11 +1052,11 @@ ja{
     unitsShort{
         acceleration{
             g-force{
-                dnam{"G フォース"}
+                dnam{"重力加速度"}
                 other{"{0} G"}
             }
             meter-per-second-squared{
-                dnam{"メートル毎秒毎秒"}
+                dnam{"m/s²"}
                 other{"{0} m/s²"}
             }
         }
@@ -997,6 +1077,10 @@ ja{
                 dnam{"ラジアン"}
                 other{"{0} rad"}
             }
+            revolution{
+                dnam{"回転"}
+                other{"{0} rev"}
+            }
         }
         area{
             acre{
@@ -1010,6 +1094,7 @@ ja{
             square-centimeter{
                 dnam{"cm²"}
                 other{"{0} cm²"}
+                per{"{0}/cm²"}
             }
             square-foot{
                 dnam{"平方フィート"}
@@ -1018,18 +1103,22 @@ ja{
             square-inch{
                 dnam{"平方インチ"}
                 other{"{0} in²"}
+                per{"{0}/in²"}
             }
             square-kilometer{
                 dnam{"km²"}
                 other{"{0} km²"}
+                per{"{0}/km²"}
             }
             square-meter{
                 dnam{"m²"}
                 other{"{0} m²"}
+                per{"{0}/m²"}
             }
             square-mile{
                 dnam{"平方マイル"}
                 other{"{0} mi²"}
+                per{"{0}/mi²"}
             }
             square-yard{
                 dnam{"平方ヤード"}
@@ -1039,14 +1128,40 @@ ja{
         compound{
             per{"{0}/{1}"}
         }
+        concentr{
+            karat{
+                dnam{"金"}
+                other{"{0} 金"}
+            }
+            milligram-per-deciliter{
+                dnam{"ミリグラム毎デシリットル"}
+                other{"{0} mg/dL"}
+            }
+            millimole-per-liter{
+                dnam{"ミリモル毎リットル"}
+                other{"{0} mmol/L"}
+            }
+            part-per-million{
+                dnam{"ppm"}
+                other{"{0} ppm"}
+            }
+        }
         consumption{
+            liter-per-100kilometers{
+                dnam{"L/100km"}
+                other{"{0} L/100km"}
+            }
             liter-per-kilometer{
-                dnam{"リットル毎キロメートル"}
+                dnam{"L/km"}
                 other{"{0} L/km"}
             }
             mile-per-gallon{
-                dnam{"マイル毎ガロン"}
+                dnam{"マイル/ガロン"}
                 other{"{0} mpg"}
+            }
+            mile-per-gallon-imperial{
+                dnam{"マイル毎英ガロン"}
+                other{"{0} mpg Imp."}
             }
         }
         digital{
@@ -1092,9 +1207,14 @@ ja{
             }
         }
         duration{
+            century{
+                dnam{"世紀"}
+                other{"{0} 世紀"}
+            }
             day{
                 dnam{"日"}
                 other{"{0} 日"}
+                per{"{0}/日"}
             }
             hour{
                 dnam{"時間"}
@@ -1112,10 +1232,12 @@ ja{
             minute{
                 dnam{"分"}
                 other{"{0} 分"}
+                per{"{0}/分"}
             }
             month{
                 dnam{"か月"}
                 other{"{0} か月"}
+                per{"{0}/月"}
             }
             nanosecond{
                 dnam{"ナノ秒"}
@@ -1129,10 +1251,12 @@ ja{
             week{
                 dnam{"週間"}
                 other{"{0} 週間"}
+                per{"{0}/週"}
             }
             year{
                 dnam{"年"}
                 other{"{0} 年"}
+                per{"{0}/年"}
             }
         }
         electric{
@@ -1155,8 +1279,8 @@ ja{
         }
         energy{
             calorie{
-                dnam{"熱力学カロリー"}
-                other{"{0} calth"}
+                dnam{"cal"}
+                other{"{0} cal"}
             }
             foodcalorie{
                 dnam{"cal"}
@@ -1181,7 +1305,7 @@ ja{
         }
         frequency{
             gigahertz{
-                dnam{"ギガヘルツ"}
+                dnam{"GHz"}
                 other{"{0} GHz"}
             }
             hertz{
@@ -1193,7 +1317,7 @@ ja{
                 other{"{0} kHz"}
             }
             megahertz{
-                dnam{"メガヘルツ"}
+                dnam{"MHz"}
                 other{"{0} MHz"}
             }
         }
@@ -1205,6 +1329,7 @@ ja{
             centimeter{
                 dnam{"cm"}
                 other{"{0} cm"}
+                per{"{0}/cm"}
             }
             decimeter{
                 dnam{"デシメートル"}
@@ -1217,6 +1342,7 @@ ja{
             foot{
                 dnam{"フィート"}
                 other{"{0} ft"}
+                per{"{0}/ft"}
             }
             furlong{
                 dnam{"ハロン"}
@@ -1225,10 +1351,12 @@ ja{
             inch{
                 dnam{"インチ"}
                 other{"{0} in"}
+                per{"{0}/in"}
             }
             kilometer{
                 dnam{"km"}
                 other{"{0} km"}
+                per{"{0}/km"}
             }
             light-year{
                 dnam{"光年"}
@@ -1237,6 +1365,7 @@ ja{
             meter{
                 dnam{"m"}
                 other{"{0} m"}
+                per{"{0}/m"}
             }
             micrometer{
                 dnam{"マイクロメートル"}
@@ -1245,6 +1374,10 @@ ja{
             mile{
                 dnam{"マイル"}
                 other{"{0} mi"}
+            }
+            mile-scandinavian{
+                dnam{"スカンジナビアマイル"}
+                other{"{0} smi"}
             }
             millimeter{
                 dnam{"mm"}
@@ -1285,14 +1418,16 @@ ja{
             gram{
                 dnam{"グラム"}
                 other{"{0} g"}
+                per{"{0}/g"}
             }
             kilogram{
                 dnam{"kg"}
                 other{"{0} kg"}
+                per{"{0}/kg"}
             }
             metric-ton{
-                dnam{"メトリックトン"}
-                other{"{0} MT"}
+                dnam{"トン"}
+                other{"{0} t"}
             }
             microgram{
                 dnam{"マイクログラム"}
@@ -1305,6 +1440,7 @@ ja{
             ounce{
                 dnam{"オンス"}
                 other{"{0} oz"}
+                per{"{0}/oz"}
             }
             ounce-troy{
                 dnam{"トロイオンス"}
@@ -1313,14 +1449,15 @@ ja{
             pound{
                 dnam{"ポンド"}
                 other{"{0} lb"}
+                per{"{0}/lb"}
             }
             stone{
                 dnam{"ストーン"}
                 other{"{0} st"}
             }
             ton{
-                dnam{"トン"}
-                other{"{0} t"}
+                dnam{"米トン"}
+                other{"{0} s/t"}
             }
         }
         power{
@@ -1371,16 +1508,14 @@ ja{
                 other{"{0} psi"}
             }
         }
-        proportion{
-            karat{
-                dnam{"金"}
-                other{"{0} 金"}
-            }
-        }
         speed{
             kilometer-per-hour{
                 dnam{"km/h"}
                 other{"{0} km/h"}
+            }
+            knot{
+                dnam{"ノット"}
+                other{"{0} kn"}
             }
             meter-per-second{
                 dnam{"m/s"}
@@ -1388,7 +1523,7 @@ ja{
             }
             mile-per-hour{
                 dnam{"マイル毎時"}
-                other{"{0} mi/h"}
+                other{"{0} mph"}
             }
         }
         temperature{
@@ -1397,8 +1532,12 @@ ja{
                 other{"{0}°C"}
             }
             fahrenheit{
-                dnam{"華氏"}
+                dnam{"°F"}
                 other{"{0}°F"}
+            }
+            generic{
+                dnam{"°"}
+                other{"{0}°"}
             }
             kelvin{
                 dnam{"K"}
@@ -1421,6 +1560,7 @@ ja{
             cubic-centimeter{
                 dnam{"cm³"}
                 other{"{0} cm³"}
+                per{"{0}/cm³"}
             }
             cubic-foot{
                 dnam{"立方フィート"}
@@ -1437,6 +1577,7 @@ ja{
             cubic-meter{
                 dnam{"m³"}
                 other{"{0} m³"}
+                per{"{0}/m³"}
             }
             cubic-mile{
                 dnam{"立方マイル"}
@@ -1450,6 +1591,10 @@ ja{
                 dnam{"カップ"}
                 other{"{0} カップ"}
             }
+            cup-metric{
+                dnam{"メトリックカップ"}
+                other{"{0} mc"}
+            }
             deciliter{
                 dnam{"デシリットル"}
                 other{"{0} dL"}
@@ -1461,6 +1606,12 @@ ja{
             gallon{
                 dnam{"ガロン"}
                 other{"{0} gal"}
+                per{"{0}/gal"}
+            }
+            gallon-imperial{
+                dnam{"英ガロン"}
+                other{"{0} gal Imp."}
+                per{"{0}/gal Imp."}
             }
             hectoliter{
                 dnam{"ヘクトリットル"}
@@ -1468,19 +1619,24 @@ ja{
             }
             liter{
                 dnam{"リットル"}
-                other{"{0} l"}
+                other{"{0} L"}
+                per{"{0}/l"}
             }
             megaliter{
                 dnam{"メガリットル"}
                 other{"{0} ML"}
             }
             milliliter{
-                dnam{"ml"}
+                dnam{"ミリリットル"}
                 other{"{0} ml"}
             }
             pint{
                 dnam{"パイント"}
                 other{"{0} pt"}
+            }
+            pint-metric{
+                dnam{"メトリックパイント"}
+                other{"{0} mpt"}
             }
             quart{
                 dnam{"クォート"}

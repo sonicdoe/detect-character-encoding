@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2014, International Business Machines Corporation and
+ * Copyright (c) 1997-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************
  * File TMSGFMT.CPP
@@ -67,6 +69,7 @@ TestMessageFormat::runIndexedTest(int32_t index, UBool exec,
     TESTCASE_AUTO(TestTrimArgumentName);
     TESTCASE_AUTO(TestSelectOrdinal);
     TESTCASE_AUTO(TestDecimals);
+    TESTCASE_AUTO(TestArgIsPrefixOfAnother);
     TESTCASE_AUTO_END;
 }
 
@@ -138,7 +141,7 @@ void TestMessageFormat::testBug3()
             continue;
         }
         Formattable result;
-        FieldPosition pos(0);
+        FieldPosition pos(FieldPosition::DONT_CARE);
         buffer.remove();
         form->format(myNumber, buffer, pos);
         success = U_ZERO_ERROR;
@@ -160,7 +163,7 @@ void TestMessageFormat::testBug1()
                                "1.0<=Arg<2.0",
                                "2.0<-Arg"};
     ChoiceFormat *cf = new ChoiceFormat(limit, formats, 3);
-    FieldPosition status(0);
+    FieldPosition status(FieldPosition::DONT_CARE);
     UnicodeString toAppendTo;
     cf->format((int32_t)1, toAppendTo, status);
     if (toAppendTo != "1.0<=Arg<2.0") {
@@ -318,7 +321,7 @@ void TestMessageFormat::PatternTest()
         //it_out << "Pat out: " << form->toPattern(buffer));
         UnicodeString result;
         int32_t count = 4;
-        FieldPosition fieldpos(0);
+        FieldPosition fieldpos(FieldPosition::DONT_CARE);
         form->format(testArgs, count, result, fieldpos, success);
         if (U_FAILURE(success)) {
             dataerrln("MessageFormat failed test #3 - %s", u_errorName(success));
@@ -378,7 +381,7 @@ void TestMessageFormat::sample()
     UnicodeString abc("abc");
     UnicodeString def("def");
     Formattable testArgs1[] = { abc, def };
-    FieldPosition fieldpos(0);
+    FieldPosition fieldpos(FieldPosition::DONT_CARE);
     assertEquals("format",
                  "There are abc files on def",
                  form->format(testArgs1, 2, buffer2, fieldpos, success));
@@ -999,7 +1002,7 @@ void TestMessageFormat::testSetLocale()
 
     MessageFormat msg( formatStr, err);
     result = "";
-    FieldPosition pos(0);
+    FieldPosition pos(FieldPosition::DONT_CARE);
     result = msg.format(
         arguments,
         3,
@@ -1058,7 +1061,7 @@ void TestMessageFormat::testFormat()
     {
         Formattable( UDate(8.71068e+011), Formattable::kIsDate )
     };
-    const int32_t ft_cnt = sizeof(ftarray) / sizeof(Formattable);
+    const int32_t ft_cnt = UPRV_LENGTHOF(ftarray);
     Formattable ft_arr( ftarray, ft_cnt );
 
     Formattable* fmt = new Formattable(UDate(8.71068e+011), Formattable::kIsDate);
@@ -1071,7 +1074,7 @@ void TestMessageFormat::testFormat()
 
     err = U_ZERO_ERROR;
     MessageFormat msg( formatStr, err);
-    FieldPosition fp(0);
+    FieldPosition fp(FieldPosition::DONT_CARE);
 
     result = "";
     fp = 0;
@@ -1403,7 +1406,7 @@ static void _testCopyConstructor2()
     UnicodeString formatStr("Hello World on {0,date,full}", "");
     UnicodeString resultStr(" ", "");
     UnicodeString result;
-    FieldPosition fp(0);
+    FieldPosition fp(FieldPosition::DONT_CARE);
     UDate d = Calendar::getNow();
     const Formattable fargs( d, Formattable::kIsDate );
 
@@ -1486,7 +1489,7 @@ void TestMessageFormat::TestUnlimitedArgsAndSubformats() {
         Formattable("of course"),
         Formattable("Horace"),
     };
-    const int32_t ARGS_LENGTH = sizeof(ARGS) / sizeof(ARGS[0]);
+    const int32_t ARGS_LENGTH = UPRV_LENGTHOF(ARGS);
     Formattable ARGS_OBJ(ARGS, ARGS_LENGTH);
 
     UnicodeString expected =
@@ -1519,17 +1522,17 @@ void TestMessageFormat::TestRBNF(void) {
         // do not always parse, so do not include them
         "0", "1", "12", "100", "123", "1001", "123,456", "-17",
     };
-    int32_t values_count = sizeof(values)/sizeof(values[0]);
+    int32_t values_count = UPRV_LENGTHOF(values);
 
     UnicodeString formats[] = {
         "There are {0,spellout} files to search.",
         "There are {0,spellout,%simplified} files to search.",
         "The bogus spellout {0,spellout,%BOGUS} files behaves like the default.",
-        "This is the {0,ordinal} file to search.", // TODO fix bug, ordinal does not parse
+        "This is the {0,ordinal} file to search.",
         "Searching this file will take {0,duration} to complete.",
         "Searching this file will take {0,duration,%with-words} to complete.",
     };
-    int32_t formats_count = sizeof(formats)/sizeof(formats[0]);
+    int32_t formats_count = UPRV_LENGTHOF(formats);
 
     Formattable args[1];
 
@@ -1549,21 +1552,19 @@ void TestMessageFormat::TestRBNF(void) {
             if (U_FAILURE(ec)) {
                 errln((UnicodeString)"Failed to parse test argument " + values[j]);
             } else {
-                FieldPosition fp(0);
+                FieldPosition fp(FieldPosition::DONT_CARE);
                 UnicodeString result;
                 fmt->format(args, 1, result, fp, ec);
                 logln((UnicodeString)"value: " + toString(args[0]) + " --> " + result + UnicodeString(" ec: ") + u_errorName(ec));
                
-                if (i != 3) { // TODO: fix this, for now skip ordinal parsing (format string at index 3)
-                    int32_t count = 0;
-                    Formattable* parseResult = fmt->parse(result, count, ec);
-                    if (count != 1) {
-                        errln((UnicodeString)"parse returned " + count + " args");
-                    } else if (parseResult[0] != args[0]) {
-                        errln((UnicodeString)"parsed argument " + toString(parseResult[0]) + " != " + toString(args[0]));
-                    }
-                    delete []parseResult;
+                int32_t count = 0;
+                Formattable* parseResult = fmt->parse(result, count, ec);
+                if (count != 1) {
+                    errln((UnicodeString)"parse returned " + count + " args");
+                } else if (parseResult[0] != args[0]) {
+                    errln((UnicodeString)"parsed argument " + toString(parseResult[0]) + " != " + toString(args[0]));
                 }
+                delete []parseResult;
             }
         }
         delete fmt;
@@ -1643,7 +1644,7 @@ void TestMessageFormat::TestCompatibleApostrophe() {
     }
 
     Formattable zero0[] = { (int32_t)0 };
-    FieldPosition fieldpos(0);
+    FieldPosition fieldpos(FieldPosition::DONT_CARE);
     UnicodeString buffer1, buffer2;
     assertEquals("incompatible ICU MessageFormat compatibility-apostrophe behavior",
             "ab12'3'4''.yz",
@@ -1702,7 +1703,7 @@ void TestMessageFormat::testAutoQuoteApostrophe(void) {
         "'} '{'}'", "'} '{'}''",
         "'} {{{''", "'} {{{'''",
     };
-    int32_t pattern_count = sizeof(patterns)/sizeof(patterns[0]);
+    int32_t pattern_count = UPRV_LENGTHOF(patterns);
 
     for (int i = 0; i < pattern_count; i += 2) {
         UErrorCode status = U_ZERO_ERROR;
@@ -1847,7 +1848,7 @@ void TestMessageFormat::TestTrimArgumentName() {
         return;
     }
     Formattable args[1] = { (int32_t)2 };
-    FieldPosition ignore(0);
+    FieldPosition ignore(FieldPosition::DONT_CARE);
     UnicodeString result;
     assertEquals("trim-numbered-arg format() failed", "a  #,#2.0  z",
                  m.format(args, 1, result, ignore, errorCode));
@@ -1872,7 +1873,7 @@ void TestMessageFormat::TestSelectOrdinal() {
         return;
     }
     Formattable args[1] = { (int32_t)21 };
-    FieldPosition ignore(0);
+    FieldPosition ignore(FieldPosition::DONT_CARE);
     UnicodeString result;
     assertEquals("plural-and-ordinal format(21) failed", "21 files, 21st file",
                  m.format(args, 1, result, ignore, errorCode), TRUE);
@@ -1961,6 +1962,33 @@ void TestMessageFormat::TestDecimals() {
     assertEquals("offset-decimals format(1)", "2.5 meters",
             m2.format(args, 1, result, ignore, errorCode), TRUE);
     errorCode.reset();
+}
+
+void TestMessageFormat::TestArgIsPrefixOfAnother() {
+    IcuTestErrorCode errorCode(*this, "TestArgIsPrefixOfAnother");
+    // Ticket #11952
+    MessageFormat mf1("{0,select,a{A}ab{AB}abc{ABC}other{?}}", Locale::getEnglish(), errorCode);
+    Formattable args[3];
+    FieldPosition ignore;
+    UnicodeString result;
+    args[0].setString("a");
+    assertEquals("a", "A", mf1.format(args, 1, result, ignore, errorCode));
+    args[0].setString("ab");
+    assertEquals("ab", "AB", mf1.format(args, 1, result.remove(), ignore, errorCode));
+    args[0].setString("abc");
+    assertEquals("abc", "ABC", mf1.format(args, 1, result.remove(), ignore, errorCode));
+
+    // Ticket #12172
+    MessageFormat mf2("{a} {aa} {aaa}", Locale::getEnglish(), errorCode);
+    UnicodeString argNames[3] = { "a", "aa", "aaa" };
+    args[0].setString("A");
+    args[1].setString("AB");
+    args[2].setString("ABC");
+    assertEquals("a aa aaa", "A AB ABC", mf2.format(argNames, args, 3, result.remove(), errorCode));
+
+    // Ticket #12172
+    MessageFormat mf3("{aa} {aaa}", Locale::getEnglish(), errorCode);
+    assertEquals("aa aaa", "AB ABC", mf3.format(argNames + 1, args + 1, 2, result.remove(), errorCode));
 }
 
 #endif /* #if !UCONFIG_NO_FORMATTING */

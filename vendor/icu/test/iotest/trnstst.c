@@ -1,12 +1,15 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
-*   Copyright (C) 2005-2005, International Business Machines
+*   Copyright (C) 2005-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   file name:  strtst.c
 *   created by: George Rhoten
 */
 
+#include "cmemory.h"
 #include "iotest.h"
 #include "unicode/ustdio.h"
 #include "unicode/utrans.h"
@@ -229,7 +232,7 @@ static void TestTranslitStringOut(void)
 
     log_verbose("opening a transliterator and UFILE for testing\n");
 
-    f = u_fstropen(ubuf, sizeof(ubuf)/sizeof(ubuf[0]), "en_US_POSIX");
+    f = u_fstropen(ubuf, UPRV_LENGTHOF(ubuf), "en_US_POSIX");
     if(f == NULL)
     {
         log_err("Couldn't open test file for writing\n");
