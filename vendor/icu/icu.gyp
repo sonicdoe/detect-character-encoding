@@ -7,7 +7,10 @@
 
 {
   'variables': {
-    'icu_src_derb': [ 'tools/genrb/derb.c' ],
+    'icu_src_derb': [
+        'tools/genrb/derb.c',
+        'tools/genrb/derb.cpp',
+    ],
     'conditions': [
       ['OS == "win"', {
         'os_posix': 0,
