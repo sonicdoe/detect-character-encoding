@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 1997-2014, International Business Machines Corporation and
+* Copyright (C) 1997-2015, International Business Machines Corporation and
 * others. All Rights Reserved.
 *******************************************************************************
 *
@@ -120,6 +122,9 @@ static const UChar * const gLastResortNumberPatterns[UNUM_FORMAT_STYLE_COUNT] = 
     gLastResortPluralCurrencyPat,  // UNUM_CURRENCY_PLURAL
     gLastResortAccountingCurrencyPat, // UNUM_CURRENCY_ACCOUNTING
     gLastResortCurrencyPat,  // UNUM_CASH_CURRENCY 
+    NULL,  // UNUM_DECIMAL_COMPACT_SHORT
+    NULL,  // UNUM_DECIMAL_COMPACT_LONG
+    gLastResortCurrencyPat,  // UNUM_CURRENCY_STANDARD
 };
 
 // Keys used for accessing resource bundles
@@ -145,7 +150,10 @@ static const char *gFormatKeys[UNUM_FORMAT_STYLE_COUNT] = {
     "currencyFormat",  // UNUM_CURRENCY_ISO
     "currencyFormat",  // UNUM_CURRENCY_PLURAL
     "accountingFormat",  // UNUM_CURRENCY_ACCOUNTING
-    "currencyFormat"  // UNUM_CASH_CURRENCY
+    "currencyFormat",  // UNUM_CASH_CURRENCY
+    NULL,  // UNUM_DECIMAL_COMPACT_SHORT
+    NULL,  // UNUM_DECIMAL_COMPACT_LONG
+    "currencyFormat",  // UNUM_CURRENCY_STANDARD
 };
 
 // Static hashtable cache of NumberingSystem objects used by NumberFormat
@@ -270,7 +278,8 @@ NumberFormat::operator=(const NumberFormat& rhs)
         fMaxFractionDigits = rhs.fMaxFractionDigits;
         fMinFractionDigits = rhs.fMinFractionDigits;
         fParseIntegerOnly = rhs.fParseIntegerOnly;
-        u_strncpy(fCurrency, rhs.fCurrency, 4);
+        u_strncpy(fCurrency, rhs.fCurrency, 3);
+        fCurrency[3] = 0;
         fLenient = rhs.fLenient;
         fCapitalizationContext = rhs.fCapitalizationContext;
     }
@@ -443,7 +452,7 @@ NumberFormat::format(int64_t number,
 //       XXXFormat::format(double
 
 UnicodeString&
-NumberFormat::format(const StringPiece &decimalNum,
+NumberFormat::format(StringPiece decimalNum,
                      UnicodeString& toAppendTo,
                      FieldPositionIterator* fpi,
                      UErrorCode& status) const
@@ -676,7 +685,7 @@ NumberFormat::parseObject(const UnicodeString& source,
 UnicodeString&
 NumberFormat::format(double number, UnicodeString& appendTo) const
 {
-    FieldPosition pos(0);
+    FieldPosition pos(FieldPosition::DONT_CARE);
     return format(number, appendTo, pos);
 }
 
@@ -686,7 +695,7 @@ NumberFormat::format(double number, UnicodeString& appendTo) const
 UnicodeString&
 NumberFormat::format(int32_t number, UnicodeString& appendTo) const
 {
-    FieldPosition pos(0);
+    FieldPosition pos(FieldPosition::DONT_CARE);
     return format(number, appendTo, pos);
 }
 
@@ -696,7 +705,7 @@ NumberFormat::format(int32_t number, UnicodeString& appendTo) const
 UnicodeString&
 NumberFormat::format(int64_t number, UnicodeString& appendTo) const
 {
-    FieldPosition pos(0);
+    FieldPosition pos(FieldPosition::DONT_CARE);
     return format(number, appendTo, pos);
 }
 
@@ -1020,8 +1029,18 @@ NumberFormat::getAvailableLocales(void)
 #endif /* UCONFIG_NO_SERVICE */
 // -------------------------------------
 
+enum { kKeyValueLenMax = 32 };
+
 NumberFormat*
 NumberFormat::internalCreateInstance(const Locale& loc, UNumberFormatStyle kind, UErrorCode& status) {
+    if (kind == UNUM_CURRENCY) {
+        char cfKeyValue[kKeyValueLenMax] = {0};
+        UErrorCode kvStatus = U_ZERO_ERROR;
+        int32_t kLen = loc.getKeywordValue("cf", cfKeyValue, kKeyValueLenMax, kvStatus);
+        if (U_SUCCESS(kvStatus) && kLen > 0 && uprv_strcmp(cfKeyValue,"account")==0) {
+            kind = UNUM_CURRENCY_ACCOUNTING;
+        }
+    }
 #if !UCONFIG_NO_SERVICE
     if (haveService()) {
         return (NumberFormat*)gService->get(loc, kind, status);
@@ -1322,6 +1341,7 @@ NumberFormat::makeInstance(const Locale& desiredLocale,
             case UNUM_CURRENCY_PLURAL:
             case UNUM_CURRENCY_ACCOUNTING:
             case UNUM_CASH_CURRENCY:
+            case UNUM_CURRENCY_STANDARD:
                 f = new Win32NumberFormat(desiredLocale, curr, status);
 
                 if (U_SUCCESS(status)) {
@@ -1406,7 +1426,7 @@ NumberFormat::makeInstance(const Locale& desiredLocale,
         return NULL;
     }
     if(style==UNUM_CURRENCY || style == UNUM_CURRENCY_ISO || style == UNUM_CURRENCY_ACCOUNTING 
-        || style == UNUM_CASH_CURRENCY){
+        || style == UNUM_CASH_CURRENCY || style == UNUM_CURRENCY_STANDARD){
         const UChar* currPattern = symbolsToAdopt->getCurrencyPattern();
         if(currPattern!=NULL){
             pattern.setTo(currPattern, u_strlen(currPattern));

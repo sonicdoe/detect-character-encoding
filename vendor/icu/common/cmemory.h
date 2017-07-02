@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2015, International Business Machines
+*   Copyright (C) 1997-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -153,16 +155,69 @@ U_NAMESPACE_BEGIN
 template<typename T>
 class LocalMemory : public LocalPointerBase<T> {
 public:
+    using LocalPointerBase<T>::operator*;
+    using LocalPointerBase<T>::operator->;
     /**
      * Constructor takes ownership.
      * @param p simple pointer to an array of T items that is adopted
      */
     explicit LocalMemory(T *p=NULL) : LocalPointerBase<T>(p) {}
+#if U_HAVE_RVALUE_REFERENCES
+    /**
+     * Move constructor, leaves src with isNull().
+     * @param src source smart pointer
+     */
+    LocalMemory(LocalMemory<T> &&src) U_NOEXCEPT : LocalPointerBase<T>(src.ptr) {
+        src.ptr=NULL;
+    }
+#endif
     /**
      * Destructor deletes the memory it owns.
      */
     ~LocalMemory() {
         uprv_free(LocalPointerBase<T>::ptr);
+    }
+#if U_HAVE_RVALUE_REFERENCES
+    /**
+     * Move assignment operator, leaves src with isNull().
+     * The behavior is undefined if *this and src are the same object.
+     * @param src source smart pointer
+     * @return *this
+     */
+    LocalMemory<T> &operator=(LocalMemory<T> &&src) U_NOEXCEPT {
+        return moveFrom(src);
+    }
+#endif
+    /**
+     * Move assignment, leaves src with isNull().
+     * The behavior is undefined if *this and src are the same object.
+     *
+     * Can be called explicitly, does not need C++11 support.
+     * @param src source smart pointer
+     * @return *this
+     */
+    LocalMemory<T> &moveFrom(LocalMemory<T> &src) U_NOEXCEPT {
+        delete[] LocalPointerBase<T>::ptr;
+        LocalPointerBase<T>::ptr=src.ptr;
+        src.ptr=NULL;
+        return *this;
+    }
+    /**
+     * Swap pointers.
+     * @param other other smart pointer
+     */
+    void swap(LocalMemory<T> &other) U_NOEXCEPT {
+        T *temp=LocalPointerBase<T>::ptr;
+        LocalPointerBase<T>::ptr=other.ptr;
+        other.ptr=temp;
+    }
+    /**
+     * Non-member LocalMemory swap function.
+     * @param p1 will get p2's pointer
+     * @param p2 will get p1's pointer
+     */
+    friend inline void swap(LocalMemory<T> &p1, LocalMemory<T> &p2) U_NOEXCEPT {
+        p1.swap(p2);
     }
     /**
      * Deletes the array it owns,
@@ -228,7 +283,7 @@ inline T *LocalMemory<T>::allocateInsteadAndCopy(int32_t newCapacity, int32_t le
                 if(length>newCapacity) {
                     length=newCapacity;
                 }
-                uprv_memcpy(p, LocalPointerBase<T>::ptr, length*sizeof(T));
+                uprv_memcpy(p, LocalPointerBase<T>::ptr, (size_t)length*sizeof(T));
             }
             uprv_free(LocalPointerBase<T>::ptr);
             LocalPointerBase<T>::ptr=p;
@@ -375,7 +430,7 @@ inline T *MaybeStackArray<T, stackCapacity>::resize(int32_t newCapacity, int32_t
                 if(length>newCapacity) {
                     length=newCapacity;
                 }
-                uprv_memcpy(p, ptr, length*sizeof(T));
+                uprv_memcpy(p, ptr, (size_t)length*sizeof(T));
             }
             releaseArray();
             ptr=p;
@@ -406,7 +461,7 @@ inline T *MaybeStackArray<T, stackCapacity>::orphanOrClone(int32_t length, int32
         if(p==NULL) {
             return NULL;
         }
-        uprv_memcpy(p, ptr, length*sizeof(T));
+        uprv_memcpy(p, ptr, (size_t)length*sizeof(T));
     }
     resultCapacity=length;
     ptr=stackArray;
@@ -554,7 +609,7 @@ inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::resize(int32_t newCapac
                     length=newCapacity;
                 }
             }
-            uprv_memcpy(p, ptr, sizeof(H)+length*sizeof(T));
+            uprv_memcpy(p, ptr, sizeof(H)+(size_t)length*sizeof(T));
             releaseMemory();
             ptr=p;
             capacity=newCapacity;
@@ -585,7 +640,7 @@ inline H *MaybeStackHeaderAndArray<H, T, stackCapacity>::orphanOrClone(int32_t l
         if(p==NULL) {
             return NULL;
         }
-        uprv_memcpy(p, ptr, sizeof(H)+length*sizeof(T));
+        uprv_memcpy(p, ptr, sizeof(H)+(size_t)length*sizeof(T));
     }
     resultCapacity=length;
     ptr=&stackHeader;

@@ -1,3 +1,5 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
 * Copyright (C) 2012-2015, International Business Machines
@@ -47,9 +49,6 @@
 #include "uvectr32.h"
 #include "uvectr64.h"
 #include "writesrc.h"
-
-// TODO: Move to ucbuf.h
-U_DEFINE_LOCAL_OPEN_POINTER(LocalUCHARBUFPointer, UCHARBUF, ucbuf_close);
 
 class CodePointIterator;
 
@@ -1118,7 +1117,7 @@ void CollationTest::parseAndSetAttribute(IcuTestErrorCode &errorCode) {
     // Parse attributes even if the Collator could not be created,
     // in order to report syntax errors.
     int32_t start = skipSpaces(1);
-    int32_t equalPos = fileLine.indexOf(0x3d);
+    int32_t equalPos = fileLine.indexOf((UChar)0x3d);
     if(equalPos < 0) {
         if(fileLine.compare(start, 7, UNICODE_STRING("reorder", 7)) == 0) {
             parseAndSetReorderCodes(start + 7, errorCode);

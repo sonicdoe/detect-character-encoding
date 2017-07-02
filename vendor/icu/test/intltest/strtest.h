@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT: 
- * Copyright (c) 1997-2011, International Business Machines Corporation and
+ * Copyright (c) 1997-2015, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 /*   file name:  strtest.h
@@ -45,6 +47,8 @@ private:
     void TestStringByteSink();
     void TestSTLCompatibility();
     void TestCharString();
+    void TestCStr();
+    void Testctou();
 };
 
 #endif

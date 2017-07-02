@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-* Copyright (C) 2014, International Business Machines Corporation and         *
-* others. All Rights Reserved.                                                *
+* Copyright (C) 2014-2016, International Business Machines Corporation and
+* others. All Rights Reserved.
 *******************************************************************************
 *
 * File QUANTITYFORMATTERTEST.CPP
@@ -11,7 +13,7 @@
 #include "cstring.h"
 #include "intltest.h"
 #include "quantityformatter.h"
-#include "simplepatternformatter.h"
+#include "unicode/simpleformatter.h"
 #include "unicode/numfmt.h"
 #include "unicode/plurrule.h"
 
@@ -37,41 +39,41 @@ void QuantityFormatterTest::TestBasic() {
     QuantityFormatter fmt;
     assertFalse(
             "adding bad variant",
-            fmt.add("a bad variant", "{0} pounds", status));
-    assertEquals("adding bad variant status", U_ILLEGAL_ARGUMENT_ERROR, status);
+            fmt.addIfAbsent("a bad variant", "{0} pounds", status));
+    assertEquals("adding bad variant status", (int32_t)U_ILLEGAL_ARGUMENT_ERROR, status);
     status = U_ZERO_ERROR;
     assertFalse(
             "Adding bad pattern",
-            fmt.add("other", "{0} {1} too many placeholders", status));
-    assertEquals("adding bad pattern status", U_ILLEGAL_ARGUMENT_ERROR, status);
+            fmt.addIfAbsent("other", "{0} {1} too many placeholders", status));
+    assertEquals("adding bad pattern status", (int32_t)U_ILLEGAL_ARGUMENT_ERROR, status);
     status = U_ZERO_ERROR;
     assertFalse("isValid with no patterns", fmt.isValid());
     assertTrue(
             "Adding good pattern with no placeholders",
-            fmt.add("other", "no placeholder", status));
+            fmt.addIfAbsent("zero", "no placeholder", status));
     assertTrue(
             "Adding good pattern",
-            fmt.add("other", "{0} pounds", status));
+            fmt.addIfAbsent("other", "{0} pounds", status));
     assertTrue("isValid with other", fmt.isValid());
     assertTrue(
             "Adding good pattern",
-            fmt.add("one", "{0} pound", status));
+            fmt.addIfAbsent("one", "{0} pound", status));
 
     assertEquals(
             "getByVariant",
-            fmt.getByVariant("bad variant")->getPatternWithNoPlaceholders(),
+            fmt.getByVariant("bad variant")->getTextWithNoArguments(),
             " pounds");
     assertEquals(
             "getByVariant",
-            fmt.getByVariant("other")->getPatternWithNoPlaceholders(),
+            fmt.getByVariant("other")->getTextWithNoArguments(),
             " pounds");
     assertEquals(
             "getByVariant",
-            fmt.getByVariant("one")->getPatternWithNoPlaceholders(),
+            fmt.getByVariant("one")->getTextWithNoArguments(),
             " pound");
     assertEquals(
             "getByVariant",
-            fmt.getByVariant("few")->getPatternWithNoPlaceholders(),
+            fmt.getByVariant("few")->getTextWithNoArguments(),
             " pounds");
 
     // Test copy constructor
@@ -79,15 +81,15 @@ void QuantityFormatterTest::TestBasic() {
         QuantityFormatter copied(fmt);
         assertEquals(
                 "copied getByVariant",
-                copied.getByVariant("other")->getPatternWithNoPlaceholders(),
+                copied.getByVariant("other")->getTextWithNoArguments(),
                 " pounds");
         assertEquals(
                 "copied getByVariant",
-                copied.getByVariant("one")->getPatternWithNoPlaceholders(),
+                copied.getByVariant("one")->getTextWithNoArguments(),
                 " pound");
         assertEquals(
                 "copied getByVariant",
-                copied.getByVariant("few")->getPatternWithNoPlaceholders(),
+                copied.getByVariant("few")->getTextWithNoArguments(),
                 " pounds");
     }
         
@@ -97,15 +99,15 @@ void QuantityFormatterTest::TestBasic() {
         assigned = fmt;
         assertEquals(
                 "assigned getByVariant",
-                assigned.getByVariant("other")->getPatternWithNoPlaceholders(),
+                assigned.getByVariant("other")->getTextWithNoArguments(),
                 " pounds");
         assertEquals(
                 "assigned getByVariant",
-                assigned.getByVariant("one")->getPatternWithNoPlaceholders(),
+                assigned.getByVariant("one")->getTextWithNoArguments(),
                 " pound");
         assertEquals(
                 "assigned getByVariant",
-                assigned.getByVariant("few")->getPatternWithNoPlaceholders(),
+                assigned.getByVariant("few")->getTextWithNoArguments(),
                 " pounds");
     }
 
@@ -119,9 +121,9 @@ void QuantityFormatterTest::TestBasic() {
         UnicodeString appendTo;
         assertEquals(
                 "format singular",
-                "1 pound",
+                UnicodeString("1 pound"),
                 fmt.format(
-                        1,
+                        1.0,
                         *numfmt,
                         *plurrule,
                         appendTo,
@@ -130,9 +132,9 @@ void QuantityFormatterTest::TestBasic() {
         appendTo.remove();
         assertEquals(
                 "format plural",
-                "2 pounds",
+                UnicodeString("2 pounds"),
                 fmt.format(
-                        2,
+                        2.0,
                         *numfmt,
                         *plurrule,
                         appendTo,

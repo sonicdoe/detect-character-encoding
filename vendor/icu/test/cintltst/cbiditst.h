@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /********************************************************************
  * COPYRIGHT:
- * Copyright (c) 1997-2013, International Business Machines Corporation and
+ * Copyright (c) 1997-2016, International Business Machines Corporation and
  * others. All Rights Reserved.
  ********************************************************************/
 /*   file name:  cbiditst.h
@@ -24,9 +26,6 @@ extern "C" {
 #endif
 
 #define MAX_STRING_LENGTH 200
-
-/* length of an array */
-#define ARRAY_LENGTH(array) (sizeof(array)/sizeof(array[0]))
 
 /*  Comparing the description of the BiDi algorithm with this implementation
     is easier with the same names for the BiDi types in the code as there.

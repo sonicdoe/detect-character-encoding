@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *****************************************************************************
-* Copyright (C) 2001-2011, International Business Machines orporation  
+* Copyright (C) 2001-2016, International Business Machines orporation  
 * and others. All Rights Reserved.
 ****************************************************************************/
 
@@ -15,6 +17,7 @@
 #include "unicode/stsearch.h"
 #include "unicode/ustring.h"
 #include "unicode/schriter.h"
+#include "cmemory.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -2422,7 +2425,7 @@ void StringSearchTest::TestSubclass()
     search.reset();
     // comparing constructors
  
-    for (i = 0; i < (int)(sizeof(expected) / sizeof(expected[0])); i ++) {
+    for (i = 0; i < UPRV_LENGTHOF(expected); i ++) {
         if (search.next(status) != expected[i]) {
             errln("Error getting next match");
         }
@@ -2433,7 +2436,7 @@ void StringSearchTest::TestSubclass()
     if (search.next(status) != USEARCH_DONE) {
         errln("Error should have reached the end of the iteration");
     }
-    for (i = sizeof(expected) / sizeof(expected[0]) - 1; i >= 0; i --) {
+    for (i = UPRV_LENGTHOF(expected) - 1; i >= 0; i --) {
         if (search.previous(status) != expected[i]) {
             errln("Error getting previous match");
         }

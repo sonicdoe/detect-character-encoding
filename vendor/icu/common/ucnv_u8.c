@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*  
 **********************************************************************
-*   Copyright (C) 2002-2015, International Business Machines
+*   Copyright (C) 2002-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   file name:  ucnv_u8.c
@@ -680,7 +682,8 @@ static UChar32 ucnv_getNextUChar_UTF8(UConverterToUnicodeArgs *args,
             break;
         }
         ++source;
-    case 5: /*fall through*/
+        U_FALLTHROUGH;
+    case 5:
         ch += (myByte = *source);
         ch <<= 6;
         if (!U8_IS_TRAIL(myByte))
@@ -689,7 +692,8 @@ static UChar32 ucnv_getNextUChar_UTF8(UConverterToUnicodeArgs *args,
             break;
         }
         ++source;
-    case 4: /*fall through*/
+        U_FALLTHROUGH;
+    case 4:
         ch += (myByte = *source);
         ch <<= 6;
         if (!U8_IS_TRAIL(myByte))
@@ -698,7 +702,8 @@ static UChar32 ucnv_getNextUChar_UTF8(UConverterToUnicodeArgs *args,
             break;
         }
         ++source;
-    case 3: /*fall through*/
+        U_FALLTHROUGH;
+    case 3:
         ch += (myByte = *source);
         ch <<= 6;
         if (!U8_IS_TRAIL(myByte))
@@ -707,7 +712,8 @@ static UChar32 ucnv_getNextUChar_UTF8(UConverterToUnicodeArgs *args,
             break;
         }
         ++source;
-    case 2: /*fall through*/
+        U_FALLTHROUGH;
+    case 2:
         ch += (myByte = *source);
         if (!U8_IS_TRAIL(myByte))
         {
@@ -1043,11 +1049,8 @@ static const UConverterStaticData _UTF8StaticData={
 };
 
 
-const UConverterSharedData _UTF8Data={
-    sizeof(UConverterSharedData), ~((uint32_t) 0),
-    NULL, NULL, &_UTF8StaticData, FALSE, &_UTF8Impl,
-    0
-};
+const UConverterSharedData _UTF8Data=
+        UCNV_IMMUTABLE_SHARED_DATA_INITIALIZER(&_UTF8StaticData, &_UTF8Impl);
 
 /* CESU-8 converter data ---------------------------------------------------- */
 
@@ -1071,7 +1074,10 @@ static const UConverterImpl _CESU8Impl={
     NULL,
     NULL,
     NULL,
-    ucnv_getCompleteUnicodeSet
+    ucnv_getCompleteUnicodeSet,
+
+    NULL,
+    NULL
 };
 
 static const UConverterStaticData _CESU8StaticData={
@@ -1086,10 +1092,7 @@ static const UConverterStaticData _CESU8StaticData={
 };
 
 
-const UConverterSharedData _CESU8Data={
-    sizeof(UConverterSharedData), ~((uint32_t) 0),
-    NULL, NULL, &_CESU8StaticData, FALSE, &_CESU8Impl,
-    0
-};
+const UConverterSharedData _CESU8Data=
+        UCNV_IMMUTABLE_SHARED_DATA_INITIALIZER(&_CESU8StaticData, &_CESU8Impl);
 
 #endif

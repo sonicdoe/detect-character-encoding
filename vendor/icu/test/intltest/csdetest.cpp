@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
  **********************************************************************
- *   Copyright (C) 2005-2015, International Business Machines
+ *   Copyright (C) 2005-2016, International Business Machines
  *   Corporation and others.  All Rights Reserved.
  **********************************************************************
  */
@@ -24,8 +26,6 @@
 #ifdef DEBUG_DETECT
 #include <stdio.h>
 #endif
-
-#define ARRAY_SIZE(array) (sizeof array / sizeof array[0])
 
 #define NEW_ARRAY(type,count) (type *) /*uprv_*/malloc((count) * sizeof(type))
 #define DELETE_ARRAY(array) /*uprv_*/free((void *) (array))

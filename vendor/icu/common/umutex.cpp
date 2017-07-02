@@ -1,7 +1,9 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
 *
-*   Copyright (C) 1997-2015, International Business Machines
+*   Copyright (C) 1997-2016, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *
 ******************************************************************************
@@ -37,16 +39,7 @@ static UMutex   globalMutex = U_MUTEX_INITIALIZER;
 // Build time user mutex hook: #include "U_USER_MUTEX_CPP"
 #include U_MUTEX_XSTR(U_USER_MUTEX_CPP)
 
-#elif U_PLATFORM_HAS_WIN32_API
-
-//-------------------------------------------------------------------------------------------
-//
-//    Windows Specific Definitions
-//
-//        Note: Cygwin (and possibly others) have both WIN32 and POSIX.
-//              Prefer Win32 in these cases.  (Win32 comes ahead in the #if chain)
-//
-//-------------------------------------------------------------------------------------------
+#elif U_PLATFORM_USES_ONLY_WIN32_API
 
 #if defined U_NO_PLATFORM_ATOMICS
 #error ICU on Win32 requires support for low level atomic operations.
@@ -68,10 +61,8 @@ U_NAMESPACE_BEGIN
 U_COMMON_API UBool U_EXPORT2 umtx_initImplPreInit(UInitOnce &uio) {
     for (;;) {
         int32_t previousState = InterlockedCompareExchange(
-#if (U_PLATFORM == U_PF_MINGW) || (U_PLATFORM == U_PF_CYGWIN) || defined(__clang__)
-           (LONG volatile *) // this is the type given in the API doc for this function.
-#endif
-            &uio.fState,  //  Destination
+            (LONG volatile *) // this is the type given in the API doc for this function.
+                &uio.fState,  //  Destination
             1,            //  Exchange Value
             0);           //  Compare value
 
@@ -344,8 +335,8 @@ umtx_atomic_dec(u_atomic_int32_t *p) {
 
 U_COMMON_API int32_t U_EXPORT2
 umtx_loadAcquire(u_atomic_int32_t &var) {
-    int32_t val = var;
     umtx_lock(&gIncDecMutex);
+    int32_t val = var;
     umtx_unlock(&gIncDecMutex);
     return val;
 }
@@ -353,8 +344,8 @@ umtx_loadAcquire(u_atomic_int32_t &var) {
 U_COMMON_API void U_EXPORT2
 umtx_storeRelease(u_atomic_int32_t &var, int32_t val) {
     umtx_lock(&gIncDecMutex);
-    umtx_unlock(&gIncDecMutex);
     var = val;
+    umtx_unlock(&gIncDecMutex);
 }
 
 U_NAMESPACE_END

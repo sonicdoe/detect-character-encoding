@@ -1,6 +1,8 @@
+// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
-*   Copyright (C) 1996-2014, International Business Machines
+*   Copyright (C) 1996-2015, International Business Machines
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  ucol.cpp
@@ -441,8 +443,6 @@ ucol_strcoll( const UCollator    *coll,
               const UChar        *target,
               int32_t            targetLength)
 {
-    U_ALIGN_CODE(16);
-
     UTRACE_ENTRY(UTRACE_UCOL_STRCOLL);
     if (UTRACE_LEVEL(UTRACE_VERBOSE)) {
         UTRACE_DATA3(UTRACE_VERBOSE, "coll=%p, source=%p, target=%p", coll, source, target);
@@ -466,8 +466,6 @@ ucol_strcollUTF8(
         int32_t         targetLength,
         UErrorCode      *status)
 {
-    U_ALIGN_CODE(16);
-
     UTRACE_ENTRY(UTRACE_UCOL_STRCOLLUTF8);
     if (UTRACE_LEVEL(UTRACE_VERBOSE)) {
         UTRACE_DATA3(UTRACE_VERBOSE, "coll=%p, source=%p, target=%p", coll, source, target);
