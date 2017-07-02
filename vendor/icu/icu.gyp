@@ -366,7 +366,6 @@
         '<@(icu_src_tools)',
         '<@(icu_src_common)',
         '<@(icu_src_i18n)',
-        '<@(icu_src_io)',
         '<@(icu_src_stubdata)',
       ],
       'sources!': [
@@ -378,7 +377,6 @@
       'include_dirs': [
         'common',
         'i18n',
-        'io',
         'tools/toolutil',
       ],
       'defines': [
@@ -398,7 +396,6 @@
         'include_dirs': [
           'common',
           'i18n',
-          'io',
           'tools/toolutil',
         ],
         'conditions': [
