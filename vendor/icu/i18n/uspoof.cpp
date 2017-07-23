@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ***************************************************************************
@@ -6,7 +6,7 @@
 * and others. All Rights Reserved.
 ***************************************************************************
 *   file name:  uspoof.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -55,7 +55,7 @@ uspoof_cleanup(void) {
 }
 
 static void U_CALLCONV initializeStatics(UErrorCode &status) {
-    static const char *inclusionPat = 
+    static const char *inclusionPat =
         "['\\-.\\:\\u00B7\\u0375\\u058A\\u05F3\\u05F4\\u06FD\\u06FE\\u0F0B\\u200C\\u200D\\u2010\\u"
         "2019\\u2027\\u30A0\\u30FB]";
     gInclusionSet = new UnicodeSet(UnicodeString(inclusionPat, -1, US_INV), status);
@@ -66,7 +66,7 @@ static void U_CALLCONV initializeStatics(UErrorCode &status) {
     //      org.unicode.text.tools.RecommendedSetGenerator
     // It will print the Java and C++ code to the console for easy copy-paste into this file.
     // Note: concatenated string constants do not work with UNICODE_STRING_SIMPLE on all platforms.
-    static const char *recommendedPat = 
+    static const char *recommendedPat =
         "[0-9A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u0131\\u0134-\\u013E\\u0141-\\u014"
         "8\\u014A-\\u017E\\u018F\\u01A0\\u01A1\\u01AF\\u01B0\\u01CD-\\u01DC\\u01DE-\\u01E3\\u01E"
         "6-\\u01F0\\u01F4\\u01F5\\u01F8-\\u021B\\u021E\\u021F\\u0226-\\u0233\\u0259\\u02BB\\u02B"
@@ -171,7 +171,7 @@ uspoof_openFromSerialized(const void *data, int32_t length, int32_t *pActualLeng
         delete si;
         return NULL;
     }
-        
+
     if (pActualLength != NULL) {
         *pActualLength = sd->size();
     }
@@ -209,10 +209,10 @@ uspoof_setChecks(USpoofChecker *sc, int32_t checks, UErrorCode *status) {
         return;
     }
 
-    // Verify that the requested checks are all ones (bits) that 
+    // Verify that the requested checks are all ones (bits) that
     //   are acceptable, known values.
     if (checks & ~(USPOOF_ALL_CHECKS | USPOOF_AUX_INFO)) {
-        *status = U_ILLEGAL_ARGUMENT_ERROR; 
+        *status = U_ILLEGAL_ARGUMENT_ERROR;
         return;
     }
 
@@ -393,7 +393,7 @@ uspoof_areConfusable(const USpoofChecker *sc,
         *status = U_ILLEGAL_ARGUMENT_ERROR;
         return 0;
     }
-        
+
     UnicodeString id1Str((length1==-1), id1, length1);  // Aliasing constructor
     UnicodeString id2Str((length2==-1), id2, length2);  // Aliasing constructor
     return uspoof_areConfusableUnicodeString(sc, id1Str, id2Str, status);
@@ -418,7 +418,7 @@ uspoof_areConfusableUTF8(const USpoofChecker *sc,
     int32_t results = uspoof_areConfusableUnicodeString(sc, id1Str, id2Str, status);
     return results;
 }
- 
+
 
 U_CAPI int32_t U_EXPORT2
 uspoof_areConfusableUnicodeString(const USpoofChecker *sc,
@@ -432,7 +432,7 @@ uspoof_areConfusableUnicodeString(const USpoofChecker *sc,
     //
     // See section 4 of UAX 39 for the algorithm for checking whether two strings are confusable,
     //   and for definitions of the types (single, whole, mixed-script) of confusables.
-    
+
     // We only care about a few of the check flags.  Ignore the others.
     // If no tests relavant to this function have been specified, return an error.
     // TODO:  is this really the right thing to do?  It's probably an error on the caller's part,
@@ -550,9 +550,9 @@ int32_t checkImpl(const SpoofImpl* This, const UnicodeString& id, CheckResult* c
         int32_t     i;
         UChar32     c;
         UChar32     firstNonspacingMark = 0;
-        UBool       haveMultipleMarks = FALSE;  
+        UBool       haveMultipleMarks = FALSE;
         UnicodeSet  marksSeenSoFar;   // Set of combining marks in a single combining sequence.
-        
+
         for (i=0; i<nfdLength ;) {
             c = nfdText.char32At(i);
             i += U16_LENGTH(c);
@@ -643,13 +643,6 @@ uspoof_getSkeletonUnicodeString(const USpoofChecker *sc,
                                 UErrorCode *status) {
     const SpoofImpl *This = SpoofImpl::validateThis(sc, *status);
     if (U_FAILURE(*status)) {
-        return dest;
-    }
-
-    // Check that at least one of the CONFUSABLE flags is turned on.  If not,
-    // return an error.
-    if ((This->fChecks & USPOOF_CONFUSABLE) == 0) {
-        *status = U_ILLEGAL_ARGUMENT_ERROR;
         return dest;
     }
 

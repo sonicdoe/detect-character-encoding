@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -8,7 +8,7 @@
 *
 ******************************************************************************
 *   file name:  uspoof_conf.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -23,7 +23,7 @@
 
 #if !UCONFIG_NO_NORMALIZATION
 
-#if !UCONFIG_NO_REGULAR_EXPRESSIONS 
+#if !UCONFIG_NO_REGULAR_EXPRESSIONS
 
 #include "unicode/uregex.h"
 #include "uhash.h"
@@ -58,7 +58,7 @@ class SPUStringPool : public UMemory {
   public:
     SPUStringPool(UErrorCode &status);
     ~SPUStringPool();
-    
+
     // Add a string. Return the string from the table.
     // If the input parameter string is already in the table, delete the
     //  input parameter and return the existing string.
@@ -96,7 +96,7 @@ class ConfusabledataBuilder : public UMemory {
     UVector            *fKeyVec;
     UVector            *fValueVec;
     UnicodeString      *fStringTable;
-    
+
     SPUStringPool      *stringPool;
     URegularExpression *fParseLine;
     URegularExpression *fParseHexNum;
@@ -128,5 +128,5 @@ class ConfusabledataBuilder : public UMemory {
 U_NAMESPACE_END
 
 #endif
-#endif  // !UCONFIG_NO_REGULAR_EXPRESSIONS 
+#endif  // !UCONFIG_NO_REGULAR_EXPRESSIONS
 #endif  // __USPOOF_BUILDCONF_H__

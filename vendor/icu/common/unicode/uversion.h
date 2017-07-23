@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -7,7 +7,7 @@
 *******************************************************************************
 *
 *   file name:  uversion.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -18,7 +18,7 @@
 
 /**
  * \file
- * \brief C API: API for accessing ICU version numbers. 
+ * \brief C API: API for accessing ICU version numbers.
  */
 /*===========================================================================*/
 /* Main ICU version information                                              */

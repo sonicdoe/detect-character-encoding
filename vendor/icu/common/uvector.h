@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -135,7 +135,7 @@ public:
     void insertElementAt(void* obj, int32_t index, UErrorCode &status);
 
     void insertElementAt(int32_t elem, int32_t index, UErrorCode &status);
-    
+
     void* elementAt(int32_t index) const;
 
     int32_t elementAti(int32_t index) const;
@@ -314,11 +314,11 @@ public:
     void* peek(void) const;
 
     int32_t peeki(void) const;
-    
+
     void* pop(void);
-    
+
     int32_t popi(void);
-    
+
     void* push(void* obj, UErrorCode &status);
 
     int32_t push(int32_t i, UErrorCode &status);

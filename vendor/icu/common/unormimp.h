@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  unormimp.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -188,7 +188,7 @@ enum {
  * int32_t indexes[_NORM_INDEX_TOP];            -- _NORM_INDEX_TOP=32, see enum in this file
  *
  * UTrie normTrie;                              -- size in bytes=indexes[_NORM_INDEX_TRIE_SIZE]
- * 
+ *
  * uint16_t extraData[extraDataTop];            -- extraDataTop=indexes[_NORM_INDEX_UCHAR_COUNT]
  *                                                 extraData[0] contains the number of units for
  *                                                 FC_NFKC_Closure (formatVersion>=2.1)

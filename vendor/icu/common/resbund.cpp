@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -205,7 +205,7 @@ ResourceBundle::ResourceBundle(UResourceBundle *res, UErrorCode& err)
     }
 }
 
-ResourceBundle::ResourceBundle(const char* path, const Locale& locale, UErrorCode& err) 
+ResourceBundle::ResourceBundle(const char* path, const Locale& locale, UErrorCode& err)
                                :UObject(), fLocale(NULL)
 {
     fResource = ures_open(path, locale.getName(), &err);

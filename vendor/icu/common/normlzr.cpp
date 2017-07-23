@@ -1,8 +1,8 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  *************************************************************************
- * COPYRIGHT: 
+ * COPYRIGHT:
  * Copyright (c) 1996-2012, International Business Machines Corporation and
  * others. All Rights Reserved.
  *************************************************************************
@@ -23,6 +23,12 @@
 #include "normalizer2impl.h"
 #include "uprops.h"  // for uniset_getUnicode32Instance()
 
+#if defined(_ARM64_) && defined(move32)
+ // System can define move32 intrinsics, but the char iters define move32 method
+ // using same undef trick in headers, so undef here to re-enable the method.
+#undef move32
+#endif
+
 U_NAMESPACE_BEGIN
 
 UOBJECT_DEFINE_RTTI_IMPLEMENTATION(Normalizer)
@@ -40,7 +46,7 @@ Normalizer::Normalizer(const UnicodeString& str, UNormalizationMode mode) :
     init();
 }
 
-Normalizer::Normalizer(const UChar *str, int32_t length, UNormalizationMode mode) :
+Normalizer::Normalizer(ConstChar16Ptr str, int32_t length, UNormalizationMode mode) :
     UObject(), fFilteredNorm2(NULL), fNorm2(NULL), fUMode(mode), fOptions(0),
     text(new UCharCharacterIterator(str, length)),
     currentIndex(0), nextIndex(0),
@@ -88,7 +94,7 @@ Normalizer::~Normalizer()
     delete text;
 }
 
-Normalizer* 
+Normalizer*
 Normalizer::clone() const
 {
     return new Normalizer(*this);
@@ -101,7 +107,7 @@ int32_t Normalizer::hashCode() const
 {
     return text->hashCode() + fUMode + fOptions + buffer.hashCode() + bufferPos + currentIndex + nextIndex;
 }
-    
+
 UBool Normalizer::operator==(const Normalizer& that) const
 {
     return
@@ -119,9 +125,9 @@ UBool Normalizer::operator==(const Normalizer& that) const
 //-------------------------------------------------------------------------
 
 void U_EXPORT2
-Normalizer::normalize(const UnicodeString& source, 
+Normalizer::normalize(const UnicodeString& source,
                       UNormalizationMode mode, int32_t options,
-                      UnicodeString& result, 
+                      UnicodeString& result,
                       UErrorCode &status) {
     if(source.isBogus() || U_FAILURE(status)) {
         result.setToBogus();
@@ -154,17 +160,17 @@ Normalizer::normalize(const UnicodeString& source,
 }
 
 void U_EXPORT2
-Normalizer::compose(const UnicodeString& source, 
+Normalizer::compose(const UnicodeString& source,
                     UBool compat, int32_t options,
-                    UnicodeString& result, 
+                    UnicodeString& result,
                     UErrorCode &status) {
     normalize(source, compat ? UNORM_NFKC : UNORM_NFC, options, result, status);
 }
 
 void U_EXPORT2
-Normalizer::decompose(const UnicodeString& source, 
+Normalizer::decompose(const UnicodeString& source,
                       UBool compat, int32_t options,
-                      UnicodeString& result, 
+                      UnicodeString& result,
                       UErrorCode &status) {
     normalize(source, compat ? UNORM_NFKD : UNORM_NFD, options, result, status);
 }
@@ -362,7 +368,7 @@ int32_t Normalizer::endIndex() const {
 //-------------------------------------------------------------------------
 
 void
-Normalizer::setMode(UNormalizationMode newMode) 
+Normalizer::setMode(UNormalizationMode newMode)
 {
     fUMode = newMode;
     init();
@@ -375,8 +381,8 @@ Normalizer::getUMode() const
 }
 
 void
-Normalizer::setOption(int32_t option, 
-                      UBool value) 
+Normalizer::setOption(int32_t option,
+                      UBool value)
 {
     if (value) {
         fOptions |= option;
@@ -397,7 +403,7 @@ Normalizer::getOption(int32_t option) const
  * The iteration position is set to the beginning of the input text.
  */
 void
-Normalizer::setText(const UnicodeString& newText, 
+Normalizer::setText(const UnicodeString& newText,
                     UErrorCode &status)
 {
     if (U_FAILURE(status)) {
@@ -418,8 +424,8 @@ Normalizer::setText(const UnicodeString& newText,
  * The iteration position is set to the beginning of the string.
  */
 void
-Normalizer::setText(const CharacterIterator& newText, 
-                    UErrorCode &status) 
+Normalizer::setText(const CharacterIterator& newText,
+                    UErrorCode &status)
 {
     if (U_FAILURE(status)) {
         return;
@@ -435,7 +441,7 @@ Normalizer::setText(const CharacterIterator& newText,
 }
 
 void
-Normalizer::setText(const UChar* newText,
+Normalizer::setText(ConstChar16Ptr newText,
                     int32_t length,
                     UErrorCode &status)
 {
@@ -457,7 +463,7 @@ Normalizer::setText(const UChar* newText,
  * @param result Receives a copy of the text under iteration.
  */
 void
-Normalizer::getText(UnicodeString&  result) 
+Normalizer::getText(UnicodeString&  result)
 {
     text->getText(result);
 }

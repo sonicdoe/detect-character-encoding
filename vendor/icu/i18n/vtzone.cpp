@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -114,7 +114,7 @@ static int32_t parseAsciiDigits(const UnicodeString& str, int32_t start, int32_t
         }
         num = 10 * num + digit;
     }
-    return sign * num;    
+    return sign * num;
 }
 
 static UnicodeString& appendAsciiDigits(int32_t number, uint8_t length, UnicodeString& str) {
@@ -358,7 +358,7 @@ static void millisToOffset(int32_t millis, UnicodeString& str) {
 /*
  * Create a default TZNAME from TZID
  */
-static void getDefaultTZName(const UnicodeString tzid, UBool isDST, UnicodeString& zonename) {
+static void getDefaultTZName(const UnicodeString &tzid, UBool isDST, UnicodeString& zonename) {
     zonename = tzid;
     if (isDST) {
         zonename += UNICODE_STRING_SIMPLE("(DST)");
@@ -369,9 +369,9 @@ static void getDefaultTZName(const UnicodeString tzid, UBool isDST, UnicodeStrin
 
 /*
  * Parse individual RRULE
- * 
+ *
  * On return -
- * 
+ *
  * month    calculated by BYMONTH-1, or -1 when not found
  * dow      day of week in BYDAY, or 0 when not found
  * wim      day of week ordinal number in BYDAY, or 0 when not found
@@ -626,7 +626,7 @@ static TimeZoneRule* createRuleByRRULE(const UnicodeString& zonename, int rawOff
             if (tmp_until > until) {
                 until = tmp_until;
             }
-            
+
             // Check if BYMONTH + BYMONTHDAY + BYDAY rule
             if (tmp_month == -1 || tmp_dayOfWeek == 0 || tmp_daysCount == 0) {
                 goto unsupportedRRule;
@@ -1385,7 +1385,7 @@ VTimeZone::parse(UErrorCode& status) {
     }
      // Set the deleter to remove TimeZoneRule vectors to avoid memory leaks due to unowned TimeZoneRules.
     rules->setDeleter(deleteTimeZoneRule);
-    
+
     dates = new UVector(uprv_deleteUObject, uhash_compareUnicodeString, status);
     if (U_FAILURE(status)) {
         goto cleanupParse;
@@ -1526,7 +1526,7 @@ VTimeZone::parse(UErrorCode& status) {
                     } else {
                         // This is rare case..  just use 1 hour DST savings
                         rawOffset = toOffset - DEF_DSTSAVINGS;
-                        dstSavings = DEF_DSTSAVINGS;                                
+                        dstSavings = DEF_DSTSAVINGS;
                     }
                 } else {
                     rawOffset = toOffset;
@@ -1995,7 +1995,7 @@ VTimeZone::writeZone(VTZWriter& w, BasicTimeZone& basictz,
                         goto cleanupWriteZone;
                     }
                 }
-            } 
+            }
             if (!sameRule) {
                 // Reset this DST information
                 dstName = name;
@@ -2077,9 +2077,9 @@ VTimeZone::writeZone(VTZWriter& w, BasicTimeZone& basictz,
         isDst = (dst != 0);
         UnicodeString tzid;
         basictz.getID(tzid);
-        getDefaultTZName(tzid, isDst, name);        
+        getDefaultTZName(tzid, isDst, name);
         writeZonePropsByTime(w, isDst, name,
-                offset, offset, DEF_TZSTARTTIME - offset, FALSE, status);    
+                offset, offset, DEF_TZSTARTTIME - offset, FALSE, status);
         if (U_FAILURE(status)) {
             goto cleanupWriteZone;
         }
@@ -2167,7 +2167,7 @@ VTimeZone::writeZone(VTZWriter& w, BasicTimeZone& basictz,
                     goto cleanupWriteZone;
                 }
             }
-        }            
+        }
     }
     writeFooter(w, status);
 
@@ -2358,7 +2358,7 @@ VTimeZone::writeZonePropsByDOW_GEQ_DOM(VTZWriter& writer, UBool isDst, const Uni
         // Check if all days are in the same month
         int32_t startDay = dayOfMonth;
         int32_t currentMonthDays = 7;
-    
+
         if (dayOfMonth <= 0) {
             // The start day is in previous month
             int32_t prevMonthDays = 1 - dayOfMonth;
@@ -2384,7 +2384,7 @@ VTimeZone::writeZonePropsByDOW_GEQ_DOM(VTZWriter& writer, UBool isDst, const Uni
             currentMonthDays -= nextMonthDays;
 
             int32_t nextMonth = (month + 1) > 11 ? 0 : month + 1;
-            
+
             writeZonePropsByDOW_GEQ_DOM_sub(writer, nextMonth, 1, dayOfWeek, nextMonthDays,
                 MAX_MILLIS /* Do not use UNTIL */, fromOffset, status);
             if (U_FAILURE(status)) {
@@ -2571,12 +2571,12 @@ VTimeZone::beginZoneProps(VTZWriter& writer, UBool isDst, const UnicodeString& z
     writer.write(COLON);
     writer.write(zonename);
     writer.write(ICAL_NEWLINE);
-    
+
     // DTSTART
     writer.write(ICAL_DTSTART);
     writer.write(COLON);
     writer.write(getDateTimeString(startTime + fromOffset, dstr));
-    writer.write(ICAL_NEWLINE);        
+    writer.write(ICAL_NEWLINE);
 }
 
 /*

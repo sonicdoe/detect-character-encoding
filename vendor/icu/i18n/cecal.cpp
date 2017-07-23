@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -54,7 +54,7 @@ CECalendar::CECalendar(const Locale& aLocale, UErrorCode& success)
     setTimeInMillis(getNow(), success);
 }
 
-CECalendar::CECalendar (const CECalendar& other) 
+CECalendar::CECalendar (const CECalendar& other)
 :   Calendar(other)
 {
 }

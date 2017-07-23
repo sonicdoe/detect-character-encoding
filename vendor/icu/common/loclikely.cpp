@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  loclikely.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -22,6 +22,7 @@
 #include "unicode/utypes.h"
 #include "unicode/locid.h"
 #include "unicode/putil.h"
+#include "unicode/uchar.h"
 #include "unicode/uloc.h"
 #include "unicode/ures.h"
 #include "unicode/uscript.h"
@@ -127,7 +128,7 @@ static const char* const unknownRegion = "ZZ";
  * to be used when constructing the new tag.  If the alternateTags parameter is NULL, or
  * it contains no language tag, the default tag for the unknown language is used.
  *
- * If the length of the new string exceeds the capacity of the output buffer, 
+ * If the length of the new string exceeds the capacity of the output buffer,
  * the function copies as many bytes to the output buffer as it can, and returns
  * the error U_BUFFER_OVERFLOW_ERROR.
  *
@@ -384,7 +385,7 @@ error:
  * must be less than or equal to 0.  If the lang parameter is an empty string, the
  * default value for an unknown language is written to the output buffer.
  *
- * If the length of the new string exceeds the capacity of the output buffer, 
+ * If the length of the new string exceeds the capacity of the output buffer,
  * the function copies as many bytes to the output buffer as it can, and returns
  * the error U_BUFFER_OVERFLOW_ERROR.
  *
@@ -536,7 +537,7 @@ parseTagString(
          */
         if (_isIDSeparator(*position)) {
             ++position;
-        }    
+        }
     }
 
     subtagLength = ulocimp_getCountry(position, region, *regionLength, &position);
@@ -925,7 +926,7 @@ _uloc_addLikelySubtags(const char*    localeID,
         uprv_memcpy(
             maximizedLocaleID,
             localeID,
-            localIDLength <= maximizedLocaleIDCapacity ? 
+            localIDLength <= maximizedLocaleIDCapacity ?
                 localIDLength : maximizedLocaleIDCapacity);
 
         resultLength =
@@ -1182,7 +1183,7 @@ _uloc_minimizeSubtags(const char*    localeID,
         uprv_memcpy(
             minimizedLocaleID,
             localeID,
-            localeIDLength <= minimizedLocaleIDCapacity ? 
+            localeIDLength <= minimizedLocaleIDCapacity ?
                 localeIDLength : minimizedLocaleIDCapacity);
 
         return u_terminateChars(
@@ -1251,7 +1252,7 @@ uloc_addLikelySubtags(const char*    localeID,
                     maximizedLocaleID,
                     maximizedLocaleIDCapacity,
                     err);
-    }    
+    }
 }
 
 U_CAPI int32_t U_EXPORT2
@@ -1275,7 +1276,7 @@ uloc_minimizeSubtags(const char*    localeID,
                     minimizedLocaleID,
                     minimizedLocaleIDCapacity,
                     err);
-    }    
+    }
 }
 
 // Pairs of (language subtag, + or -) for finding out fast if common languages

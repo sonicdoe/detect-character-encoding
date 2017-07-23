@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *****************************************************************************
@@ -230,6 +230,7 @@ typedef enum UDateDirection {
 
 U_NAMESPACE_BEGIN
 
+class BreakIterator;
 class RelativeDateTimeCacheData;
 class SharedNumberFormat;
 class SharedPluralRules;
@@ -345,7 +346,7 @@ public:
      * @param style the format style. The UDAT_RELATIVE bit field has no effect.
      * @param capitalizationContext A value from UDisplayContext that pertains to
      * capitalization.
-     * @status Any error is returned here. 
+     * @status Any error is returned here.
      * @stable ICU 54
      */
     RelativeDateTimeFormatter(
@@ -414,12 +415,11 @@ public:
             UnicodeString& appendTo,
             UErrorCode& status) const;
 
-#ifndef U_HIDE_DRAFT_API
     /**
      * Format a combination of URelativeDateTimeUnit and numeric offset
      * using a numeric style, e.g. "1 week ago", "in 1 week",
      * "5 weeks ago", "in 5 weeks".
-     * 
+     *
      * @param offset    The signed offset for the specified unit. This
      *                  will be formatted according to this object's
      *                  NumberFormat object.
@@ -430,7 +430,7 @@ public:
      *                  appended.
      * @param status    ICU error code returned here.
      * @return          appendTo
-     * @draft ICU 57
+     * @stable ICU 57
      */
     UnicodeString& formatNumeric(
             double offset,
@@ -453,14 +453,13 @@ public:
      *                  appended.
      * @param status    ICU error code returned here.
      * @return          appendTo
-     * @draft ICU 57
+     * @stable ICU 57
      */
     UnicodeString& format(
             double offset,
             URelativeDateTimeUnit unit,
             UnicodeString& appendTo,
             UErrorCode& status) const;
-#endif  /* U_HIDE_DRAFT_API */
 
     /**
      * Combines a relative date string and a time string in this object's

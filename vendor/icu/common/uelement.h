@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -6,7 +6,7 @@
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  uelement.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -74,7 +74,7 @@ U_CDECL_END
  * @param key2 The string for comparison
  * @return true if key1 and key2 are equal, return false otherwise.
  */
-U_CAPI UBool U_EXPORT2 
+U_CAPI UBool U_EXPORT2
 uhash_compareUnicodeString(const UElement key1, const UElement key2);
 
 /**
@@ -85,7 +85,7 @@ uhash_compareUnicodeString(const UElement key1, const UElement key2);
  * @param key2 The string for comparison
  * @return true if key1 and key2 are equal, return false otherwise.
  */
-U_CAPI UBool U_EXPORT2 
+U_CAPI UBool U_EXPORT2
 uhash_compareCaselessUnicodeString(const UElement key1, const UElement key2);
 
 #endif  /* __UELEMENT_H__ */

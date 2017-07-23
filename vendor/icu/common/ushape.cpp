@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  ******************************************************************************
@@ -8,7 +8,7 @@
  *
  ******************************************************************************
  *   file name:  ushape.cpp
- *   encoding:   US-ASCII
+ *   encoding:   UTF-8
  *   tab size:   8 (not used)
  *   indentation:4
  *
@@ -818,9 +818,9 @@ handleGeneratedSpaces(UChar *dest, int32_t sourceLength,
 
     if(lamAlefOption || tashkeelOption){
         uprv_memset(tempbuffer, 0, (sourceLength+1)*U_SIZEOF_UCHAR);
-        
+
         i = j = sourceLength; count = 0;
-        
+
         while(i >= 0) {
             if ( (lamAlefOption && dest[i] == LAMALEF_SPACE_SUB) ||
                  (tashkeelOption && dest[i] == TASHKEEL_SPACE_SUB) ){

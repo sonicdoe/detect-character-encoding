@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -243,7 +243,7 @@ public:
      * @param value The UDisplayContext value to set.
      * @param status Input/output status. If at entry this indicates a failure
      *               status, the function will do nothing; otherwise this will be
-     *               updated with any new status from the function. 
+     *               updated with any new status from the function.
      * @internal ICU 53
      */
     virtual void setContext(UDisplayContext value, UErrorCode& status);

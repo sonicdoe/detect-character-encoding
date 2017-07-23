@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  **********************************************************************
@@ -6,7 +6,7 @@
  *   Corporation and others.  All Rights Reserved.
  **********************************************************************
  *   file name:  ucsdet.h
- *   encoding:   US-ASCII
+ *   encoding:   UTF-8
  *   indentation:4
  *
  *   created on: 2005Aug04
@@ -29,7 +29,7 @@
 #include "unicode/uenum.h"
 
 /**
- * \file 
+ * \file
  * \brief C API: Charset Detection API
  *
  * This API provides a facility for detecting the
@@ -45,8 +45,12 @@
  * in a single language, and a minimum of a few hundred bytes worth of plain text
  * in the language are needed.  The detection process will attempt to
  * ignore html or xml style markup that could otherwise obscure the content.
+ * <p>
+ * An alternative to the ICU Charset Detector is the
+ * Compact Encoding Detector, https://github.com/google/compact_enc_det.
+ * It often gives more accurate results, especially with short input samples.
  */
- 
+
 
 struct UCharsetDetector;
 /**
@@ -148,8 +152,8 @@ ucsdet_setDeclaredEncoding(UCharsetDetector *ucsd, const char *encoding, int32_t
 
 /**
  * Return the charset that best matches the supplied input data.
- * 
- * Note though, that because the detection 
+ *
+ * Note though, that because the detection
  * only looks at the start of the input data,
  * there is a possibility that the returned charset will fail to handle
  * the full set of input data.
@@ -173,7 +177,7 @@ ucsdet_setDeclaredEncoding(UCharsetDetector *ucsd, const char *encoding, int32_t
  */
 U_STABLE const UCharsetMatch * U_EXPORT2
 ucsdet_detect(UCharsetDetector *ucsd, UErrorCode *status);
-    
+
 
 /**
  *  Find all charset matches that appear to be consistent with the input,
@@ -186,14 +190,14 @@ ucsdet_detect(UCharsetDetector *ucsd, UErrorCode *status);
  *  <p>
  *  The returned UCharsetMatch objects are owned by the UCharsetDetector.
  *  They will remain valid until the detector is closed or modified
- *  
+ *
  * <p>
- * Return an error if 
+ * Return an error if
  *  <ul>
  *    <li>no charsets appear to match the input data.</li>
  *    <li>no input text has been provided</li>
  *  </ul>
- * 
+ *
  * @param ucsd          the charset detector to be used.
  * @param matchesFound  pointer to a variable that will be set to the
  *                      number of charsets identified that are consistent with
@@ -293,7 +297,7 @@ ucsdet_getLanguage(const UCharsetMatch *ucsm, UErrorCode *status);
   *  NUL character will be appended to the buffer if space is available.
   *
   *  The number of UChars in the output string, not including the terminating
-  *  NUL, is returned. 
+  *  NUL, is returned.
   *
   *  If the supplied buffer is smaller than required to hold the output,
   *  the contents of the buffer are undefined.  The full output string length
@@ -316,7 +320,7 @@ ucsdet_getUChars(const UCharsetMatch *ucsm,
 
 
 /**
-  *  Get an iterator over the set of all detectable charsets - 
+  *  Get an iterator over the set of all detectable charsets -
   *  over the charsets that are known to the charset detection
   *  service.
   *
@@ -395,7 +399,7 @@ ucsdet_getDetectableCharsets(const UCharsetDetector *ucsd,  UErrorCode *status);
 /**
   * Enable or disable individual charset encoding.
   * A name of charset encoding must be included in the names returned by
-  * {@link #getAllDetectableCharsets()}.
+  * {@link #ucsdet_getAllDetectableCharsets()}.
   *
   * @param ucsd a Charset detector.
   * @param encoding encoding the name of charset encoding.
@@ -411,5 +415,3 @@ ucsdet_setDetectableCharset(UCharsetDetector *ucsd, const char *encoding, UBool 
 
 #endif
 #endif   /* __UCSDET_H */
-
-

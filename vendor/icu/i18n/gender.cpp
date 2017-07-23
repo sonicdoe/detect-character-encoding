@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -165,7 +165,7 @@ const GenderInfo* GenderInfo::loadInstance(const Locale& locale, UErrorCode& sta
     return &gObjs[NEUTRAL];
   }
   if (uprv_strcmp(type_str, gMixedNeutralStr) == 0) {
-    return &gObjs[MIXED_NEUTRAL]; 
+    return &gObjs[MIXED_NEUTRAL];
   }
   if (uprv_strcmp(type_str, gMailTaintsStr) == 0) {
     return &gObjs[MALE_TAINTS];

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -10,7 +10,7 @@
 *
 *
 *  ucnv_io.cpp:
-*  initializes global variables and defines functions pertaining to converter 
+*  initializes global variables and defines functions pertaining to converter
 *  name resolution aspect of the conversion code.
 *
 *   new implementation:

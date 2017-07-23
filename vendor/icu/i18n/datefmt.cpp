@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  *******************************************************************************
@@ -65,7 +65,7 @@ const DateFmtBestPattern *LocaleCacheKey<DateFmtBestPattern>::createObject(
     return NULL;
 }
 
-class U_I18N_API DateFmtBestPatternKey : public LocaleCacheKey<DateFmtBestPattern> { 
+class U_I18N_API DateFmtBestPatternKey : public LocaleCacheKey<DateFmtBestPattern> {
 private:
     UnicodeString fSkeleton;
 public:
@@ -80,11 +80,11 @@ public:
             fSkeleton(other.fSkeleton) { }
     virtual ~DateFmtBestPatternKey();
     virtual int32_t hashCode() const {
-        return 37 * LocaleCacheKey<DateFmtBestPattern>::hashCode() + fSkeleton.hashCode();
+        return (int32_t)(37u * (uint32_t)LocaleCacheKey<DateFmtBestPattern>::hashCode() + (uint32_t)fSkeleton.hashCode());
     }
     virtual UBool operator==(const CacheKeyBase &other) const {
        // reflexive
-       if (this == &other) { 	
+       if (this == &other) {
            return TRUE;
        }
        if (!LocaleCacheKey<DateFmtBestPattern>::operator==(other)) {
@@ -105,7 +105,7 @@ public:
         if (U_FAILURE(status)) {
             return NULL;
         }
-  
+
         LocalPointer<DateFmtBestPattern> pattern(
                 new DateFmtBestPattern(
                         dtpg->getBestPattern(fSkeleton, status)),
@@ -498,7 +498,7 @@ DateFormat* U_EXPORT2
 DateFormat::create(EStyle timeStyle, EStyle dateStyle, const Locale& locale)
 {
     UErrorCode status = U_ZERO_ERROR;
-#if U_PLATFORM_HAS_WIN32_API
+#if U_PLATFORM_USES_ONLY_WIN32_API
     char buffer[8];
     int32_t count = locale.getKeywordValue("compat", buffer, sizeof(buffer), status);
 
@@ -720,10 +720,10 @@ UDisplayContext DateFormat::getContext(UDisplayContextType type, UErrorCode& sta
 //----------------------------------------------------------------------
 
 
-DateFormat& 
+DateFormat&
 DateFormat::setBooleanAttribute(UDateFormatBooleanAttribute attr,
-    									UBool newValue,
-    									UErrorCode &status) {
+									UBool newValue,
+									UErrorCode &status) {
     if(!fBoolFlags.isValidValue(newValue)) {
         status = U_ILLEGAL_ARGUMENT_ERROR;
     } else {
@@ -735,7 +735,7 @@ DateFormat::setBooleanAttribute(UDateFormatBooleanAttribute attr,
 
 //----------------------------------------------------------------------
 
-UBool 
+UBool
 DateFormat::getBooleanAttribute(UDateFormatBooleanAttribute attr, UErrorCode &/*status*/) const {
 
     return fBoolFlags.get(attr);

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -124,7 +124,7 @@ UBool needsPluralRules() const;
  * @param formatter handles the details of formatting the actual value.
  * @param handler records field positions
  * @param optPluralRules the plural rules, but may be NULL if
- *   needsPluralRules returns FALSE. 
+ *   needsPluralRules returns FALSE.
  * @appendTo formatted string appended here.
  * @status any error returned here.
  */
@@ -156,7 +156,7 @@ UnicodeString &format(
  * @param formatter handles the details of formatting the actual value.
  * @param handler records field positions
  * @param optPluralRules the plural rules, but may be NULL if
- *   needsPluralRules returns FALSE. 
+ *   needsPluralRules returns FALSE.
  * @appendTo formatted string appended here.
  * @status any error returned here.
  */

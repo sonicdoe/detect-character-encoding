@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -69,7 +69,7 @@ NumberingSystem::NumberingSystem() {
      * @draft ICU 4.2
      */
 
-NumberingSystem::NumberingSystem(const NumberingSystem& other) 
+NumberingSystem::NumberingSystem(const NumberingSystem& other)
 :  UObject(other) {
     *this=other;
 }
@@ -100,7 +100,7 @@ NumberingSystem::createInstance(int32_t radix_in, UBool isAlgorithmic_in, const 
     ns->setAlgorithmic(isAlgorithmic_in);
     ns->setName(NULL);
     return ns;
-    
+
 }
 
 
@@ -117,7 +117,7 @@ NumberingSystem::createInstance(const Locale & inLocale, UErrorCode& status) {
     int32_t count = inLocale.getKeywordValue("numbers",buffer, sizeof(buffer),status);
     if ( count > 0 ) { // @numbers keyword was specified in the locale
         buffer[count] = '\0'; // Make sure it is null terminated.
-        if ( !uprv_strcmp(buffer,gDefault) || !uprv_strcmp(buffer,gNative) || 
+        if ( !uprv_strcmp(buffer,gDefault) || !uprv_strcmp(buffer,gNative) ||
              !uprv_strcmp(buffer,gTraditional) || !uprv_strcmp(buffer,gFinance)) {
             nsResolved = FALSE;
         }
@@ -135,13 +135,13 @@ NumberingSystem::createInstance(const Locale & inLocale, UErrorCode& status) {
             count = 0;
             const UChar *nsName = ures_getStringByKeyWithFallback(numberElementsRes, buffer, &count, &localStatus);
             if ( count > 0 && count < ULOC_KEYWORDS_CAPACITY ) { // numbering system found
-                u_UCharsToChars(nsName,buffer,count); 
+                u_UCharsToChars(nsName,buffer,count);
                 buffer[count] = '\0'; // Make sure it is null terminated.
                 nsResolved = TRUE;
-            } 
+            }
 
             if (!nsResolved) { // Fallback behavior per TR35 - traditional falls back to native, finance and native fall back to default
-                if (!uprv_strcmp(buffer,gNative) || !uprv_strcmp(buffer,gFinance)) { 
+                if (!uprv_strcmp(buffer,gNative) || !uprv_strcmp(buffer,gFinance)) {
                     uprv_strcpy(buffer,gDefault);
                 } else if (!uprv_strcmp(buffer,gTraditional)) {
                     uprv_strcpy(buffer,gNative);
@@ -230,7 +230,7 @@ void NumberingSystem::setAlgorithmic(UBool c) {
     algorithmic = c;
 }
 
-void NumberingSystem::setDesc(UnicodeString d) {
+void NumberingSystem::setDesc(const UnicodeString &d) {
     desc.setTo(d);
 }
 void NumberingSystem::setName(const char *n) {
@@ -259,7 +259,7 @@ StringEnumeration* NumberingSystem::getAvailableNames(UErrorCode &status) {
         if (U_FAILURE(status)) {
             return NULL;
         }
-        
+
         UErrorCode rbstatus = U_ZERO_ERROR;
         UResourceBundle *numberingSystemsInfo = ures_openDirect(NULL, "numberingSystems", &rbstatus);
         numberingSystemsInfo = ures_getByKey(numberingSystemsInfo,"numberingSystems",numberingSystemsInfo,&rbstatus);

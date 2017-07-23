@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 //
 //   Copyright (C) 2002-2015 International Business Machines Corporation
@@ -26,7 +26,7 @@ U_NAMESPACE_BEGIN
 
 // For debugging, define REGEX_DEBUG
 // To define with configure,
-//   CPPFLAGS="-DREGEX_DEBUG" ./runConfigureICU --enable-debug --disable-release Linux 
+//   CPPFLAGS="-DREGEX_DEBUG" ./runConfigureICU --enable-debug --disable-release Linux
 
 #ifdef REGEX_DEBUG
 //
@@ -243,7 +243,7 @@ enum {
         "DOLLAR_MD",           \
         "URX_BACKSLASH_H",     \
         "URX_BACKSLASH_R",     \
-        "URX_BACKSLASH_V" 
+        "URX_BACKSLASH_V"
 
 
 //
@@ -374,7 +374,6 @@ class CaseFoldingUTextIterator: public UMemory {
                                   //  folding of the same code point from the orignal UText.
       private:
         UText             &fUText;
-        const  UCaseProps *fcsp;
         const  UChar      *fFoldChars;
         int32_t            fFoldLength;
         int32_t            fFoldIndex;
@@ -404,7 +403,6 @@ class CaseFoldingUCharIterator: public UMemory {
         const  UChar      *fChars;
         int64_t            fIndex;
         int64_t            fLimit;
-        const  UCaseProps *fcsp;
         const  UChar      *fFoldChars;
         int32_t            fFoldLength;
         int32_t            fFoldIndex;
@@ -413,4 +411,3 @@ class CaseFoldingUCharIterator: public UMemory {
 
 U_NAMESPACE_END
 #endif
-

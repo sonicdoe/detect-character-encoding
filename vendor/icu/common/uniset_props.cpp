@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  uniset_props.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -195,7 +195,7 @@ void U_CALLCONV UnicodeSet_initInclusion(int32_t src, UErrorCode &status) {
         if(U_SUCCESS(status)) {
             impl->addPropertyStarts(&sa, status);
         }
-        ucase_addPropertyStarts(ucase_getSingleton(), &sa, &status);
+        ucase_addPropertyStarts(&sa, &status);
         break;
     }
     case UPROPS_SRC_NFC: {
@@ -228,7 +228,7 @@ void U_CALLCONV UnicodeSet_initInclusion(int32_t src, UErrorCode &status) {
     }
 #endif
     case UPROPS_SRC_CASE:
-        ucase_addPropertyStarts(ucase_getSingleton(), &sa, &status);
+        ucase_addPropertyStarts(&sa, &status);
         break;
     case UPROPS_SRC_BIDI:
         ubidi_addPropertyStarts(ubidi_getSingleton(), &sa, &status);
@@ -335,7 +335,7 @@ UnicodeSet::UnicodeSet(const UnicodeString& pattern,
         list = (UChar32*) uprv_malloc(sizeof(UChar32) * capacity);
         /* test for NULL */
         if(list == NULL) {
-            status = U_MEMORY_ALLOCATION_ERROR;  
+            status = U_MEMORY_ALLOCATION_ERROR;
         }else{
             allocateStrings(status);
             applyPattern(pattern, status);
@@ -512,7 +512,7 @@ void UnicodeSet::applyPattern(RuleCharacterIterator& chars,
                     mode = 1;
                     patLocal.append((UChar) 0x5B /*'['*/);
                     chars.getPos(backup); // prepare to backup
-                    c = chars.next(opts, literal, ec); 
+                    c = chars.next(opts, literal, ec);
                     if (U_FAILURE(ec)) return;
                     if (c == 0x5E /*'^'*/ && !literal) {
                         invert = TRUE;
@@ -1244,7 +1244,7 @@ UnicodeSet& UnicodeSet::applyPropertyPattern(const UnicodeString& pattern,
     else {
         // Handle case where no '=' is seen, and \N{}
         pattern.extractBetween(pos, close, propName);
-            
+
         // Handle \N{name}
         if (isName) {
             // This is a little inefficient since it means we have to
@@ -1263,7 +1263,7 @@ UnicodeSet& UnicodeSet::applyPropertyPattern(const UnicodeString& pattern,
         if (invert) {
             complement();
         }
-            
+
         // Move to the limit position after the close delimiter if the
         // parse succeeded.
         ppos.setIndex(close + (posix ? 2 : 1));

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  resbund_cnv.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -39,7 +39,7 @@ ResourceBundle::ResourceBundle( const UnicodeString&    path,
     constructForLocale(path, Locale::getDefault(), error);
 }
 
-void 
+void
 ResourceBundle::constructForLocale(const UnicodeString& path,
                                    const Locale& locale,
                                    UErrorCode& error)

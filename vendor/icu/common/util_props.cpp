@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -214,4 +214,3 @@ int32_t ICU_Utility::parseNumber(const UnicodeString& text,
 }
 
 U_NAMESPACE_END
-

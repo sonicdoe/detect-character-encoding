@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -87,7 +87,7 @@ typedef size_t uintptr_t;
 
 #ifdef U_HAVE_NL_LANGINFO_CODESET
     /* Use the predefined value. */
-#elif U_PLATFORM_HAS_WIN32_API || U_PLATFORM == U_PF_ANDROID || U_PLATFORM == U_PF_QNX
+#elif U_PLATFORM_USES_ONLY_WIN32_API || U_PLATFORM == U_PF_ANDROID || U_PLATFORM == U_PF_QNX
 #   define U_HAVE_NL_LANGINFO_CODESET 0
 #else
 #   define U_HAVE_NL_LANGINFO_CODESET 1
@@ -106,7 +106,10 @@ typedef size_t uintptr_t;
 #ifdef U_TZSET
     /* Use the predefined value. */
 #elif U_PLATFORM_USES_ONLY_WIN32_API
+    // UWP doesn't support tzset or environment variables for tz
+#if U_PLATFORM_HAS_WINUWP_API == 0
 #   define U_TZSET _tzset
+#endif
 #elif U_PLATFORM == U_PF_OS400
    /* not defined */
 #else
@@ -141,7 +144,10 @@ typedef size_t uintptr_t;
 #ifdef U_TZNAME
     /* Use the predefined value. */
 #elif U_PLATFORM_USES_ONLY_WIN32_API
+    /* not usable on all windows platforms */
+#if U_PLATFORM_HAS_WINUWP_API == 0
 #   define U_TZNAME _tzname
+#endif
 #elif U_PLATFORM == U_PF_OS400
    /* not defined */
 #else
@@ -220,10 +226,10 @@ typedef size_t uintptr_t;
 #elif __clang__ && __clang_major__==3 && __clang_minor__<=1
     /* Clang 3.1, has atomic variable initializer bug. */
 #   define U_HAVE_STD_ATOMICS 0
-#else 
+#else
     /* U_HAVE_ATOMIC is typically set by an autoconf test of #include <atomic>  */
     /*   Can be set manually, or left undefined, on platforms without autoconf. */
-#   if defined(U_HAVE_ATOMIC) &&  U_HAVE_ATOMIC 
+#   if defined(U_HAVE_ATOMIC) &&  U_HAVE_ATOMIC
 #      define U_HAVE_STD_ATOMICS 1
 #   else
 #      define U_HAVE_STD_ATOMICS 0
@@ -411,7 +417,7 @@ U_INTERNAL double  U_EXPORT2 uprv_round(double x);
  * Return the default codepage for this platform and locale.
  * This function can call setlocale() on Unix platforms. Please read the
  * platform documentation on setlocale() before calling this function.
- * @return the default codepage for this platform 
+ * @return the default codepage for this platform
  * @internal
  */
 U_INTERNAL const char*  U_EXPORT2 uprv_getDefaultCodepage(void);
@@ -420,7 +426,7 @@ U_INTERNAL const char*  U_EXPORT2 uprv_getDefaultCodepage(void);
 /**
  * Please use uloc_getDefault() instead.
  * Return the default locale ID string by querying ths system, or
- *     zero if one cannot be found. 
+ *     zero if one cannot be found.
  * This function can call setlocale() on Unix platforms. Please read the
  * platform documentation on setlocale() before calling this function.
  * @return the default locale ID string

@@ -37,6 +37,7 @@ detect-character-encoding should work fine on:
 - Ubuntu 16.04 x64
 - Debian 8
 - macOS 10.12
+- Alpine Linux
 
 You may currently encounter issues on 32-bit systems and Windows.
 
@@ -77,6 +78,10 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## Release history
 
+- v0.5.0 (2017-07-23):
+  - Update to ICU 59.1
+  - Add support for Alpine Linux
+  - Drop support for Node.js v5 and v7
 - v0.4.0 (2017-07-02):
   - Update to ICU 58.1
   - Add support for Node.js v8

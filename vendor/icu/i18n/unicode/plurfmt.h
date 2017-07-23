@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -387,7 +387,7 @@ public:
                           FieldPosition& pos,
                           UErrorCode& status) const;
 
-#ifndef U_HIDE_DEPRECATED_API 
+#ifndef U_HIDE_DEPRECATED_API
     /**
      * Sets the locale used by this <code>PluraFormat</code> object.
      * Note: Calling this method resets this <code>PluraFormat</code> object,
@@ -453,7 +453,7 @@ public:
    /**
     * Formats a plural message for a number taken from a Formattable object.
     *
-    * @param obj       The object containing a number for which the 
+    * @param obj       The object containing a number for which the
     *                  plural message should be formatted.
     *                  The object must be of a numeric type.
     * @param appendTo  output parameter to receive result.

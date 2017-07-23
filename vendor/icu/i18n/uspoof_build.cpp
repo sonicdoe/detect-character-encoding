@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  ***************************************************************************
@@ -6,7 +6,7 @@
  * and others. All Rights Reserved.
  ***************************************************************************
  *   file name:  uspoof_build.cpp
- *   encoding:   US-ASCII
+ *   encoding:   UTF-8
  *   tab size:   8 (not used)
  *   indentation:4
  *
@@ -55,8 +55,8 @@ uspoof_openFromSource(const char *confusables,  int32_t confusablesLen,
     if (U_FAILURE(*status)) {
         return NULL;
     }
-#if UCONFIG_NO_REGULAR_EXPRESSIONS 
-    *status = U_UNSUPPORTED_ERROR;      
+#if UCONFIG_NO_REGULAR_EXPRESSIONS
+    *status = U_UNSUPPORTED_ERROR;
     return NULL;
 #else
     if (errorType!=NULL) {
@@ -75,13 +75,13 @@ uspoof_openFromSource(const char *confusables,  int32_t confusablesLen,
 
     // Compile the binary data from the source (text) format.
     ConfusabledataBuilder::buildConfusableData(This, confusables, confusablesLen, errorType, pe, *status);
-    
+
     if (U_FAILURE(*status)) {
         delete This;
         This = NULL;
     }
     return (USpoofChecker *)This;
-#endif // UCONFIG_NO_REGULAR_EXPRESSIONS 
+#endif // UCONFIG_NO_REGULAR_EXPRESSIONS
 }
 
 #endif

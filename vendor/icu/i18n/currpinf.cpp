@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  *******************************************************************************
@@ -20,6 +20,7 @@
 
 #include "unicode/locid.h"
 #include "unicode/plurrule.h"
+#include "unicode/strenum.h"
 #include "unicode/ures.h"
 #include "unicode/numsys.h"
 #include "cstring.h"
@@ -77,7 +78,7 @@ CurrencyPluralInfo::CurrencyPluralInfo(const Locale& locale, UErrorCode& status)
     initialize(locale, status);
 }
 
-CurrencyPluralInfo::CurrencyPluralInfo(const CurrencyPluralInfo& info) 
+CurrencyPluralInfo::CurrencyPluralInfo(const CurrencyPluralInfo& info)
 :   UObject(info),
     fPluralCountToCurrencyUnitPattern(NULL),
     fPluralRules(NULL),
@@ -95,7 +96,7 @@ CurrencyPluralInfo::operator=(const CurrencyPluralInfo& info) {
     deleteHash(fPluralCountToCurrencyUnitPattern);
     UErrorCode status = U_ZERO_ERROR;
     fPluralCountToCurrencyUnitPattern = initHash(status);
-    copyHash(info.fPluralCountToCurrencyUnitPattern, 
+    copyHash(info.fPluralCountToCurrencyUnitPattern,
              fPluralCountToCurrencyUnitPattern, status);
     if ( U_FAILURE(status) ) {
         return *this;
@@ -150,7 +151,7 @@ CurrencyPluralInfo::clone() const {
     return new CurrencyPluralInfo(*this);
 }
 
-const PluralRules* 
+const PluralRules*
 CurrencyPluralInfo::getPluralRules() const {
     return fPluralRules;
 }
@@ -158,16 +159,16 @@ CurrencyPluralInfo::getPluralRules() const {
 UnicodeString&
 CurrencyPluralInfo::getCurrencyPluralPattern(const UnicodeString&  pluralCount,
                                              UnicodeString& result) const {
-    const UnicodeString* currencyPluralPattern = 
+    const UnicodeString* currencyPluralPattern =
         (UnicodeString*)fPluralCountToCurrencyUnitPattern->get(pluralCount);
     if (currencyPluralPattern == NULL) {
         // fall back to "other"
         if (pluralCount.compare(gPluralCountOther, 5)) {
-            currencyPluralPattern = 
+            currencyPluralPattern =
                 (UnicodeString*)fPluralCountToCurrencyUnitPattern->get(UnicodeString(TRUE, gPluralCountOther, 5));
         }
         if (currencyPluralPattern == NULL) {
-            // no currencyUnitPatterns defined, 
+            // no currencyUnitPatterns defined,
             // fallback to predefined defult.
             // This should never happen when ICU resource files are
             // available, since currencyUnitPattern of "other" is always
@@ -213,7 +214,7 @@ CurrencyPluralInfo::setLocale(const Locale& loc, UErrorCode& status) {
 }
 
 
-void 
+void
 CurrencyPluralInfo::initialize(const Locale& loc, UErrorCode& status) {
     if (U_FAILURE(status)) {
         return;
@@ -227,7 +228,7 @@ CurrencyPluralInfo::initialize(const Locale& loc, UErrorCode& status) {
     setupCurrencyPluralPattern(loc, status);
 }
 
-   
+
 void
 CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& status) {
     if (U_FAILURE(status)) {
@@ -285,7 +286,7 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
 
     UResourceBundle *currRb = ures_open(U_ICUDATA_CURR, loc.getName(), &ec);
     UResourceBundle *currencyRes = ures_getByKeyWithFallback(currRb, gCurrUnitPtnTag, NULL, &ec);
-    
+
 #ifdef CURRENCY_PLURAL_INFO_DEBUG
     std::cout << "in set up\n";
 #endif
@@ -305,13 +306,13 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
                     pattern->extract(0, pattern->length(), result_1, "UTF-8");
                     std::cout << "pluralCount: " << pluralCount << "; pattern: " << result_1 << "\n";
 #endif
-                    pattern->findAndReplace(UnicodeString(TRUE, gPart0, 3), 
+                    pattern->findAndReplace(UnicodeString(TRUE, gPart0, 3),
                       UnicodeString(numberStylePattern, numberStylePatternLen));
                     pattern->findAndReplace(UnicodeString(TRUE, gPart1, 3), UnicodeString(TRUE, gTripleCurrencySign, 3));
 
                     if (hasSeparator) {
                         UnicodeString negPattern(patternChars, ptnLen);
-                        negPattern.findAndReplace(UnicodeString(TRUE, gPart0, 3), 
+                        negPattern.findAndReplace(UnicodeString(TRUE, gPart0, 3),
                           UnicodeString(negNumberStylePattern, negNumberStylePatternLen));
                         negPattern.findAndReplace(UnicodeString(TRUE, gPart1, 3), UnicodeString(TRUE, gTripleCurrencySign, 3));
                         pattern->append(gNumberPatternSeparator);
@@ -335,7 +336,7 @@ CurrencyPluralInfo::setupCurrencyPluralPattern(const Locale& loc, UErrorCode& st
 
 
 void
-CurrencyPluralInfo::deleteHash(Hashtable* hTable) 
+CurrencyPluralInfo::deleteHash(Hashtable* hTable)
 {
     if ( hTable == NULL ) {
         return;
@@ -363,7 +364,7 @@ CurrencyPluralInfo::initHash(UErrorCode& status) {
         return NULL;
     }
     if ( U_FAILURE(status) ) {
-        delete hTable; 
+        delete hTable;
         return NULL;
     }
     hTable->setValueComparator(ValueComparator);

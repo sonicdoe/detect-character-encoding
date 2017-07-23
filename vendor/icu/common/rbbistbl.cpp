@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 //
 //  file:  rbbistbl.cpp    Implementation of the ICU RBBISymbolTable class
@@ -45,7 +45,7 @@ RBBISymbolTable::RBBISymbolTable(RBBIRuleScanner *rs, const UnicodeString &rules
 {
     fHashTable       = NULL;
     fCachedSetLookup = NULL;
-    
+
     fHashTable = uhash_open(uhash_hashUnicodeString, uhash_compareUnicodeString, NULL, &status);
     // uhash_open checks status
     if (U_FAILURE(status)) {

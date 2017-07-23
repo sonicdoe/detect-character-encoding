@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -159,7 +159,7 @@ umtx_condWait(UConditionVar *condition, UMutex *mutex) {
 
     condition->fWaitCount++;
     umtx_unlock(mutex);
-    WaitForSingleObject(condition->fEntryGate, INFINITE); 
+    WaitForSingleObject(condition->fEntryGate, INFINITE);
     umtx_lock(mutex);
     condition->fWaitCount--;
     if (condition->fWaitCount == 0) {

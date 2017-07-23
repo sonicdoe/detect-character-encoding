@@ -327,6 +327,3 @@ print "    0};\n\n";
 
 print "U_NAMESPACE_END\n";
 print "#endif\n";
-
-
-

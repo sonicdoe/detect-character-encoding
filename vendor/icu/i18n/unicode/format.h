@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ********************************************************************************
@@ -27,8 +27,8 @@
 #include "unicode/utypes.h"
 
 /**
- * \file 
- * \brief C++ API: Base class for all formats. 
+ * \file
+ * \brief C++ API: Base class for all formats.
  */
 
 #if !UCONFIG_NO_FORMATTING
@@ -38,7 +38,7 @@
 #include "unicode/fieldpos.h"
 #include "unicode/fpositer.h"
 #include "unicode/parsepos.h"
-#include "unicode/parseerr.h" 
+#include "unicode/parseerr.h"
 #include "unicode/locid.h"
 
 U_NAMESPACE_BEGIN
@@ -243,7 +243,7 @@ public:
                      UErrorCode& status) const;
 
     /** Get the locale for this format object. You can choose between valid and actual locale.
-     *  @param type type of the locale we're looking for (valid or actual) 
+     *  @param type type of the locale we're looking for (valid or actual)
      *  @param status error code for the operation
      *  @return the locale
      *  @stable ICU 2.8
@@ -252,7 +252,7 @@ public:
 
 #ifndef U_HIDE_INTERNAL_API
     /** Get the locale for this format object. You can choose between valid and actual locale.
-     *  @param type type of the locale we're looking for (valid or actual) 
+     *  @param type type of the locale we're looking for (valid or actual)
      *  @param status error code for the operation
      *  @return the locale
      *  @internal
@@ -281,7 +281,7 @@ protected:
      */
     Format& operator=(const Format&); // Does nothing; for subclasses
 
-       
+
     /**
      * Simple function for initializing a UParseError from a UnicodeString.
      *

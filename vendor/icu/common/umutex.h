@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -86,7 +86,9 @@ U_NAMESPACE_END
 //                Original plan was to use gcc atomics for MinGW, but they
 //                aren't supported, so we fold MinGW into this path.
 
+#ifndef WIN32_LEAN_AND_MEAN
 # define WIN32_LEAN_AND_MEAN
+#endif
 # define VC_EXTRALEAN
 # define NOUSER
 # define NOSERVICE
@@ -189,16 +191,16 @@ U_NAMESPACE_BEGIN
 typedef int32_t u_atomic_int32_t;
 #define ATOMIC_INT32_T_INITIALIZER(val) val
 
-U_COMMON_API int32_t U_EXPORT2 
+U_COMMON_API int32_t U_EXPORT2
 umtx_loadAcquire(u_atomic_int32_t &var);
 
-U_COMMON_API void U_EXPORT2 
+U_COMMON_API void U_EXPORT2
 umtx_storeRelease(u_atomic_int32_t &var, int32_t val);
 
-U_COMMON_API int32_t U_EXPORT2 
+U_COMMON_API int32_t U_EXPORT2
 umtx_atomic_inc(u_atomic_int32_t *p);
 
-U_COMMON_API int32_t U_EXPORT2 
+U_COMMON_API int32_t U_EXPORT2
 umtx_atomic_dec(u_atomic_int32_t *p);
 
 U_NAMESPACE_END
@@ -331,7 +333,9 @@ U_NAMESPACE_END
  *         win32 APIs for Critical Sections.
  */
 
+#ifndef WIN32_LEAN_AND_MEAN
 # define WIN32_LEAN_AND_MEAN
+#endif
 # define VC_EXTRALEAN
 # define NOUSER
 # define NOSERVICE
@@ -360,7 +364,7 @@ struct UConditionVar {
 };
 
 #define U_CONDITION_INITIALIZER {NULL, NULL, 0}
-    
+
 
 
 #elif U_PLATFORM_IMPLEMENTS_POSIX
@@ -432,7 +436,7 @@ U_INTERNAL void U_EXPORT2 umtx_condWait(UConditionVar *cond, UMutex *mutex);
  * Broadcast wakeup of all threads waiting on a Condition.
  * The associated mutex must be locked by the calling thread when calling
  * this function; this is a temporary ICU restriction.
- * 
+ *
  * @param cond the condition variable.
  */
 U_INTERNAL void U_EXPORT2 umtx_condBroadcast(UConditionVar *cond);

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -16,10 +16,10 @@
 #include "unicode/unistr.h"
 
 /**
- * \file 
+ * \file
  * \brief C++ API: String Enumeration
  */
- 
+
 U_NAMESPACE_BEGIN
 
 /**
@@ -35,7 +35,7 @@ U_NAMESPACE_BEGIN
  * call, so the returned string still might not be 'valid' on
  * subsequent use.</p>
  *
- * <p>Strings may take the form of const char*, const UChar*, or const
+ * <p>Strings may take the form of const char*, const char16_t*, or const
  * UnicodeString*.  The type you get is determine by the variant of
  * 'next' that you call.  In general the StringEnumeration is
  * optimized for one of these types, but all StringEnumerations can
@@ -52,9 +52,9 @@ U_NAMESPACE_BEGIN
  * ICU 2.8 adds some default implementations and helper functions
  * for subclasses.
  *
- * @stable ICU 2.4 
+ * @stable ICU 2.4
  */
-class U_COMMON_API StringEnumeration : public UObject { 
+class U_COMMON_API StringEnumeration : public UObject {
 public:
     /**
      * Destructor.
@@ -112,7 +112,7 @@ public:
      * <p>If the iterator is out of sync with its service, status is set
      * to U_ENUM_OUT_OF_SYNC_ERROR and NULL is returned.</p>
      *
-     * <p>If the native service string is a UChar* string, it is
+     * <p>If the native service string is a char16_t* string, it is
      * converted to char* with the invariant converter.  If the
      * conversion fails (because a character cannot be converted) then
      * status is set to U_INVARIANT_CONVERSION_ERROR and the return
@@ -126,12 +126,12 @@ public:
      * @param resultLength a pointer to receive the length, can be NULL.
      * @return a pointer to the string, or NULL.
      *
-     * @stable ICU 2.4 
+     * @stable ICU 2.4
      */
     virtual const char* next(int32_t *resultLength, UErrorCode& status);
 
     /**
-     * <p>Returns the next element as a NUL-terminated UChar*.  If there
+     * <p>Returns the next element as a NUL-terminated char16_t*.  If there
      * are no more elements, returns NULL.  If the resultLength pointer
      * is not NULL, the length of the string (not counting the
      * terminating NUL) is returned at that address.  If an error
@@ -151,9 +151,9 @@ public:
      * @param resultLength a ponter to receive the length, can be NULL.
      * @return a pointer to the string, or NULL.
      *
-     * @stable ICU 2.4 
+     * @stable ICU 2.4
      */
-    virtual const UChar* unext(int32_t *resultLength, UErrorCode& status);
+    virtual const char16_t* unext(int32_t *resultLength, UErrorCode& status);
 
     /**
      * <p>Returns the next element a UnicodeString*.  If there are no
@@ -173,7 +173,7 @@ public:
      * @param status the error code.
      * @return a pointer to the string, or NULL.
      *
-     * @stable ICU 2.4 
+     * @stable ICU 2.4
      */
     virtual const UnicodeString* snext(UErrorCode& status);
 
@@ -187,7 +187,7 @@ public:
      *
      * @param status the error code.
      *
-     * @stable ICU 2.4 
+     * @stable ICU 2.4
      */
     virtual void reset(UErrorCode& status) = 0;
 
@@ -196,7 +196,7 @@ public:
      *
      * @param that The other string enumeration to compare this object to
      * @return TRUE if the enumerations are equal. FALSE if not.
-     * @stable ICU 3.6 
+     * @stable ICU 3.6
      */
     virtual UBool operator==(const StringEnumeration& that)const;
     /**
@@ -204,7 +204,7 @@ public:
      *
      * @param that The other string enumeration to compare this object to
      * @return TRUE if the enumerations are equal. FALSE if not.
-     * @stable ICU 3.6 
+     * @stable ICU 3.6
      */
     virtual UBool operator!=(const StringEnumeration& that)const;
 

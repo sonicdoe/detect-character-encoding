@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -88,7 +88,7 @@ void TitlecaseTransliterator::handleTransliterate(
     // Our mode; we are either converting letter toTitle or
     // toLower.
     UBool doTitle = TRUE;
-    
+
     // Determine if there is a preceding context of cased case-ignorable*,
     // in which case we want to start in toLower mode.  If the
     // prior context is anything else (including empty) then start
@@ -97,7 +97,7 @@ void TitlecaseTransliterator::handleTransliterate(
     int32_t start;
     for (start = offsets.start - 1; start >= offsets.contextStart; start -= U16_LENGTH(c)) {
         c = text.char32At(start);
-        type=ucase_getTypeOrIgnorable(fCsp, c);
+        type=ucase_getTypeOrIgnorable(c);
         if(type>0) { // cased
             doTitle=FALSE;
             break;
@@ -106,7 +106,7 @@ void TitlecaseTransliterator::handleTransliterate(
         }
         // else (type<0) case-ignorable: continue
     }
-    
+
     // Convert things after a cased character toLower; things
     // after an uncased, non-case-ignorable character toTitle.  Case-ignorable
     // characters are copied directly and do not change the mode.
@@ -118,19 +118,19 @@ void TitlecaseTransliterator::handleTransliterate(
 
     UnicodeString tmp;
     const UChar *s;
-    int32_t textPos, delta, result, locCache=0;
+    int32_t textPos, delta, result;
 
     for(textPos=offsets.start; textPos<offsets.limit;) {
         csc.cpStart=textPos;
         c=text.char32At(textPos);
         csc.cpLimit=textPos+=U16_LENGTH(c);
 
-        type=ucase_getTypeOrIgnorable(fCsp, c);
+        type=ucase_getTypeOrIgnorable(c);
         if(type>=0) { // not case-ignorable
             if(doTitle) {
-                result=ucase_toFullTitle(fCsp, c, utrans_rep_caseContextIterator, &csc, &s, "", &locCache);
+                result=ucase_toFullTitle(c, utrans_rep_caseContextIterator, &csc, &s, UCASE_LOC_ROOT);
             } else {
-                result=ucase_toFullLower(fCsp, c, utrans_rep_caseContextIterator, &csc, &s, "", &locCache);
+                result=ucase_toFullLower(c, utrans_rep_caseContextIterator, &csc, &s, UCASE_LOC_ROOT);
             }
             doTitle = (UBool)(type==0); // doTitle=isUncased
 

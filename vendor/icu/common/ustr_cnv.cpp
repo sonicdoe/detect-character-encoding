@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  ustr_cnv.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -37,10 +37,10 @@ U_CAPI UConverter* U_EXPORT2
 u_getDefaultConverter(UErrorCode *status)
 {
     UConverter *converter = NULL;
-    
+
     if (gDefaultConverter != NULL) {
         umtx_lock(NULL);
-        
+
         /* need to check to make sure it wasn't taken out from under us */
         if (gDefaultConverter != NULL) {
             converter = gDefaultConverter;
@@ -86,10 +86,10 @@ U_CAPI void U_EXPORT2
 u_flushDefaultConverter()
 {
     UConverter *converter = NULL;
-    
+
     if (gDefaultConverter != NULL) {
         umtx_lock(NULL);
-        
+
         /* need to check to make sure it wasn't taken out from under us */
         if (gDefaultConverter != NULL) {
             converter = gDefaultConverter;
