@@ -25,7 +25,7 @@
     "zone": "locales",
     "converters": "none",
     "stringprep": "locales",
-    "translit": "locales",
+    "translit": "none",
     "brkfiles": "none",
     "brkdict": "none",
     "confusables": "none",
