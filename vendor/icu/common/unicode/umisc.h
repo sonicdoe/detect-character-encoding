@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -6,7 +6,7 @@
 *   Corporation and others.  All Rights Reserved.
 **********************************************************************
 *   file name:  umisc.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -21,29 +21,29 @@
 
 /**
  * \file
- * \brief  C API:misc definitions 
+ * \brief  C API:misc definitions
  *
- *  This file contains miscellaneous definitions for the C APIs. 
+ *  This file contains miscellaneous definitions for the C APIs.
  */
 
 U_CDECL_BEGIN
 
-/** A struct representing a range of text containing a specific field 
+/** A struct representing a range of text containing a specific field
  *  @stable ICU 2.0
  */
 typedef struct UFieldPosition {
   /**
-   * The field 
+   * The field
    * @stable ICU 2.0
    */
   int32_t field;
   /**
-   * The start of the text range containing field 
+   * The start of the text range containing field
    * @stable ICU 2.0
    */
   int32_t beginIndex;
-  /** 
-   * The limit of the text range containing field 
+  /**
+   * The limit of the text range containing field
    * @stable ICU 2.0
    */
   int32_t endIndex;

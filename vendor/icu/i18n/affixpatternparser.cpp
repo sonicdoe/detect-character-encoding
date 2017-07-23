@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  * Copyright (C) 2015, International Business Machines
@@ -13,7 +13,9 @@
 
 #include "unicode/dcfmtsym.h"
 #include "unicode/plurrule.h"
+#include "unicode/strenum.h"
 #include "unicode/ucurr.h"
+#include "unicode/ustring.h"
 #include "affixpatternparser.h"
 #include "charstr.h"
 #include "precision.h"
@@ -196,7 +198,7 @@ AffixPattern::add(ETokenType t, uint8_t count) {
     U_ASSERT(t != kLiteral);
     char32Count += count;
     switch (t) {
-    case kCurrency: 
+    case kCurrency:
         hasCurrencyToken = TRUE;
         break;
     case kPercent:
@@ -438,7 +440,7 @@ private:
 AffixPattern &
 AffixPattern::parseUserAffixString(
         const UnicodeString &affixStr,
-        AffixPattern &appendTo, 
+        AffixPattern &appendTo,
         UErrorCode &status) {
     if (U_FAILURE(status)) {
         return appendTo;
@@ -507,7 +509,7 @@ AffixPattern::parseUserAffixString(
 AffixPattern &
 AffixPattern::parseAffixString(
         const UnicodeString &affixStr,
-        AffixPattern &appendTo, 
+        AffixPattern &appendTo,
         UErrorCode &status) {
     if (U_FAILURE(status)) {
         return appendTo;
@@ -639,7 +641,7 @@ PluralAffix &
 AffixPatternParser::parse(
         const AffixPattern &affixPattern,
         const CurrencyAffixInfo &currencyAffixInfo,
-        PluralAffix &appendTo, 
+        PluralAffix &appendTo,
         UErrorCode &status) const {
     if (U_FAILURE(status)) {
         return appendTo;

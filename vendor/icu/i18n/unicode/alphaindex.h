@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -15,6 +15,7 @@
 #include "unicode/utypes.h"
 #include "unicode/uobject.h"
 #include "unicode/locid.h"
+#include "unicode/unistr.h"
 
 #if !UCONFIG_NO_COLLATION
 
@@ -83,7 +84,7 @@ class UVector;
  * AlphabeticIndex supports the creation of a UI index appropriate for a given language.
  * It can support either direct use, or use with a client that doesn't support localized collation.
  * The following is an example of what an index might look like in a UI:
- * 
+ *
  * <pre>
  *  <b>... A B C D E F G H I J K L M N O P Q R S T U V W X Y Z  ...</b>
  *
@@ -303,17 +304,17 @@ public:
      */
      AlphabeticIndex(const Locale &locale, UErrorCode &status);
 
-   /** 
+   /**
      * Construct an AlphabeticIndex that uses a specific collator.
-     * 
+     *
      * The index will be created with no labels; the addLabels() function must be called
      * after creation to add the desired labels to the index.
-     * 
-     * The index adopts the collator, and is responsible for deleting it. 
+     *
+     * The index adopts the collator, and is responsible for deleting it.
      * The caller should make no further use of the collator after creating the index.
-     * 
+     *
      * @param collator The collator to use to order the contents of this index.
-     * @param status Error code, will be set with the reason if the 
+     * @param status Error code, will be set with the reason if the
      *               operation fails.
      * @stable ICU 51
      */
@@ -324,7 +325,7 @@ public:
      * that are already in the index; they do not replace the existing
      * ones.
      * @param additions The additional characters to add to the index, such as A-Z.
-     * @param status Error code, will be set with the reason if the 
+     * @param status Error code, will be set with the reason if the
      *               operation fails.
      * @return this, for chaining
      * @stable ICU 4.8
@@ -339,7 +340,7 @@ public:
      * when creating this Index.
      *
      * @param locale The locale whose index characters are to be added.
-     * @param status Error code, will be set with the reason if the 
+     * @param status Error code, will be set with the reason if the
      *               operation fails.
      * @return this, for chaining
      * @stable ICU 4.8

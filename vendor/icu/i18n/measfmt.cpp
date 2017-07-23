@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -26,6 +26,7 @@
 #include "unicode/decimfmt.h"
 #include "uresimp.h"
 #include "unicode/ures.h"
+#include "unicode/ustring.h"
 #include "ureslocs.h"
 #include "cstring.h"
 #include "mutex.h"
@@ -41,7 +42,7 @@
 #include "standardplural.h"
 #include "unifiedcache.h"
 
-#define MEAS_UNIT_COUNT 138
+#define MEAS_UNIT_COUNT 135
 #define WIDTH_INDEX_COUNT (UMEASFMT_WIDTH_NARROW + 1)
 
 U_NAMESPACE_BEGIN
@@ -66,9 +67,9 @@ public:
             const UnicodeString &hm,
             const UnicodeString &ms,
             const UnicodeString &hms,
-            UErrorCode &status) : 
+            UErrorCode &status) :
             hourMinute(hm, status),
-            minuteSecond(ms, status), 
+            minuteSecond(ms, status),
             hourMinuteSecond(hms, status) {
         const TimeZone *gmt = TimeZone::getGMT();
         hourMinute.setTimeZone(*gmt);
@@ -288,10 +289,8 @@ struct UnitDataSink : public ResourceSink {
             return;
         }
 
-        if (value.getType() == URES_STRING) {
-            // Units like "coordinate" that don't have plural variants
-            setFormatterIfAbsent(StandardPlural::OTHER, value, 0, errorCode);
-        } else if (value.getType() == URES_TABLE) {
+        // We no longer handle units like "coordinate" here (which do not have plural variants)
+        if (value.getType() == URES_TABLE) {
             // Units that have plural variants
             ResourceTable patternTableTable = value.getTable(errorCode);
             if (U_FAILURE(errorCode)) { return; }
@@ -333,6 +332,8 @@ struct UnitDataSink : public ResourceSink {
                     consumeCompoundPattern(key, value, errorCode);
                 }
             }
+        } else if (uprv_strcmp(key, "coordinate") == 0) {
+            // special handling but we need to determine what that is
         } else {
             type = key;
             ResourceTable subtypeTable = value.getTable(errorCode);
@@ -619,7 +620,7 @@ MeasureFormat::MeasureFormat(
         const Locale &locale,
         UMeasureFormatWidth w,
         NumberFormat *nfToAdopt,
-        UErrorCode &status) 
+        UErrorCode &status)
         : cache(NULL),
           numberFormat(NULL),
           pluralRules(NULL),
@@ -915,7 +916,7 @@ UBool MeasureFormat::setMeasureFormatLocale(const Locale &locale, UErrorCode &st
     }
     initMeasureFormat(locale, width, NULL, status);
     return U_SUCCESS(status);
-} 
+}
 
 const NumberFormat &MeasureFormat::getNumberFormat() const {
     return **numberFormat;
@@ -969,7 +970,7 @@ UnicodeString &MeasureFormat::formatNumeric(
     if (U_FAILURE(status)) {
         return appendTo;
     }
-    UDate millis = 
+    UDate millis =
         (UDate) (((uprv_trunc(hms[0].getDouble(status)) * 60.0
              + uprv_trunc(hms[1].getDouble(status))) * 60.0
                   + uprv_trunc(hms[2].getDouble(status))) * 1000.0);

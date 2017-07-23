@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -537,7 +537,7 @@ parseDependency(ParseState* state, char *tag, uint32_t startline, const struct U
     uint32_t          line;
     char              filename[256] = { '\0' };
     char              cs[128]       = { '\0' };
-    
+
     expect(state, TOK_STRING, &tokenValue, NULL, &line, status);
 
     if(isVerbose()){
@@ -558,7 +558,7 @@ parseDependency(ParseState* state, char *tag, uint32_t startline, const struct U
             uprv_strcat(filename, U_FILE_SEP_STRING);
         }
     }
-    
+
     u_UCharsToChars(tokenValue->fChars, cs, tokenValue->fLength);
 
     if (U_FAILURE(*status))
@@ -570,7 +570,7 @@ parseDependency(ParseState* state, char *tag, uint32_t startline, const struct U
         if(isStrict()){
             error(line, "The dependency file %s does not exist. Please make sure it exists.\n",filename);
         }else{
-            warning(line, "The dependency file %s does not exist. Please make sure it exists.\n",filename);       
+            warning(line, "The dependency file %s does not exist. Please make sure it exists.\n",filename);
         }
     }
     if(dependencyArray==NULL){

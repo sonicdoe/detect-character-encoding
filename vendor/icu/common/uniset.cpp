@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -1649,7 +1649,7 @@ UBool UnicodeSet::allocateStrings(UErrorCode &status) {
         delete strings;
         strings = NULL;
         return FALSE;
-    } 
+    }
     return TRUE;
 }
 

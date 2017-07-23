@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -32,10 +32,10 @@
 
 /**
  * Retrieves the data version from icuver and stores it in dataVersionFillin.
- * 
+ *
  * @param dataVersionFillin icuver data version information to be filled in if not-null
  * @param status stores the error code from the calls to resource bundle
- * 
+ *
  * @stable ICU 49
  */
 U_STABLE void U_EXPORT2 u_getDataVersion(UVersionInfo dataVersionFillin, UErrorCode *status);

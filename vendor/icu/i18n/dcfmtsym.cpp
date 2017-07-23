@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -164,8 +164,8 @@ DecimalFormatSymbols::operator=(const DecimalFormatSymbols& rhs)
         locale = rhs.locale;
         uprv_strcpy(validLocale, rhs.validLocale);
         uprv_strcpy(actualLocale, rhs.actualLocale);
-        fIsCustomCurrencySymbol = rhs.fIsCustomCurrencySymbol; 
-        fIsCustomIntlCurrencySymbol = rhs.fIsCustomIntlCurrencySymbol; 
+        fIsCustomCurrencySymbol = rhs.fIsCustomCurrencySymbol;
+        fIsCustomIntlCurrencySymbol = rhs.fIsCustomIntlCurrencySymbol;
     }
     return *this;
 }
@@ -178,12 +178,12 @@ DecimalFormatSymbols::operator==(const DecimalFormatSymbols& that) const
     if (this == &that) {
         return TRUE;
     }
-    if (fIsCustomCurrencySymbol != that.fIsCustomCurrencySymbol) { 
-        return FALSE; 
-    } 
-    if (fIsCustomIntlCurrencySymbol != that.fIsCustomIntlCurrencySymbol) { 
-        return FALSE; 
-    } 
+    if (fIsCustomCurrencySymbol != that.fIsCustomCurrencySymbol) {
+        return FALSE;
+    }
+    if (fIsCustomIntlCurrencySymbol != that.fIsCustomIntlCurrencySymbol) {
+        return FALSE;
+    }
     for(int32_t i = 0; i < (int32_t)kFormatSymbolCount; ++i) {
         if(fSymbols[(ENumberFormatSymbol)i] != that.fSymbols[(ENumberFormatSymbol)i]) {
             return FALSE;
@@ -519,9 +519,9 @@ DecimalFormatSymbols::initialize() {
     fSymbols[kInfinitySymbol] = (UChar)0x221e;          // 'oo' infinite
     fSymbols[kNaNSymbol] = (UChar)0xfffd;               // SUB NaN
     fSymbols[kSignificantDigitSymbol] = (UChar)0x0040;  // '@' significant digit
-    fSymbols[kMonetaryGroupingSeparatorSymbol].remove(); // 
+    fSymbols[kMonetaryGroupingSeparatorSymbol].remove(); //
     fSymbols[kExponentMultiplicationSymbol] = (UChar)0xd7; // 'x' multiplication symbol for exponents
-    fIsCustomCurrencySymbol = FALSE; 
+    fIsCustomCurrencySymbol = FALSE;
     fIsCustomIntlCurrencySymbol = FALSE;
 
 }

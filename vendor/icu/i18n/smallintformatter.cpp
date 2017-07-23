@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  * Copyright (C) 2015, International Business Machines
@@ -2590,7 +2590,7 @@ IntDigitCountRange::pin(int32_t digitCount) const {
     return digitCount < fMin ? fMin : (digitCount < fMax ? digitCount : fMax);
 }
 
-int32_t 
+int32_t
 SmallIntFormatter::estimateDigitCount(
         int32_t positiveValue, const IntDigitCountRange &range) {
     if (positiveValue >= gMaxFastInt) {
@@ -2620,4 +2620,3 @@ SmallIntFormatter::format(
 }
 
 U_NAMESPACE_END
-

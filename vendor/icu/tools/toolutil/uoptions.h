@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  uoptions.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -130,7 +130,7 @@ struct UOption {
  * where the error was detected.
  *
  * The OS/400 compiler requires that argv either be "char* argv[]",
- * or "const char* const argv[]", and it will not accept, 
+ * or "const char* const argv[]", and it will not accept,
  * "const char* argv[]" as a definition for main().
  *
  * @param argv This parameter is modified

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -169,7 +169,7 @@ int32_t ICU_Utility::skipWhitespace(const UnicodeString& str, int32_t& pos,
 //?    if (!isForward) {
 //?        --pos; // pos is a limit, so back up by one
 //?    }
-//?    
+//?
 //?    while (pos != stop &&
 //?           PatternProps::isWhiteSpace(c = text.char32At(pos))) {
 //?        if (isForward) {
@@ -376,7 +376,7 @@ void ICU_Utility::appendToRule(UnicodeString& rule,
             quoteBuf.append(c);
         }
     }
-    
+
     // Otherwise just append
     else {
         rule.append(c);

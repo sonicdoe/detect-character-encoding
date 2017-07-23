@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -6,7 +6,7 @@
 *                Corporation and others. All Rights Reserved.
 ******************************************************************************
 *   file name:  uclean.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -22,7 +22,7 @@
  * \file
  * \brief C API: Initialize and clean up ICU
  */
- 
+
 /**
  *  Initialize ICU.
  *
@@ -48,8 +48,8 @@
  *    failure, as usual.
  *
  * @stable ICU 2.6
- */  
-U_STABLE void U_EXPORT2 
+ */
+U_STABLE void U_EXPORT2
 u_init(UErrorCode *status);
 
 #ifndef U_HIDE_SYSTEM_API
@@ -66,10 +66,10 @@ u_init(UErrorCode *status);
  * just before the library unload.
  * <p>
  * u_cleanup() also clears any ICU heap functions, mutex functions or
- * trace functions that may have been set for the process.  
+ * trace functions that may have been set for the process.
  * This has the effect of restoring ICU to its initial condition, before
  * any of these override functions were installed.  Refer to
- * u_setMemoryFunctions(), u_setMutexFunctions and 
+ * u_setMemoryFunctions(), u_setMutexFunctions and
  * utrace_setFunctions().  If ICU is to be reinitialized after after
  * calling u_cleanup(), these runtime override functions will need to
  * be set up again if they are still required.
@@ -85,7 +85,7 @@ u_init(UErrorCode *status);
  * calling u_init().  An application must invoke u_init() first from one single
  * thread before allowing other threads call u_init().  All threads existing
  * at the time of the first thread's call to u_init() must also call
- * u_init() themselves before continuing with other ICU operations.  
+ * u_init() themselves before continuing with other ICU operations.
  * <p>
  * The use of u_cleanup() just before an application terminates is optional,
  * but it should be called only once for performance reasons. The primary
@@ -98,10 +98,10 @@ u_init(UErrorCode *status);
  * @stable ICU 2.0
  * @system
  */
-U_STABLE void U_EXPORT2 
+U_STABLE void U_EXPORT2
 u_cleanup(void);
 
-
+U_CDECL_BEGIN
 /**
   *  Pointer type for a user supplied memory allocation function.
   *  @param context user supplied value, obtained from from u_setMemoryFunctions().
@@ -147,11 +147,12 @@ typedef void  U_CALLCONV UMemFreeFn (const void *context, void *mem);
  *  @param status  Receives error values.
  *  @stable ICU 2.8
  *  @system
- */  
-U_STABLE void U_EXPORT2 
-u_setMemoryFunctions(const void *context, UMemAllocFn *a, UMemReallocFn *r, UMemFreeFn *f, 
+ */
+U_STABLE void U_EXPORT2
+u_setMemoryFunctions(const void *context, UMemAllocFn * U_CALLCONV a, UMemReallocFn * U_CALLCONV r, UMemFreeFn * U_CALLCONV f,
                     UErrorCode *status);
 
+U_CDECL_END
 
 #ifndef U_HIDE_DEPRECATED_API
 /*********************************************************************************
@@ -172,6 +173,7 @@ u_setMemoryFunctions(const void *context, UMemAllocFn *a, UMemReallocFn *r, UMem
   */
 typedef void *UMTX;
 
+U_CDECL_BEGIN
 /**
   *  Function Pointer type for a user supplied mutex initialization function.
   *  The user-supplied function will be called by ICU whenever ICU needs to create a
@@ -180,8 +182,8 @@ typedef void *UMTX;
   *  as a paramter.
   *  @param context user supplied value, obtained from from u_setMutexFunctions().
   *  @param mutex   Receives a pointer that identifies the new mutex.
-  *                 The mutex init function must set the UMTX to a non-null value.   
-  *                 Subsequent calls by ICU to lock, unlock, or destroy a mutex will 
+  *                 The mutex init function must set the UMTX to a non-null value.
+  *                 Subsequent calls by ICU to lock, unlock, or destroy a mutex will
   *                 identify the mutex by the UMTX value.
   *  @param status  Error status.  Report errors back to ICU by setting this variable
   *                 with an error code.
@@ -201,7 +203,7 @@ typedef void U_CALLCONV UMtxInitFn (const void *context, UMTX  *mutex, UErrorCod
   *  @system
   */
 typedef void U_CALLCONV UMtxFn   (const void *context, UMTX  *mutex);
-
+U_CDECL_END
 
 /**
   *  Set the functions that ICU will use for mutex operations
@@ -211,7 +213,7 @@ typedef void U_CALLCONV UMtxFn   (const void *context, UMTX  *mutex);
   *  u_init() has been called.
   *  @param context This pointer value will be saved, and then (later) passed as
   *                 a parameter to the user-supplied mutex functions each time they
-  *                 are called. 
+  *                 are called.
   *  @param init    Pointer to a mutex initialization function.  Must be non-null.
   *  @param destroy Pointer to the mutex destroy function.  Must be non-null.
   *  @param lock    pointer to the mutex lock function.  Must be non-null.
@@ -219,8 +221,8 @@ typedef void U_CALLCONV UMtxFn   (const void *context, UMTX  *mutex);
   *  @param status  Receives error values.
   *  @deprecated ICU 52. This function is no longer supported.
   *  @system
-  */  
-U_DEPRECATED void U_EXPORT2 
+  */
+U_DEPRECATED void U_EXPORT2
 u_setMutexFunctions(const void *context, UMtxInitFn *init, UMtxFn *destroy, UMtxFn *lock, UMtxFn *unlock,
                     UErrorCode *status);
 
@@ -243,14 +245,14 @@ typedef int32_t U_CALLCONV UMtxAtomicFn(const void *context, int32_t *p);
  *  u_init() has been called.
  *  @param context This pointer value will be saved, and then (later) passed as
  *                 a parameter to the increment and decrement functions each time they
- *                 are called.  This function can only be called 
+ *                 are called.  This function can only be called
  *  @param inc     Pointer to a function to do an atomic increment operation.  Must be non-null.
  *  @param dec     Pointer to a function to do an atomic decrement operation.  Must be non-null.
  *  @param status  Receives error values.
  *  @deprecated ICU 52. This function is no longer supported.
  *  @system
- */  
-U_DEPRECATED void U_EXPORT2 
+ */
+U_DEPRECATED void U_EXPORT2
 u_setAtomicIncDecFunctions(const void *context, UMtxAtomicFn *inc, UMtxAtomicFn *dec,
                     UErrorCode *status);
 

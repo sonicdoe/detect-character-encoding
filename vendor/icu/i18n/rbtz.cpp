@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -449,7 +449,7 @@ RuleBasedTimeZone::getOffsetInternal(UDate date, UBool local,
                 }
                 if (rule == NULL) {
                     // no final rules or the given time is before the first transition
-                    // specified by the final rules -> use the last rule 
+                    // specified by the final rules -> use the last rule
                     rule = ((Transition*)fHistoricTransitions->elementAt(idx))->to;
                 }
             } else {
@@ -749,7 +749,7 @@ RuleBasedTimeZone::findNext(UDate base, UBool inclusive, UDate& transitionTime,
         result = *tzt;
         found = TRUE;
     } else {
-        int32_t idx = fHistoricTransitions->size() - 1;        
+        int32_t idx = fHistoricTransitions->size() - 1;
         tzt = (Transition*)fHistoricTransitions->elementAt(idx);
         tt = tzt->time;
         if (inclusive && tt == base) {
@@ -832,7 +832,7 @@ RuleBasedTimeZone::findPrev(UDate base, UBool inclusive, UDate& transitionTime,
         result = *tzt;
         found = TRUE;
     } else if (tt < base) {
-        int32_t idx = fHistoricTransitions->size() - 1;        
+        int32_t idx = fHistoricTransitions->size() - 1;
         tzt = (Transition*)fHistoricTransitions->elementAt(idx);
         tt = tzt->time;
         if (inclusive && tt == base) {
@@ -956,4 +956,3 @@ U_NAMESPACE_END
 #endif /* #if !UCONFIG_NO_FORMATTING */
 
 //eof
-

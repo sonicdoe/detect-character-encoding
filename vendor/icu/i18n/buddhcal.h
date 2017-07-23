@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  ********************************************************************************
@@ -145,7 +145,7 @@ private:
     virtual int32_t handleGetExtendedYear();
     /**
      * Subclasses may override this method to compute several fields
-     * specific to each calendar system.  
+     * specific to each calendar system.
      * @internal
      */
     virtual void handleComputeFields(int32_t julianDay, UErrorCode& status);
@@ -199,4 +199,3 @@ U_NAMESPACE_END
 
 #endif // _GREGOCAL
 //eof
-

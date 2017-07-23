@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ********************************************************************************
@@ -108,7 +108,7 @@ class FixedDecimal;
  * The first two DAGs are simple in that setting any independent attribute
  * in the DAG recalculates all the dependent attributes in that DAG.
  * The updateGrouping() and updatePrecision() perform the respective
- * recalculations. 
+ * recalculations.
  *
  * Because some of the derived formatting attributes are expensive to
  * calculate, the formatting attributes DAG is more complex. The
@@ -258,9 +258,9 @@ void setMinMaxSignificantDigits(int32_t min, int32_t max);
 void setScientificNotation(UBool newValue);
 void setSignificantDigitsUsed(UBool newValue);
 
-int32_t getMinimumSignificantDigits() const { 
+int32_t getMinimumSignificantDigits() const {
         return fMinSigDigits; }
-int32_t getMaximumSignificantDigits() const { 
+int32_t getMaximumSignificantDigits() const {
         return fMaxSigDigits; }
 UBool isScientificNotation() const { return fUseScientific; }
 UBool areSignificantDigitsUsed() const { return fUseSigDigits; }
@@ -364,7 +364,7 @@ DecimalFormat::ERoundingMode fRoundingMode;
 // fEffPrecision.fMantissa.fMin,
 // fEffPrecision.fMantissa.fMax,
 // fEffPrecision.fMantissa.fSignificant fields
-// We have this two phase update because of backward compatibility. 
+// We have this two phase update because of backward compatibility.
 // DecimalFormat has to remember all settings even if those settings are
 // invalid or disabled.
 int32_t fMinSigDigits;

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -16,10 +16,10 @@
 #include "unicode/utypes.h"
 
 /**
- * \file 
+ * \file
  * \brief C++ API: MeasureUnit object.
  */
- 
+
 #if !UCONFIG_NO_FORMATTING
 
 #include "unicode/fmtable.h"
@@ -79,7 +79,7 @@ class U_I18N_API Measure: public UObject {
      * @stable ICU 3.0
      */
     virtual ~Measure();
-    
+
     /**
      * Equality operator.  Return true if this object is equal
      * to the given object.

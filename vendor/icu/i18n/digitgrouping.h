@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -35,7 +35,7 @@ public:
      * Returns TRUE if this object is equal to rhs.
      */
     UBool equals(const DigitGrouping &rhs) const {
-        return ((fGrouping == rhs.fGrouping) && 
+        return ((fGrouping == rhs.fGrouping) &&
                 (fGrouping2 == rhs.fGrouping2) &&
                 (fMinGrouping == rhs.fMinGrouping));
     }

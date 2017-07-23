@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -218,9 +218,10 @@ UnicodeString::UnicodeString(const UChar *text,
 }
 
 UnicodeString::UnicodeString(UBool isTerminated,
-                             const UChar *text,
+                             ConstChar16Ptr textPtr,
                              int32_t textLength) {
   fUnion.fFields.fLengthAndFlags = kReadonlyAlias;
+  const UChar *text = textPtr;
   if(text == NULL) {
     // treat as an empty string, do not alias
     setToEmpty();
@@ -234,7 +235,8 @@ UnicodeString::UnicodeString(UBool isTerminated,
       // text is terminated, or else it would have failed the above test
       textLength = u_strlen(text);
     }
-    setArray((UChar *)text, textLength, isTerminated ? textLength + 1 : textLength);
+    setArray(const_cast<UChar *>(text), textLength,
+             isTerminated ? textLength + 1 : textLength);
   }
 }
 
@@ -673,7 +675,7 @@ UnicodeString::doCompare( int32_t start,
   if(isBogus()) {
     return -1;
   }
-  
+
   // pin indices to legal values
   pinIndices(start, length);
 
@@ -721,7 +723,7 @@ UnicodeString::doCompare( int32_t start,
   if(minLength > 0 && chars != srcChars) {
     int32_t result;
 
-#   if U_IS_BIG_ENDIAN 
+#   if U_IS_BIG_ENDIAN
       // big-endian: byte comparison works
       result = uprv_memcmp(chars, srcChars, minLength * sizeof(UChar));
       if(result != 0) {
@@ -873,7 +875,7 @@ UnicodeString::doExtract(int32_t start,
 }
 
 int32_t
-UnicodeString::extract(UChar *dest, int32_t destCapacity,
+UnicodeString::extract(Char16Ptr dest, int32_t destCapacity,
                        UErrorCode &errorCode) const {
   int32_t len = length();
   if(U_SUCCESS(errorCode)) {
@@ -953,7 +955,7 @@ UnicodeString::extract(int32_t start, int32_t len,
 // else see unistr_cnv.cpp
 #endif
 
-void 
+void
 UnicodeString::extractBetween(int32_t start,
                   int32_t limit,
                   UnicodeString& target) const {
@@ -1022,7 +1024,7 @@ UnicodeString::toUTF32(UChar32 *utf32, int32_t capacity, UErrorCode &errorCode) 
   return length32;
 }
 
-int32_t 
+int32_t
 UnicodeString::indexOf(const UChar *srcChars,
                int32_t srcStart,
                int32_t srcLength,
@@ -1086,7 +1088,7 @@ UnicodeString::doIndexOf(UChar32 c,
   }
 }
 
-int32_t 
+int32_t
 UnicodeString::lastIndexOf(const UChar *srcChars,
                int32_t srcStart,
                int32_t srcLength,
@@ -1158,7 +1160,7 @@ UnicodeString::doLastIndexOf(UChar32 c,
 // Write implementation
 //========================================
 
-UnicodeString& 
+UnicodeString&
 UnicodeString::findAndReplace(int32_t start,
                   int32_t length,
                   const UnicodeString& oldText,
@@ -1215,10 +1217,10 @@ UnicodeString::unBogus() {
   }
 }
 
-const UChar *
+const char16_t *
 UnicodeString::getTerminatedBuffer() {
   if(!isWritable()) {
-    return 0;
+    return nullptr;
   }
   UChar *array = getArrayStart();
   int32_t len = length();
@@ -1249,14 +1251,14 @@ UnicodeString::getTerminatedBuffer() {
     array[len] = 0;
     return array;
   } else {
-    return NULL;
+    return nullptr;
   }
 }
 
 // setTo() analogous to the readonly-aliasing constructor with the same signature
 UnicodeString &
 UnicodeString::setTo(UBool isTerminated,
-                     const UChar *text,
+                     ConstChar16Ptr textPtr,
                      int32_t textLength)
 {
   if(fUnion.fFields.fLengthAndFlags & kOpenGetBuffer) {
@@ -1264,6 +1266,7 @@ UnicodeString::setTo(UBool isTerminated,
     return *this;
   }
 
+  const UChar *text = textPtr;
   if(text == NULL) {
     // treat as an empty string, do not alias
     releaseArray();
@@ -1576,7 +1579,7 @@ UnicodeString::handleReplaceBetween(int32_t start,
 /**
  * Replaceable API
  */
-void 
+void
 UnicodeString::copy(int32_t start, int32_t limit, int32_t dest) {
     if (limit <= start) {
         return; // Nothing to do; avoid bogus malloc call
@@ -1585,7 +1588,7 @@ UnicodeString::copy(int32_t start, int32_t limit, int32_t dest) {
     // Check to make sure text is not null.
     if (text != NULL) {
 	    extractBetween(start, limit, text, 0);
-	    insert(dest, text, 0, limit - start);    
+	    insert(dest, text, 0, limit - start);
 	    uprv_free(text);
     }
 }
@@ -1653,7 +1656,7 @@ UnicodeString::doReverse(int32_t start, int32_t length) {
   return *this;
 }
 
-UBool 
+UBool
 UnicodeString::padLeading(int32_t targetLength,
                           UChar padChar)
 {
@@ -1675,7 +1678,7 @@ UnicodeString::padLeading(int32_t targetLength,
   }
 }
 
-UBool 
+UBool
 UnicodeString::padTrailing(int32_t targetLength,
                            UChar padChar)
 {
@@ -1713,14 +1716,14 @@ UnicodeString::doHashCode() const
 // External Buffer
 //========================================
 
-UChar *
+char16_t *
 UnicodeString::getBuffer(int32_t minCapacity) {
   if(minCapacity>=-1 && cloneArrayIfNeeded(minCapacity)) {
     fUnion.fFields.fLengthAndFlags|=kOpenGetBuffer;
     setZeroLength();
     return getArrayStart();
   } else {
-    return 0;
+    return nullptr;
   }
 }
 

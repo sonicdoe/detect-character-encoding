@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -74,7 +74,7 @@ void SpoofImpl::construct(UErrorCode& status) {
 
 // Copy Constructor, used by the user level clone() function.
 SpoofImpl::SpoofImpl(const SpoofImpl &src, UErrorCode &status)  :
-        fMagic(0), fChecks(USPOOF_ALL_CHECKS), fSpoofData(NULL), fAllowedCharsSet(NULL) , 
+        fMagic(0), fChecks(USPOOF_ALL_CHECKS), fSpoofData(NULL), fAllowedCharsSet(NULL) ,
         fAllowedLocales(NULL) {
     if (U_FAILURE(status)) {
         return;
@@ -182,7 +182,7 @@ void SpoofImpl::setAllowedLocales(const char *localesList, UErrorCode &status) {
         if (fAllowedLocales == NULL || tmpSet == NULL) {
             status = U_MEMORY_ALLOCATION_ERROR;
             return;
-        } 
+        }
         tmpSet->freeze();
         delete fAllowedCharsSet;
         fAllowedCharsSet = tmpSet;
@@ -190,14 +190,14 @@ void SpoofImpl::setAllowedLocales(const char *localesList, UErrorCode &status) {
         return;
     }
 
-        
+
     // Add all common and inherited characters to the set of allowed chars.
     UnicodeSet tempSet;
     tempSet.applyIntPropertyValue(UCHAR_SCRIPT, USCRIPT_COMMON, status);
     allowedChars.addAll(tempSet);
     tempSet.applyIntPropertyValue(UCHAR_SCRIPT, USCRIPT_INHERITED, status);
     allowedChars.addAll(tempSet);
-    
+
     // If anything went wrong, we bail out without changing
     // the state of the spoof checker.
     if (U_FAILURE(status)) {
@@ -540,7 +540,7 @@ uspoof_cleanupDefaultData(void) {
 
 static void U_CALLCONV uspoof_loadDefaultData(UErrorCode& status) {
     UDataMemory *udm = udata_openChoice(NULL, "cfu", "confusables",
-                                        spoofDataIsAcceptable, 
+                                        spoofDataIsAcceptable,
                                         NULL,       // context, would receive dataVersion if supplied.
                                         &status);
     if (U_FAILURE(status)) { return; }
@@ -614,7 +614,7 @@ SpoofData::SpoofData(UErrorCode &status) {
     // Just in case it's not, round it up.
     uint32_t initialSize = (sizeof(SpoofDataHeader) + 15) & ~15;
     U_ASSERT(initialSize == sizeof(SpoofDataHeader));
-    
+
     fRawData = static_cast<SpoofDataHeader *>(uprv_malloc(initialSize));
     fMemLimit = initialSize;
     if (fRawData == NULL) {
@@ -858,7 +858,7 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
     const uint8_t   *inBytes =(const uint8_t *)inData+headerSize;
     SpoofDataHeader *spoofDH = (SpoofDataHeader *)inBytes;
     if (ds->readUInt32(spoofDH->fMagic)   != USPOOF_MAGIC ||
-        ds->readUInt32(spoofDH->fLength)  <  sizeof(SpoofDataHeader)) 
+        ds->readUInt32(spoofDH->fLength)  <  sizeof(SpoofDataHeader))
     {
         udata_printError(ds, "uspoof_swap(): Spoof Data header is invalid.\n");
         *status=U_UNSUPPORTED_ERROR;
@@ -938,5 +938,3 @@ uspoof_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *ou
 }
 
 #endif
-
-
