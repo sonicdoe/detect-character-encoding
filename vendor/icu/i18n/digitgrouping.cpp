@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  * Copyright (C) 2015, International Business Machines
@@ -56,4 +56,3 @@ DigitGrouping::clear() {
 }
 
 U_NAMESPACE_END
-

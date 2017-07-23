@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -120,7 +120,7 @@ public:
      * @param status     Output parameter filled in with success or failure status.
      */
     virtual void freeze(UParseError& parseError, UErrorCode& status);
-    
+
     /**
      * Transliterate the given text with the given UTransPosition
      * indices.  Return TRUE if the transliteration should continue

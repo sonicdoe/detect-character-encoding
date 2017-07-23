@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  rbbidata.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -56,8 +56,8 @@ ubrk_swap(const UDataSwapper *ds,
 
 U_NAMESPACE_BEGIN
 
-/*  
- *   The following structs map exactly onto the raw data from ICU common data file. 
+/*
+ *   The following structs map exactly onto the raw data from ICU common data file.
  */
 struct RBBIDataHeader {
     uint32_t         fMagic;           /*  == 0xbla0                                               */
@@ -176,7 +176,7 @@ public:
     const RBBIStateTable     *fSafeFwdTable;
     const RBBIStateTable     *fSafeRevTable;
     const UChar              *fRuleSource;
-    const int32_t            *fRuleStatusTable; 
+    const int32_t            *fRuleStatusTable;
 
     /* number of int32_t values in the rule status table.   Used to sanity check indexing */
     int32_t             fStatusMaxIdx;

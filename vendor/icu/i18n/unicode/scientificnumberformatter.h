@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -17,7 +17,7 @@
 #include "unicode/unistr.h"
 
 /**
- * \file 
+ * \file
  * \brief C++ API: Formats in scientific notation.
  */
 
@@ -219,4 +219,4 @@ U_NAMESPACE_END
 
 
 #endif /* !UCONFIG_NO_FORMATTING */
-#endif 
+#endif

@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -66,10 +66,10 @@ struct DecimalFormatPattern : public UMemory {
   UnicodeString fNegSuffixPattern;
   UnicodeString fPosPrefixPattern;
   UnicodeString fPosSuffixPattern;
-  AffixPattern fNegPrefixAffix; 
-  AffixPattern fNegSuffixAffix; 
-  AffixPattern fPosPrefixAffix; 
-  AffixPattern fPosSuffixAffix; 
+  AffixPattern fNegPrefixAffix;
+  AffixPattern fNegSuffixAffix;
+  AffixPattern fPosPrefixAffix;
+  AffixPattern fPosSuffixAffix;
   EPadPosition fPadPosition;
 };
 

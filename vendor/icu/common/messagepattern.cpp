@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -6,7 +6,7 @@
 *   Corporation and others.  All Rights Reserved.
 *******************************************************************************
 *   file name:  messagepattern.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -454,7 +454,7 @@ MessagePattern::parseMessage(int32_t index, int32_t msgStartLength,
         UChar c=msg.charAt(index++);
         if(c==u_apos) {
             if(index==msg.length()) {
-                // The apostrophe is the last character in the pattern. 
+                // The apostrophe is the last character in the pattern.
                 // Add a Part for auto-quoting.
                 addPart(UMSGPAT_PART_TYPE_INSERT_CHAR, index, 0,
                         u_apos, errorCode);  // value=char to be inserted

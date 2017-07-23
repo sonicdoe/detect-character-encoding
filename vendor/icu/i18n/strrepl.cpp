@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -199,7 +199,7 @@ int32_t StringReplacer::replace(Replaceable& text,
 
         // Delete the old text (the key)
         text.handleReplaceBetween(start + outLen, limit + outLen, UnicodeString());
-    }        
+    }
 
     if (hasCursor) {
         // Adjust the cursor for positions outside the key.  These

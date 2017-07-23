@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -120,7 +120,7 @@ public:
 
 /* write a java resource file */
 // TODO: C++ify
-void bundle_write_java(struct SRBRoot *bundle, const char *outputDir, const char* outputEnc, char *writtenFilename, 
+void bundle_write_java(struct SRBRoot *bundle, const char *outputDir, const char* outputEnc, char *writtenFilename,
                        int writtenFilenameLen, const char* packageName, const char* bundleName, UErrorCode *status);
 
 /* write a xml resource file */
@@ -304,7 +304,7 @@ public:
     StringBaseResource(int8_t type, const UChar *value, int32_t len, UErrorCode &errorCode);
     virtual ~StringBaseResource();
 
-    const UChar *getBuffer() const { return fString.getBuffer(); }
+    const UChar *getBuffer() const { return icu::toUCharPtr(fString.getBuffer()); }
     int32_t length() const { return fString.length(); }
 
     virtual void handlePreWrite(uint32_t *byteOffset);

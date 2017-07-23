@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -1495,7 +1495,7 @@ int32_t RegexCImpl::appendReplacement(RegularExpression    *regexp,
             // Scan for Named Capture Group, ${name}.
             UnicodeString groupName;
             U16_FWD_1(replacementText, replIdx, replacementLength);
-            while (U_SUCCESS(*status) && c32 != RIGHTBRACKET) { 
+            while (U_SUCCESS(*status) && c32 != RIGHTBRACKET) {
                 if (replIdx >= replacementLength) {
                     *status = U_REGEX_INVALID_CAPTURE_GROUP_NAME;
                     break;
@@ -1974,4 +1974,3 @@ uregex_splitUText(URegularExpression    *regexp2,
 
 
 #endif   // !UCONFIG_NO_REGULAR_EXPRESSIONS
-

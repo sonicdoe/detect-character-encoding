@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -40,7 +40,7 @@ ScriptSet::~ScriptSet() {
 ScriptSet::ScriptSet(const ScriptSet &other) {
     *this = other;
 }
-    
+
 
 ScriptSet & ScriptSet::operator =(const ScriptSet &other) {
     for (uint32_t i=0; i<UPRV_LENGTHOF(bits); i++) {
@@ -125,7 +125,7 @@ ScriptSet &ScriptSet::intersect(UScriptCode script, UErrorCode &status) {
     }
     return *this;
 }
-    
+
 UBool ScriptSet::intersects(const ScriptSet &other) const {
     for (uint32_t i=0; i<UPRV_LENGTHOF(bits); i++) {
         if ((bits[i] & other.bits[i]) != 0) {
@@ -258,7 +258,7 @@ void ScriptSet::setScriptExtensions(UChar32 codePoint, UErrorCode& status) {
 
     while (TRUE) {
         script_count = uscript_getScriptExtensions(
-            codePoint, scripts.getAlias(), FIRST_GUESS_SCRIPT_CAPACITY, &internalStatus);
+            codePoint, scripts.getAlias(), scripts.getCapacity(), &internalStatus);
         if (internalStatus == U_BUFFER_OVERFLOW_ERROR) {
             // Need to allocate more space
             if (scripts.resize(script_count) == NULL) {

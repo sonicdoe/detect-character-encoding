@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -22,10 +22,10 @@
 *   07/09/99    stephen     Removed kMaxCount (unused, for HP compiler)
 ******************************************************************************
 */
- 
+
 #ifndef DIGITLST_H
 #define DIGITLST_H
- 
+
 #include "unicode/uobject.h"
 
 #if !UCONFIG_NO_FORMATTING
@@ -53,12 +53,12 @@ typedef enum EDigitListValues {
 U_NAMESPACE_BEGIN
 
 class CharString;
-class DigitInterval; 
+class DigitInterval;
 
 // Export an explicit template instantiation of the MaybeStackHeaderAndArray that
 //    is used as a data member of DigitList.
 //
-//    MSVC requires this, even though it should not be necessary. 
+//    MSVC requires this, even though it should not be necessary.
 //    No direct access to the MaybeStackHeaderAndArray leaks out of the i18n library.
 //
 //    Macintosh produces duplicate definition linker errors with the explicit template
@@ -75,7 +75,7 @@ enum EFastpathBits { kFastpathOk = 1, kNoDecimal = 2 };
 
 /**
  * Digit List is actually a Decimal Floating Point number.
- * The original implementation has been replaced by a thin wrapper onto a 
+ * The original implementation has been replaced by a thin wrapper onto a
  * decimal number from the decNumber library.
  *
  * The original DigitList API has been retained, to minimize the impact of
@@ -134,7 +134,7 @@ public:
 
     /* copy constructor
      * @param DigitList The object to be copied.
-     * @return the newly created object. 
+     * @return the newly created object.
      */
     DigitList(const DigitList&); // copy constructor
 
@@ -171,9 +171,9 @@ public:
      *  leaving an integer value.
      */
     void toIntegralValue();
-    
+
     /**
-     * Appends digits to the list. 
+     * Appends digits to the list.
      *    CAUTION:  this function is not recommended for new code.
      *              In the original DigitList implementation, decimal numbers were
      *              parsed by appending them to a digit list as they were encountered.
@@ -286,7 +286,7 @@ public:
     //  The following functions replace direct access to the original DigitList implmentation
     //  data structures.
 
-    void setRoundingMode(DecimalFormat::ERoundingMode m); 
+    void setRoundingMode(DecimalFormat::ERoundingMode m);
 
     /** Test a number for zero.
      * @return  TRUE if the number is zero
@@ -316,7 +316,7 @@ public:
      * Round the number to the given number of digits.
      * @param maximumDigits The maximum number of digits to be shown.
      * Upon return, count will be less than or equal to maximumDigits.
-     * result is guaranteed to be trimmed. 
+     * result is guaranteed to be trimmed.
      */
     void round(int32_t maximumDigits);
 
@@ -326,17 +326,17 @@ public:
      *      the requested size.   Capacity is not reduced if it is already greater
      *      than requested.
      */
-    void  ensureCapacity(int32_t  requestedSize, UErrorCode &status); 
+    void  ensureCapacity(int32_t  requestedSize, UErrorCode &status);
 
     UBool    isPositive(void) const { return decNumberIsNegative(fDecNumber) == 0;}
-    void     setPositive(UBool s); 
+    void     setPositive(UBool s);
 
     void     setDecimalAt(int32_t d);
     int32_t  getDecimalAt();
 
     void     setCount(int32_t c);
     int32_t  getCount() const;
-    
+
     /**
      * Set the digit in platform (invariant) format, from '0'..'9'
      * @param i index of digit
@@ -411,7 +411,7 @@ public:
     /**
      * Like toScientific but only returns the exponent
      * leaving this instance unchanged.
-     */ 
+     */
     int32_t getScientificExponent(
             int32_t minIntDigitCount, int32_t exponentMultiplier) const;
 
@@ -463,7 +463,7 @@ private:
      */
 
 public:
-    decContext    fContext;   // public access to status flags.  
+    decContext    fContext;   // public access to status flags.
 
 private:
     decNumber     *fDecNumber;

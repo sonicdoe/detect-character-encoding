@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -15,6 +15,7 @@
 #if !UCONFIG_NO_FORMATTING && !UCONFIG_NO_BREAK_ITERATION
 
 #include "unicode/dtfmtsym.h"
+#include "unicode/ucasemap.h"
 #include "unicode/ureldatefmt.h"
 #include "unicode/udisplaycontext.h"
 #include "unicode/unum.h"
@@ -901,7 +902,7 @@ UnicodeString& RelativeDateTimeFormatter::format(
             case  100/* 1*/: direction = UDAT_DIRECTION_NEXT; break;
             case  200/* 2*/: direction = UDAT_DIRECTION_NEXT_2; break;
             default: break;
-    	}
+	}
     }
     UDateAbsoluteUnit absunit = UDAT_ABSOLUTE_UNIT_COUNT;
     switch (unit) {

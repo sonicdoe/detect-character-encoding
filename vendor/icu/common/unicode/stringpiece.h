@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 // Copyright (C) 2009-2013, International Business Machines
 // Corporation and others. All Rights Reserved.
@@ -23,7 +23,7 @@
 #define __STRINGPIECE_H__
 
 /**
- * \file 
+ * \file
  * \brief C++ API: StringPiece: Read-only byte string wrapper class.
  */
 
@@ -68,14 +68,12 @@ class U_COMMON_API StringPiece : public UMemory {
    * @stable ICU 4.2
    */
   StringPiece(const char* str);
-#if U_HAVE_STD_STRING
   /**
    * Constructs from a std::string.
    * @stable ICU 4.2
    */
   StringPiece(const std::string& str)
     : ptr_(str.data()), length_(static_cast<int32_t>(str.size())) { }
-#endif
   /**
    * Constructs from a const char * pointer and a specified length.
    * @param offset a const char * pointer (need not be terminated)
@@ -146,7 +144,7 @@ class U_COMMON_API StringPiece : public UMemory {
 
   /**
    * Reset the stringpiece to refer to new data.
-   * @param str a pointer to a NUL-terminated string. 
+   * @param str a pointer to a NUL-terminated string.
    * @stable ICU 4.8
    */
   void set(const char* str);
@@ -207,7 +205,7 @@ class U_COMMON_API StringPiece : public UMemory {
  * @return TRUE if the string data is equal
  * @stable ICU 4.8
  */
-U_EXPORT UBool U_EXPORT2 
+U_EXPORT UBool U_EXPORT2
 operator==(const StringPiece& x, const StringPiece& y);
 
 /**

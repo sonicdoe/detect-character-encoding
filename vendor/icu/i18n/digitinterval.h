@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -119,7 +119,7 @@ public:
      * Returns number of digits to the left of the decimal that this
      * interval includes. This is a synonym for getMostSignificantExclusive().
      */
-    int32_t getIntDigitCount() const { 
+    int32_t getIntDigitCount() const {
         return fLargestExclusive;
     }
 

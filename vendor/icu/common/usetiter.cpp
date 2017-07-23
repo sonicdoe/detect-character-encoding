@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -120,7 +120,7 @@ void UnicodeSetIterator::reset() {
     }
     range = 0;
     endElement = -1;
-    nextElement = 0;            
+    nextElement = 0;
     if (endRange >= 0) {
         loadRange(range);
     }

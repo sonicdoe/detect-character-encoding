@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  normalizer2.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -203,8 +203,8 @@ static UBool U_CALLCONV uprv_normalizer2_cleanup() {
     nfcSingleton = NULL;
     delete noopSingleton;
     noopSingleton = NULL;
-    nfcInitOnce.reset(); 
-    noopInitOnce.reset(); 
+    nfcInitOnce.reset();
+    noopInitOnce.reset();
     return TRUE;
 }
 

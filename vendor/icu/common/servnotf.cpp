@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /**
  *******************************************************************************
@@ -23,8 +23,8 @@ UOBJECT_DEFINE_RTTI_IMPLEMENTATION(EventListener)
 
 static UMutex notifyLock = U_MUTEX_INITIALIZER;
 
-ICUNotifier::ICUNotifier(void) 
-: listeners(NULL) 
+ICUNotifier::ICUNotifier(void)
+: listeners(NULL)
 {
 }
 
@@ -37,8 +37,8 @@ ICUNotifier::~ICUNotifier(void) {
 }
 
 
-void 
-ICUNotifier::addListener(const EventListener* l, UErrorCode& status) 
+void
+ICUNotifier::addListener(const EventListener* l, UErrorCode& status)
 {
     if (U_SUCCESS(status)) {
         if (l == NULL) {
@@ -70,8 +70,8 @@ ICUNotifier::addListener(const EventListener* l, UErrorCode& status)
     }
 }
 
-void 
-ICUNotifier::removeListener(const EventListener *l, UErrorCode& status) 
+void
+ICUNotifier::removeListener(const EventListener *l, UErrorCode& status)
 {
     if (U_SUCCESS(status)) {
         if (l == NULL) {
@@ -99,8 +99,8 @@ ICUNotifier::removeListener(const EventListener *l, UErrorCode& status)
     }
 }
 
-void 
-ICUNotifier::notifyChanged(void) 
+void
+ICUNotifier::notifyChanged(void)
 {
     if (listeners != NULL) {
         Mutex lmx(&notifyLock);
@@ -117,4 +117,3 @@ U_NAMESPACE_END
 
 /* UCONFIG_NO_SERVICE */
 #endif
-

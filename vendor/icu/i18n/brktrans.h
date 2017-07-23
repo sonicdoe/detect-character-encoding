@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -28,7 +28,7 @@ class UVector32;
 /**
  * A transliterator that pInserts the specified characters at word breaks.
  * To restrict it to particular characters, use a filter.
- * TODO: this is an internal class, and only temporary. 
+ * TODO: this is an internal class, and only temporary.
  * Remove it once we have \b notation in Transliterator.
  */
 class BreakTransliterator : public Transliterator {

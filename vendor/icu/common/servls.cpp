@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /**
  *******************************************************************************
@@ -93,12 +93,12 @@ ICULocaleService::get(const Locale& locale, int32_t kind, Locale* actualReturn, 
 
 
 URegistryKey
-ICULocaleService::registerInstance(UObject* objToAdopt, const UnicodeString& locale, 
+ICULocaleService::registerInstance(UObject* objToAdopt, const UnicodeString& locale,
     UBool visible, UErrorCode& status)
 {
     Locale loc;
     LocaleUtility::initLocaleFromName(locale, loc);
-    return registerInstance(objToAdopt, loc, LocaleKey::KIND_ANY, 
+    return registerInstance(objToAdopt, loc, LocaleKey::KIND_ANY,
         visible ? LocaleKeyFactory::VISIBLE : LocaleKeyFactory::INVISIBLE, status);
 }
 
@@ -291,5 +291,3 @@ U_NAMESPACE_END
 
 /* !UCONFIG_NO_SERVICE */
 #endif
-
-

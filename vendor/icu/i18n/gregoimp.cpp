@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
  **********************************************************************
@@ -111,9 +111,9 @@ void Grego::dayToFields(double day, int32_t& year, int32_t& month,
     } else {
         ++year;
     }
-    
+
     UBool isLeap = isLeapYear(year);
-    
+
     // Gregorian day zero is a Monday.
     dow = (int32_t) uprv_fmod(day + 1, 7);
     dow += (dow < 0) ? (UCAL_SUNDAY + 7) : UCAL_SUNDAY;

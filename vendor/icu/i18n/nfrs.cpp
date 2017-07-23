@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -6,7 +6,7 @@
 *   Corporation and others.  All Rights Reserved.
 ******************************************************************************
 *   file name:  nfrs.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -23,6 +23,7 @@
 #include "nfrule.h"
 #include "nfrlist.h"
 #include "patternprops.h"
+#include "putilimp.h"
 
 #ifdef RBNF_DEBUG
 #include "cmemory.h"
@@ -544,7 +545,7 @@ NFRuleSet::findNormalRule(int64_t number) const
         // an explanation of the rollback rule).  If we do, roll back
         // one rule and return that one instead of the one we'd normally
         // return
-        if (result->shouldRollBack((double)number)) {
+        if (result->shouldRollBack(number)) {
             if (hi == 1) { // bad rule set, no prior rule to rollback to from this base
                 return NULL;
             }
@@ -817,7 +818,7 @@ int64_t util64_fromDouble(double d) {
         } else if (d > mant) {
             d = mant;
         }
-        UBool neg = d < 0; 
+        UBool neg = d < 0;
         if (neg) {
             d = -d;
         }
@@ -829,26 +830,28 @@ int64_t util64_fromDouble(double d) {
     return result;
 }
 
-int64_t util64_pow(int32_t r, uint32_t e)  { 
-    if (r == 0) {
+int64_t util64_pow(int32_t base, uint16_t exponent)  {
+    if (base == 0) {
         return 0;
-    } else if (e == 0) {
-        return 1;
-    } else {
-        int64_t n = r;
-        while (--e > 0) {
-            n *= r;
-        }
-        return n;
     }
+    int64_t result = 1;
+    int64_t pow = base;
+    while (exponent > 0) {
+        if ((exponent & 1) == 1) {
+            result *= pow;
+        }
+        pow *= pow;
+        exponent >>= 1;
+    }
+    return result;
 }
 
-static const uint8_t asciiDigits[] = { 
+static const uint8_t asciiDigits[] = {
     0x30u, 0x31u, 0x32u, 0x33u, 0x34u, 0x35u, 0x36u, 0x37u,
     0x38u, 0x39u, 0x61u, 0x62u, 0x63u, 0x64u, 0x65u, 0x66u,
     0x67u, 0x68u, 0x69u, 0x6au, 0x6bu, 0x6cu, 0x6du, 0x6eu,
     0x6fu, 0x70u, 0x71u, 0x72u, 0x73u, 0x74u, 0x75u, 0x76u,
-    0x77u, 0x78u, 0x79u, 0x7au,  
+    0x77u, 0x78u, 0x79u, 0x7au,
 };
 
 static const UChar kUMinus = (UChar)0x002d;
@@ -929,7 +932,7 @@ int64_t util64_utoi(const UChar* str, uint32_t radix)
 }
 
 uint32_t util64_toa(int64_t w, char* buf, uint32_t len, uint32_t radix, UBool raw)
-{    
+{
     if (radix > 36) {
         radix = 36;
     } else if (radix < 2) {
@@ -975,7 +978,7 @@ uint32_t util64_toa(int64_t w, char* buf, uint32_t len, uint32_t radix, UBool ra
 #endif
 
 uint32_t util64_tou(int64_t w, UChar* buf, uint32_t len, uint32_t radix, UBool raw)
-{    
+{
     if (radix > 36) {
         radix = 36;
     } else if (radix < 2) {
@@ -1024,4 +1027,3 @@ U_NAMESPACE_END
 
 /* U_HAVE_RBNF */
 #endif
-

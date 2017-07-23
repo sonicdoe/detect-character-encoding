@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 ******************************************************************************
@@ -8,7 +8,7 @@
 *
 ******************************************************************************
 *   file name:  ucnvmbcs.cpp
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -35,7 +35,7 @@
 *   limitations and adds m:n character mappings and other features.
 *   See ucnv_ext.h for details.
 *
-*   Change history: 
+*   Change history:
 *
 *    5/6/2001       Ram       Moved  MBCS_SINGLE_RESULT_FROM_U,MBCS_STAGE_2_FROM_U,
 *                             MBCS_VALUE_2_FROM_STAGE_2, MBCS_VALUE_4_FROM_STAGE_2
@@ -848,7 +848,7 @@ ucnv_MBCSEnumToUnicode(UConverterMBCSTable *mbcsTable,
     }
 }
 
-U_CFUNC void 
+U_CFUNC void
 ucnv_MBCSGetFilteredUnicodeSetForUnicode(const UConverterSharedData *sharedData,
                                          const USetAdder *sa,
                                          UConverterUnicodeSet which,

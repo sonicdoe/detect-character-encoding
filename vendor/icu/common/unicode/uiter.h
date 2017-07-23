@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 *******************************************************************************
@@ -8,7 +8,7 @@
 *
 *******************************************************************************
 *   file name:  uiter.h
-*   encoding:   US-ASCII
+*   encoding:   UTF-8
 *   tab size:   8 (not used)
 *   indentation:4
 *
@@ -171,7 +171,7 @@ UCharIteratorHasNext(UCharIterator *iter);
  */
 typedef UBool U_CALLCONV
 UCharIteratorHasPrevious(UCharIterator *iter);
- 
+
 /**
  * Function type declaration for UCharIterator.current().
  *

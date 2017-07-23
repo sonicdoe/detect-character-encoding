@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -58,7 +58,7 @@ UnicodeFunctor* Quantifier::clone() const {
 UnicodeMatcher* Quantifier::toMatcher() const {
   Quantifier  *nonconst_this = const_cast<Quantifier *>(this);
   UnicodeMatcher *nonconst_base = static_cast<UnicodeMatcher *>(nonconst_this);
-  
+
   return nonconst_base;
 }
 

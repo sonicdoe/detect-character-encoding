@@ -1,4 +1,4 @@
-// Copyright (C) 2016 and later: Unicode, Inc. and others.
+// © 2016 and later: Unicode, Inc. and others.
 // License & terms of use: http://www.unicode.org/copyright.html
 /*
 **********************************************************************
@@ -70,7 +70,7 @@ UnicodeFunctor* FunctionReplacer::clone() const {
 UnicodeReplacer* FunctionReplacer::toReplacer() const {
   FunctionReplacer  *nonconst_this = const_cast<FunctionReplacer *>(this);
   UnicodeReplacer *nonconst_base = static_cast<UnicodeReplacer *>(nonconst_this);
-  
+
   return nonconst_base;
 }
 
