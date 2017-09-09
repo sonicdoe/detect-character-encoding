@@ -78,6 +78,7 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## Release history
 
+- v0.5.1 (2017-09-09): Fix compilation errors under Node.js v6 on macOS
 - v0.5.0 (2017-07-23):
   - Update to ICU 59.1
   - Add support for Alpine Linux
