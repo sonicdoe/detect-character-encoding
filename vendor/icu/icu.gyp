@@ -57,7 +57,10 @@
             'cflags_cc!': [ '-fno-rtti' ],
           }],
           [ 'OS == "mac" or OS == "ios"', {
-            'xcode_settings': {'GCC_ENABLE_CPP_RTTI': 'YES' },
+            'xcode_settings': {
+              'GCC_ENABLE_CPP_RTTI': 'YES',
+              'OTHER_CPLUSPLUSFLAGS': [ '-stdlib=libc++' ]
+            },
           }],
           [ 'OS == "win"', {
             'msvs_settings': {
