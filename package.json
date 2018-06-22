@@ -3,10 +3,7 @@
 	"version": "0.6.0",
 	"author": "Jakob Krigovsky <jakob@krigovsky.com>",
 	"description": "Detect character encoding using ICU.",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/sonicdoe/detect-character-encoding.git"
-	},
+	"repository": "sonicdoe/detect-character-encoding",
 	"keywords": [
 		"detect",
 		"character",
