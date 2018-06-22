@@ -8,15 +8,8 @@
 {
   'variables': {
     'icu_src_derb': [
-        'tools/genrb/derb.c',
-        'tools/genrb/derb.cpp',
-    ],
-    'conditions': [
-      ['OS == "win"', {
-        'os_posix': 0,
-      }, {
-        'os_posix': 1,
-      }],
+      'tools/genrb/derb.c',
+      'tools/genrb/derb.cpp'
     ],
   },
   'includes': [ 'icu_config.gypi' ],
@@ -26,6 +19,9 @@
       'target_name': 'icu_uconfig_target',
       'type': 'none',
       'toolsets': [ 'target' ],
+      'direct_dependent_settings': {
+        'defines': []
+      },
     },
     {
       # a target to hold uconfig defines.
@@ -35,16 +31,11 @@
       'toolsets': [ 'host', 'target' ],
       'direct_dependent_settings': {
         'defines': [
-          'UCONFIG_NO_LEGACY_CONVERSION=1',
-          'UCONFIG_NO_IDNA=1',
-          'UCONFIG_NO_TRANSLITERATION=1',
           'UCONFIG_NO_SERVICE=1',
           'UCONFIG_NO_REGULAR_EXPRESSIONS=1',
           'U_ENABLE_DYLOAD=0',
           'U_STATIC_IMPLEMENTATION=1',
-          # Don't need std::string in API.
-          # Also, problematic: <http://bugs.icu-project.org/trac/ticket/11333>
-          'U_HAVE_STD_STRING=0',
+          'U_HAVE_STD_STRING=1',
           # TODO(srl295): reenable following pending
           # https://code.google.com/p/v8/issues/detail?id=3345
           # (saves some space)
@@ -63,12 +54,10 @@
           [ 'os_posix == 1 and OS != "mac" and OS != "ios"', {
             'cflags': [ '-Wno-deprecated-declarations' ],
             'cflags_cc': [ '-frtti' ],
+            'cflags_cc!': [ '-fno-rtti' ],
           }],
           [ 'OS == "mac" or OS == "ios"', {
-            'xcode_settings': {
-              'GCC_ENABLE_CPP_RTTI': 'YES',
-              'OTHER_CPLUSPLUSFLAGS': [ '-stdlib=libc++' ]
-            },
+            'xcode_settings': {'GCC_ENABLE_CPP_RTTI': 'YES' },
           }],
           [ 'OS == "win"', {
             'msvs_settings': {
@@ -80,6 +69,7 @@
           'VCCLCompilerTool': {
             'RuntimeTypeInfo': 'true',
             'ExceptionHandling': '1',
+            'AdditionalOptions': [ '/source-charset:utf-8' ],
           },
         },
         'configurations': {
@@ -118,6 +108,80 @@
           'sources': [
             '<@(icu_src_i18n)'
           ],
+          ## if your compiler can dead-strip, these exclusions will
+          ## make ZERO difference to binary size.
+          ## Made ICU-specific for future-proofing.
+          'conditions': [
+            [ 'icu_ver_major == 55', { 'sources!': [
+              # alphabetic index
+              'i18n/alphaindex.cpp',
+              # BOCSU
+              # misc
+              'i18n/regexcmp.cpp',
+              'i18n/regexcmp.h',
+              'i18n/regexcst.h',
+              'i18n/regeximp.cpp',
+              'i18n/regeximp.h',
+              'i18n/regexst.cpp',
+              'i18n/regexst.h',
+              'i18n/regextxt.cpp',
+              'i18n/regextxt.h',
+              'i18n/region.cpp',
+              'i18n/region_impl.h',
+              'i18n/reldatefmt.cpp',
+              'i18n/reldatefmt.h'
+              'i18n/scientificformathelper.cpp',
+              'i18n/tmunit.cpp',
+              'i18n/tmutamt.cpp',
+              'i18n/tmutfmt.cpp',
+              'i18n/uregex.cpp',
+              'i18n/uregexc.cpp',
+              'i18n/uregion.cpp',
+              'i18n/uspoof.cpp',
+              'i18n/uspoof_build.cpp',
+              'i18n/uspoof_conf.cpp',
+              'i18n/uspoof_conf.h',
+              'i18n/uspoof_impl.cpp',
+              'i18n/uspoof_impl.h',
+              'i18n/uspoof_wsconf.cpp',
+              'i18n/uspoof_wsconf.h',
+            ]}],
+            [ 'icu_ver_major == 57', { 'sources!': [
+
+              # alphabetic index
+              'i18n/alphaindex.cpp',
+              # BOCSU
+              # misc
+              'i18n/regexcmp.cpp',
+              'i18n/regexcmp.h',
+              'i18n/regexcst.h',
+              'i18n/regeximp.cpp',
+              'i18n/regeximp.h',
+              'i18n/regexst.cpp',
+              'i18n/regexst.h',
+              'i18n/regextxt.cpp',
+              'i18n/regextxt.h',
+              'i18n/region.cpp',
+              'i18n/region_impl.h',
+              'i18n/reldatefmt.cpp',
+              'i18n/reldatefmt.h'
+              'i18n/scientificformathelper.cpp',
+              'i18n/tmunit.cpp',
+              'i18n/tmutamt.cpp',
+              'i18n/tmutfmt.cpp',
+              'i18n/uregex.cpp',
+              'i18n/uregexc.cpp',
+              'i18n/uregion.cpp',
+              'i18n/uspoof.cpp',
+              'i18n/uspoof_build.cpp',
+              'i18n/uspoof_conf.cpp',
+              'i18n/uspoof_conf.h',
+              'i18n/uspoof_impl.cpp',
+              'i18n/uspoof_impl.h',
+              'i18n/uspoof_wsconf.cpp',
+              'i18n/uspoof_wsconf.h',
+            ]}],
+            ],
           'include_dirs': [
             'i18n',
           ],
@@ -134,6 +198,8 @@
         }],
         ['_toolset=="host"', {
           'type': 'none',
+          'dependencies': [ 'icutools' ],
+          'export_dependent_settings': [ 'icutools' ],
         }],
       ],
     },
@@ -152,6 +218,7 @@
               'actions': [
                 {
                   'action_name': 'icudata',
+                  'msvs_quote_cmd': 0,
                   'inputs': [ '<(icu_data_in)' ],
                   'outputs': [ '<(SHARED_INTERMEDIATE_DIR)/icudt<(icu_ver_major)<(icu_endianness)_dat.obj' ],
                   'action': [ '<(PRODUCT_DIR)/genccode',
@@ -171,11 +238,12 @@
                 {
                   # trim down ICU
                   'action_name': 'icutrim',
+                  'msvs_quote_cmd': 0,
                   'inputs': [ '<(icu_data_in)', 'icu_small.json' ],
                   'outputs': [ '<(SHARED_INTERMEDIATE_DIR)/icutmp/icudt<(icu_ver_major)<(icu_endianness).dat' ],
                   'action': [ 'python',
                               'icutrim.py',
-                              '-P', '../../<(CONFIGURATION_NAME)',
+                              '-P', '<(PRODUCT_DIR)/.', # '.' suffix is a workaround against GYP assumptions :(
                               '-D', '<(icu_data_in)',
                               '--delete-tmp',
                               '-T', '<(SHARED_INTERMEDIATE_DIR)/icutmp',
@@ -187,9 +255,10 @@
                 {
                   # build final .dat -> .obj
                   'action_name': 'genccode',
+                  'msvs_quote_cmd': 0,
                   'inputs': [ '<(SHARED_INTERMEDIATE_DIR)/icutmp/icudt<(icu_ver_major)<(icu_endianness).dat' ],
                   'outputs': [ '<(SHARED_INTERMEDIATE_DIR)/icudt<(icu_ver_major)<(icu_endianness)_dat.obj' ],
-                  'action': [ '../../<(CONFIGURATION_NAME)/genccode',
+                  'action': [ '<(PRODUCT_DIR)/genccode',
                               '-o',
                               '-d', '<(SHARED_INTERMEDIATE_DIR)/',
                               '-n', 'icudata',
@@ -333,7 +402,39 @@
       'sources': [
         '<@(icu_src_common)',
       ],
+          ## if your compiler can dead-strip, this will
+          ## make ZERO difference to binary size.
+          ## Made ICU-specific for future-proofing.
       'conditions': [
+        [ 'icu_ver_major == 55', { 'sources!': [
+
+          # bidi- not needed (yet!)
+          'common/ubidi.c',
+          'common/ubidiimp.h',
+          'common/ubidiln.c',
+          'common/ubidiwrt.c',
+          #'common/ubidi_props.c',
+          #'common/ubidi_props.h',
+          #'common/ubidi_props_data.h',
+          # and the callers
+          'common/ushape.cpp',
+        ]}],
+        [ 'icu_ver_major == 57', { 'sources!': [
+          # work around http://bugs.icu-project.org/trac/ticket/12451
+          # (benign afterwards)
+          'common/cstr.cpp',
+
+          # bidi- not needed (yet!)
+          'common/ubidi.c',
+          'common/ubidiimp.h',
+          'common/ubidiln.c',
+          'common/ubidiwrt.c',
+          #'common/ubidi_props.c',
+          #'common/ubidi_props.h',
+          #'common/ubidi_props_data.h',
+          # and the callers
+          'common/ushape.cpp',
+        ]}],
         [ 'OS == "solaris"', { 'defines': [
           '_XOPEN_SOURCE_EXTENDED=0',
         ]}],
@@ -353,13 +454,13 @@
         'conditions': [
           [ 'OS=="win"', {
             'link_settings': {
-              'libraries': [ '-lAdvAPI32.Lib', '-lUser32.lib' ],
+              'libraries': [ '-lAdvAPI32.lib', '-lUser32.lib' ],
             },
           }],
         ],
       },
     },
-    # tools library
+    # tools library. This builds all of ICU together.
     {
       'target_name': 'icutools',
       'type': '<(library)',
@@ -404,7 +505,7 @@
         'conditions': [
           [ 'OS=="win"', {
             'link_settings': {
-              'libraries': [ '-lAdvAPI32.Lib', '-lUser32.lib' ],
+              'libraries': [ '-lAdvAPI32.lib', '-lUser32.lib' ],
             },
           }],
         ],
