@@ -14,18 +14,25 @@ const environments = [
 	{os: 'ubuntu', osVersion: '16.04', nodeVersion:  '6'},
 	{os: 'ubuntu', osVersion: '14.04', nodeVersion: '10'},
 	{os: 'ubuntu', osVersion: '14.04', nodeVersion:  '8'},
-	{os: 'ubuntu', osVersion: '14.04', nodeVersion:  '6'}
+	{os: 'ubuntu', osVersion: '14.04', nodeVersion:  '6'},
+	{os: 'debian', osVersion:     '9', nodeVersion: '10', dockerTag: '10-stretch'},
+	{os: 'debian', osVersion:     '9', nodeVersion:  '8', dockerTag:  '8-stretch'},
+	{os: 'debian', osVersion:     '9', nodeVersion:  '6', dockerTag:  '6-stretch'},
+	{os: 'debian', osVersion:     '8', nodeVersion: '10', dockerTag:  '10-jessie'},
+	{os: 'debian', osVersion:     '8', nodeVersion:  '8', dockerTag:   '8-jessie'},
+	{os: 'debian', osVersion:     '8', nodeVersion:  '6', dockerTag:   '6-jessie'}
 ];
 /* eslint-enable key-spacing */
 
 (async() => {
 	const templates = {
-		ubuntu: await fs.readFile(`${__dirname}/templates/ubuntu/Dockerfile`, 'utf8')
+		ubuntu: await fs.readFile(`${__dirname}/templates/ubuntu/Dockerfile`, 'utf8'),
+		debian: await fs.readFile(`${__dirname}/templates/debian/Dockerfile`, 'utf8')
 	};
 
 	const promises = environments.map(environment => {
-		const{os, osVersion, nodeVersion} = environment;
-		const variables = {TAG: osVersion, NODE_VERSION: nodeVersion};
+		const{os, osVersion, nodeVersion, dockerTag} = environment;
+		const variables = {TAG: (dockerTag || osVersion), NODE_VERSION: nodeVersion};
 
 		const dockerfile = dockerfileTemplate.process(templates[os], variables);
 		const dockerfilePath = `${__dirname}/${os}-${osVersion}/node-v${nodeVersion}/Dockerfile`;
