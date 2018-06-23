@@ -20,6 +20,10 @@ env:
   - ENVIRONMENT=alpine-node-node-v10
   - ENVIRONMENT=alpine-node-node-v8
   - ENVIRONMENT=alpine-node-node-v6
+matrix:
+  allow_failures:
+    - env: ENVIRONMENT=alpine-node-node-v8
+    - env: ENVIRONMENT=alpine-node-node-v6
 script:
   - docker-compose build $ENVIRONMENT
   - docker-compose run --rm $ENVIRONMENT
