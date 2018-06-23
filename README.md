@@ -31,16 +31,15 @@ console.log(charsetMatch);
 
 ## Supported environments
 
-detect-character-encoding should work fine on:
-
-- Ubuntu 14.04 x64
-- Ubuntu 16.04 x64
-- Ubuntu 18.04 x64
+- macOS High Sierra
+- Ubuntu 18.04
+- Ubuntu 16.04
+- Ubuntu 14.04
+- Debian 9
 - Debian 8
-- macOS 10.13
-- Alpine Linux
+- Alpine Linux (only Node.js v10 and later)
 
-You may currently encounter issues on 32-bit systems and Windows.
+You may encounter issues on 32-bit systems and Windows.
 
 ## Supported character sets
 
