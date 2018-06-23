@@ -3,6 +3,7 @@
 
 const fs = require('fs-extra');
 const dockerfileTemplate = require('dockerfile-template');
+const yaml = require('js-yaml');
 
 /* eslint-disable key-spacing */
 const environments = [
@@ -27,7 +28,7 @@ const environments = [
 ];
 /* eslint-enable key-spacing */
 
-(async() => {
+const generateDockerfiles = async() => {
 	const templates = {
 		ubuntu: await fs.readFile(`${__dirname}/templates/ubuntu/Dockerfile`, 'utf8'),
 		debian: await fs.readFile(`${__dirname}/templates/debian/Dockerfile`, 'utf8'),
@@ -45,4 +46,29 @@ const environments = [
 	});
 
 	return Promise.all(promises);
-})();
+};
+
+const generateComposeFile = () => {
+	const composeFile = {
+		version: '3',
+		services: environments.reduce((services, environment) => {
+			const{os, osVersion, nodeVersion} = environment;
+
+			services[`${os}-${osVersion}-node-v${nodeVersion}`] = {
+				build: {
+					context: '.',
+					dockerfile: `docker/${os}-${osVersion}/node-v${nodeVersion}/Dockerfile`
+				}
+			};
+
+			return services;
+		}, {})
+	};
+
+	return fs.writeFile(`${__dirname}/../docker-compose.yml`, yaml.safeDump(composeFile));
+};
+
+Promise.all([
+	generateDockerfiles(),
+	generateComposeFile()
+]);
