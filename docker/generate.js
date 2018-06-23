@@ -20,14 +20,18 @@ const environments = [
 	{os: 'debian', osVersion:     '9', nodeVersion:  '6', dockerTag:  '6-stretch'},
 	{os: 'debian', osVersion:     '8', nodeVersion: '10', dockerTag:  '10-jessie'},
 	{os: 'debian', osVersion:     '8', nodeVersion:  '8', dockerTag:   '8-jessie'},
-	{os: 'debian', osVersion:     '8', nodeVersion:  '6', dockerTag:   '6-jessie'}
+	{os: 'debian', osVersion:     '8', nodeVersion:  '6', dockerTag:   '6-jessie'},
+	{os: 'alpine', osVersion:  'node', nodeVersion: '10'},
+	{os: 'alpine', osVersion:  'node', nodeVersion:  '8'},
+	{os: 'alpine', osVersion:  'node', nodeVersion:  '6'}
 ];
 /* eslint-enable key-spacing */
 
 (async() => {
 	const templates = {
 		ubuntu: await fs.readFile(`${__dirname}/templates/ubuntu/Dockerfile`, 'utf8'),
-		debian: await fs.readFile(`${__dirname}/templates/debian/Dockerfile`, 'utf8')
+		debian: await fs.readFile(`${__dirname}/templates/debian/Dockerfile`, 'utf8'),
+		alpine: await fs.readFile(`${__dirname}/templates/alpine/Dockerfile`, 'utf8')
 	};
 
 	const promises = environments.map(environment => {
