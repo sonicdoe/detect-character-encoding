@@ -20,6 +20,7 @@
 		"vendor/icu"
 	],
 	"scripts": {
+		"generate-dockerfiles": "node docker/generate.js",
 		"test": "xo && mocha"
 	},
 	"dependencies": {
@@ -27,6 +28,8 @@
 		"nan": "^2.10.0"
 	},
 	"devDependencies": {
+		"dockerfile-template": "^0.1.0",
+		"fs-extra": "^6.0.1",
 		"mocha": "^5.2.0",
 		"xo": "^0.21.1"
 	},
