@@ -3,6 +3,8 @@
                                      'common/umutex.h',
                                      'common/cstring.cpp',
                                      'common/ucln.h',
+                                     'common/ucln_cmn.h',
+                                     'common/ucln_cmn.cpp',
                                      'common/putil.cpp',
                                      'common/cmemory.h',
                                      'common/uenum.cpp',
