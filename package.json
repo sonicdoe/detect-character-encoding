@@ -2,7 +2,7 @@
 	"name": "detect-character-encoding",
 	"version": "0.6.0",
 	"author": "Jakob Krigovsky <jakob@krigovsky.com>",
-	"description": "Detect character encoding using ICU.",
+	"description": "Detect character encoding using ICU",
 	"repository": "sonicdoe/detect-character-encoding",
 	"keywords": [
 		"detect",
