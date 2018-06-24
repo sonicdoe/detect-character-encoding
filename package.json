@@ -47,18 +47,6 @@
 			"after",
 			"beforeEach",
 			"afterEach"
-		],
-		"rules": {
-			"keyword-spacing": [
-				"error",
-				{
-					"after": false
-				}
-			],
-			"space-before-function-paren": [
-				"error",
-				"never"
-			]
-		}
+		]
 	}
 }

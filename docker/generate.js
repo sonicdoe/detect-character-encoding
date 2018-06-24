@@ -28,7 +28,7 @@ const environments = [
 ];
 /* eslint-enable key-spacing */
 
-const generateDockerfiles = async() => {
+const generateDockerfiles = async () => {
 	const templates = {
 		ubuntu: await fs.readFile(`${__dirname}/templates/ubuntu/Dockerfile`, 'utf8'),
 		debian: await fs.readFile(`${__dirname}/templates/debian/Dockerfile`, 'utf8'),
@@ -36,7 +36,7 @@ const generateDockerfiles = async() => {
 	};
 
 	const promises = environments.map(environment => {
-		const{os, osVersion, nodeVersion, dockerTag} = environment;
+		const {os, osVersion, nodeVersion, dockerTag} = environment;
 		const variables = {TAG: (dockerTag || osVersion), NODE_VERSION: nodeVersion};
 
 		const dockerfile = dockerfileTemplate.process(templates[os], variables);
@@ -52,7 +52,7 @@ const generateComposeFile = () => {
 	const composeFile = {
 		version: '3',
 		services: environments.reduce((services, environment) => {
-			const{os, osVersion, nodeVersion} = environment;
+			const {os, osVersion, nodeVersion} = environment;
 
 			services[`${os}-${osVersion}-node-v${nodeVersion}`] = {
 				build: {
