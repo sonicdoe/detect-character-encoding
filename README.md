@@ -78,4 +78,4 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## License
 
-detect-character-encoding is licensed under the BSD 2-clause license, subject to additional terms. See [LICENSE](./LICENSE) for the full license text.
+detect-character-encoding is licensed under the BSD 2-clause license but includes third-party software under different licenses. See [`LICENSE`](./LICENSE) for the full license text.
