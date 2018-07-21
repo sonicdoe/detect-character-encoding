@@ -38,15 +38,8 @@
 		"node": ">=6"
 	},
 	"xo": {
-		"globals": [
-			"describe",
-			"context",
-			"it",
-			"specify",
-			"before",
-			"after",
-			"beforeEach",
-			"afterEach"
+		"envs": [
+			"mocha"
 		]
 	}
 }
