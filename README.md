@@ -1,19 +1,17 @@
 # detect-character-encoding
 
-[![Node.js package](https://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
-[![Linux Build Status](https://img.shields.io/travis/sonicdoe/detect-character-encoding/develop.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
+[![npm](https://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
+[![Build status](https://img.shields.io/travis/sonicdoe/detect-character-encoding.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
 
-Detect character encoding using [ICU](http://site.icu-project.org).
+> Detect character encoding using [ICU](http://site.icu-project.org)
 
-## Getting started
+## Installation
 
-Install using:
-
-```shell
+```console
 $ npm install detect-character-encoding
 ```
 
-Use it like this:
+## Usage
 
 ```js
 const fs = require('fs');
@@ -29,17 +27,12 @@ console.log(charsetMatch);
 // }
 ```
 
-## Supported environments
+## Supported operating systems
 
 - macOS High Sierra
-- Ubuntu 18.04
-- Ubuntu 16.04
-- Ubuntu 14.04
-- Debian 9
-- Debian 8
-- Alpine Linux (only Node.js v10 and later)
-
-You may encounter issues on 32-bit systems and Windows.
+- Ubuntu 18.04, 16.04, and 14.04
+- Debian 9 and 8
+- Alpine Linux
 
 ## Supported character sets
 
