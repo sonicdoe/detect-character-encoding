@@ -32,7 +32,6 @@ console.log(charsetMatch);
 - macOS High Sierra
 - Ubuntu 18.04, 16.04, and 14.04
 - Debian 9 and 8
-- Alpine Linux
 
 ## Supported character sets
 
