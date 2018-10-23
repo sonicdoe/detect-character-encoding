@@ -11,7 +11,7 @@ function getFixture(fixture) {
 }
 
 it('should return the encoding', () => {
-	assert.equal(detectCharacterEncoding(getFixture('utf-8.txt')).encoding, 'UTF-8');
+	assert.strictEqual(detectCharacterEncoding(getFixture('utf-8.txt')).encoding, 'UTF-8');
 });
 
 it('should return a confidence value', () => {
