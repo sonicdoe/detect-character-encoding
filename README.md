@@ -33,6 +33,8 @@ console.log(charsetMatch);
 - Ubuntu 18.04, 16.04, and 14.04
 - Debian 9 and 8
 
+detect-character-encoding does not support 32-bit operating systems.
+
 ## Supported character sets
 
 As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/detection#TOC-Detected-Encodings):
