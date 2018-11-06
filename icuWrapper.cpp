@@ -40,6 +40,12 @@ NAN_METHOD(DetectCharacterEncoding) {
 		return;
 	}
 
+	if(charsetMatch == NULL) {
+		info.GetReturnValue().Set(Nan::Null());
+		ucsdet_close(charsetDetector);
+		return;
+	}
+
 	const char *charsetName = ucsdet_getName(charsetMatch, &errorCode);
 
 	if(U_FAILURE(errorCode)) {

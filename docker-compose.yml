@@ -1,0 +1,62 @@
+version: '3'
+services:
+  ubuntu-18.04-node-v10:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-18.04/node-v10/Dockerfile
+  ubuntu-18.04-node-v8:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-18.04/node-v8/Dockerfile
+  ubuntu-18.04-node-v6:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-18.04/node-v6/Dockerfile
+  ubuntu-16.04-node-v10:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-16.04/node-v10/Dockerfile
+  ubuntu-16.04-node-v8:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-16.04/node-v8/Dockerfile
+  ubuntu-16.04-node-v6:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-16.04/node-v6/Dockerfile
+  ubuntu-14.04-node-v10:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-14.04/node-v10/Dockerfile
+  ubuntu-14.04-node-v8:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-14.04/node-v8/Dockerfile
+  ubuntu-14.04-node-v6:
+    build:
+      context: .
+      dockerfile: docker/ubuntu-14.04/node-v6/Dockerfile
+  debian-9-node-v10:
+    build:
+      context: .
+      dockerfile: docker/debian-9/node-v10/Dockerfile
+  debian-9-node-v8:
+    build:
+      context: .
+      dockerfile: docker/debian-9/node-v8/Dockerfile
+  debian-9-node-v6:
+    build:
+      context: .
+      dockerfile: docker/debian-9/node-v6/Dockerfile
+  debian-8-node-v10:
+    build:
+      context: .
+      dockerfile: docker/debian-8/node-v10/Dockerfile
+  debian-8-node-v8:
+    build:
+      context: .
+      dockerfile: docker/debian-8/node-v8/Dockerfile
+  debian-8-node-v6:
+    build:
+      context: .
+      dockerfile: docker/debian-8/node-v6/Dockerfile

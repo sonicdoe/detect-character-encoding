@@ -1,12 +1,9 @@
 {
 	"name": "detect-character-encoding",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"author": "Jakob Krigovsky <jakob@krigovsky.com>",
-	"description": "Detect character encoding using ICU.",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/sonicdoe/detect-character-encoding.git"
-	},
+	"description": "Detect character encoding using ICU",
+	"repository": "sonicdoe/detect-character-encoding",
 	"keywords": [
 		"detect",
 		"character",
@@ -16,14 +13,14 @@
 	],
 	"license": "BSD-2-Clause",
 	"files": [
-		"vendor/icu",
 		"binding.gyp",
 		"config.gypi",
 		"icuWrapper.cpp",
 		"index.js",
-		"LICENSE"
+		"vendor/icu"
 	],
 	"scripts": {
+		"generate-dockerfiles": "node docker/generate.js",
 		"test": "xo && mocha"
 	},
 	"dependencies": {
@@ -31,34 +28,18 @@
 		"nan": "^2.10.0"
 	},
 	"devDependencies": {
+		"dockerfile-template": "^0.1.0",
+		"fs-extra": "^7.0.0",
+		"js-yaml": "^3.12.0",
 		"mocha": "^5.2.0",
-		"xo": "^0.21.1"
+		"xo": "^0.23.0"
 	},
 	"engines": {
 		"node": ">=6"
 	},
 	"xo": {
-		"globals": [
-			"describe",
-			"context",
-			"it",
-			"specify",
-			"before",
-			"after",
-			"beforeEach",
-			"afterEach"
-		],
-		"rules": {
-			"keyword-spacing": [
-				"error",
-				{
-					"after": false
-				}
-			],
-			"space-before-function-paren": [
-				"error",
-				"never"
-			]
-		}
+		"envs": [
+			"mocha"
+		]
 	}
 }

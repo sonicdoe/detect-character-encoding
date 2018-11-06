@@ -1,19 +1,17 @@
 # detect-character-encoding
 
-[![Node.js package](https://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
-[![Linux Build Status](https://img.shields.io/travis/sonicdoe/detect-character-encoding/develop.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
+[![npm](https://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
+[![Build status](https://img.shields.io/travis/sonicdoe/detect-character-encoding.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
 
-Detect character encoding using [ICU](http://site.icu-project.org).
+> Detect character encoding using [ICU](http://site.icu-project.org)
 
-## Getting started
+## Installation
 
-Install using:
-
-```shell
+```console
 $ npm install detect-character-encoding
 ```
 
-Use it like this:
+## Usage
 
 ```js
 const fs = require('fs');
@@ -29,18 +27,15 @@ console.log(charsetMatch);
 // }
 ```
 
-## Supported environments
+detect-character-encoding may return `null` if no charset matches.
 
-detect-character-encoding should work fine on:
+## Supported operating systems
 
-- Ubuntu 14.04 x64
-- Ubuntu 16.04 x64
-- Ubuntu 18.04 x64
-- Debian 8
-- macOS 10.13
-- Alpine Linux
+- macOS Mojave and macOS High Sierra
+- Ubuntu 18.04, 16.04, and 14.04
+- Debian 9 and 8
 
-You may currently encounter issues on 32-bit systems and Windows.
+detect-character-encoding does not support 32-bit operating systems.
 
 ## Supported character sets
 
@@ -77,33 +72,6 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 - IBM420
 - IBM424
 
-## Release history
-
-- v0.6.0 (2018-06-14):
-  - Add support for Node.js v10
-  - Add support for Ubuntu 18.04
-  - Drop support for Node.js v4
-  - Drop support for macOS 10.12
-- v0.5.1 (2017-09-09): Fix compilation errors under Node.js v6 on macOS
-- v0.5.0 (2017-07-23):
-  - Update to ICU 59.1
-  - Add support for Alpine Linux
-  - Drop support for Node.js v5 and v7
-- v0.4.0 (2017-07-02):
-  - Update to ICU 58.1
-  - Add support for Node.js v8
-  - Add support for Ubuntu 16.04 and drop support for Ubuntu 12.04
-  - Add support for Debian 8 and drop support for Debian 7
-  - Drop support for macOS versions older than macOS Sierra 10.12
-- v0.3.1 (2017-03-10):
-  - Fix continuing execution even after an error occurred.
-  - Fix memory leak by properly closing ICU’s charset detector.
-- v0.3.0 (2017-01-28): Add support for Node.js v6 and v7 and
-  drop support for Node.js v0.10 and v0.12.
-- v0.2.1 (2015-12-28): Republish because v0.2.0 didn’t include `config.gypi`.
-- v0.2.0 (2015-09-15): Add support for Node.js v4.
-- v0.1.0 (2015-03-15): Initial release.
-
 ## License
 
-detect-character-encoding is licensed under the BSD 2-clause license, subject to additional terms. See [LICENSE](./LICENSE) for the full license text.
+detect-character-encoding is licensed under the BSD 2-clause license but includes third-party software under different licenses. See [`LICENSE`](./LICENSE) for the full license text.

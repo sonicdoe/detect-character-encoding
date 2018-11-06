@@ -11,11 +11,15 @@ function getFixture(fixture) {
 }
 
 it('should return the encoding', () => {
-	assert.equal(detectCharacterEncoding(getFixture('utf-8.txt')).encoding, 'UTF-8');
+	assert.strictEqual(detectCharacterEncoding(getFixture('utf-8.txt')).encoding, 'UTF-8');
 });
 
 it('should return a confidence value', () => {
 	assert(typeof detectCharacterEncoding(getFixture('utf-8.txt')).confidence === 'number');
+});
+
+it('should return null if no charset matches', () => {
+	assert.strictEqual(detectCharacterEncoding(Buffer.from([0xAB])), null);
 });
 
 it('should throw a TypeError if argument is not a buffer', () => {
