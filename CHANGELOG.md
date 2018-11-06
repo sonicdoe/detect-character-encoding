@@ -2,6 +2,15 @@
 
 All releases and their notable changes are documented in this file. This project follows [Semantic Versioning 2](https://semver.org).
 
+## v0.7.0 (2018-11-06)
+
+- Update to ICU 61.1
+- Fix segmentation fault if no charset matches (it now returns `null` in that case) ([`992a110`](https://github.com/sonicdoe/detect-character-encoding/commit/992a11007fff6cfd40b952150ab8d30410c4a20a))
+- Add support for macOS Mojave
+- Add support for Debian 9
+- Drop support for macOS Sierra
+- Drop support for Alpine Linux
+
 ## v0.6.0 (2018-06-14)
 
 - Add support for Node.js v10
