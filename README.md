@@ -27,6 +27,8 @@ console.log(charsetMatch);
 // }
 ```
 
+detect-character-encoding may return `null` if no charset matches.
+
 ## Supported operating systems
 
 - macOS High Sierra
