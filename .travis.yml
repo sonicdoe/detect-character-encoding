@@ -2,15 +2,19 @@ language: generic
 services:
   - docker
 env:
+  - ENVIRONMENT=ubuntu-18.04-node-v12
   - ENVIRONMENT=ubuntu-18.04-node-v10
   - ENVIRONMENT=ubuntu-18.04-node-v8
   - ENVIRONMENT=ubuntu-18.04-node-v6
+  - ENVIRONMENT=ubuntu-16.04-node-v12
   - ENVIRONMENT=ubuntu-16.04-node-v10
   - ENVIRONMENT=ubuntu-16.04-node-v8
   - ENVIRONMENT=ubuntu-16.04-node-v6
+  - ENVIRONMENT=debian-9-node-v12
   - ENVIRONMENT=debian-9-node-v10
   - ENVIRONMENT=debian-9-node-v8
   - ENVIRONMENT=debian-9-node-v6
+  - ENVIRONMENT=debian-8-node-v12
   - ENVIRONMENT=debian-8-node-v10
   - ENVIRONMENT=debian-8-node-v8
   - ENVIRONMENT=debian-8-node-v6

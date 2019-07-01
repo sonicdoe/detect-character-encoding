@@ -7,15 +7,19 @@ const yaml = require('js-yaml');
 
 /* eslint-disable key-spacing */
 const environments = [
+	{os: 'ubuntu', osVersion: '18.04', nodeVersion: '12'},
 	{os: 'ubuntu', osVersion: '18.04', nodeVersion: '10'},
 	{os: 'ubuntu', osVersion: '18.04', nodeVersion:  '8'},
 	{os: 'ubuntu', osVersion: '18.04', nodeVersion:  '6'},
+	{os: 'ubuntu', osVersion: '16.04', nodeVersion: '12'},
 	{os: 'ubuntu', osVersion: '16.04', nodeVersion: '10'},
 	{os: 'ubuntu', osVersion: '16.04', nodeVersion:  '8'},
 	{os: 'ubuntu', osVersion: '16.04', nodeVersion:  '6'},
+	{os: 'debian', osVersion:     '9', nodeVersion: '12', dockerTag: '10-stretch'},
 	{os: 'debian', osVersion:     '9', nodeVersion: '10', dockerTag: '10-stretch'},
 	{os: 'debian', osVersion:     '9', nodeVersion:  '8', dockerTag:  '8-stretch'},
 	{os: 'debian', osVersion:     '9', nodeVersion:  '6', dockerTag:  '6-stretch'},
+	{os: 'debian', osVersion:     '8', nodeVersion: '12', dockerTag:  '10-jessie'},
 	{os: 'debian', osVersion:     '8', nodeVersion: '10', dockerTag:  '10-jessie'},
 	{os: 'debian', osVersion:     '8', nodeVersion:  '8', dockerTag:   '8-jessie'},
 	{os: 'debian', osVersion:     '8', nodeVersion:  '6', dockerTag:   '6-jessie'}
