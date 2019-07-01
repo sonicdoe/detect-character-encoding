@@ -12,10 +12,6 @@ services:
     build:
       context: .
       dockerfile: docker/ubuntu-18.04/node-v8/Dockerfile
-  ubuntu-18.04-node-v6:
-    build:
-      context: .
-      dockerfile: docker/ubuntu-18.04/node-v6/Dockerfile
   ubuntu-16.04-node-v12:
     build:
       context: .
@@ -28,10 +24,6 @@ services:
     build:
       context: .
       dockerfile: docker/ubuntu-16.04/node-v8/Dockerfile
-  ubuntu-16.04-node-v6:
-    build:
-      context: .
-      dockerfile: docker/ubuntu-16.04/node-v6/Dockerfile
   debian-9-node-v12:
     build:
       context: .
@@ -44,10 +36,6 @@ services:
     build:
       context: .
       dockerfile: docker/debian-9/node-v8/Dockerfile
-  debian-9-node-v6:
-    build:
-      context: .
-      dockerfile: docker/debian-9/node-v6/Dockerfile
   debian-8-node-v12:
     build:
       context: .
@@ -60,7 +48,3 @@ services:
     build:
       context: .
       dockerfile: docker/debian-8/node-v8/Dockerfile
-  debian-8-node-v6:
-    build:
-      context: .
-      dockerfile: docker/debian-8/node-v6/Dockerfile
