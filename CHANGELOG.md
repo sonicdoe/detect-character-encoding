@@ -2,6 +2,11 @@
 
 All releases and their notable changes are documented in this file. This project follows [Semantic Versioning 2](https://semver.org).
 
+## v0.8.0 (2019-07-01)
+
+- Add support for Node.js v12
+- Drop support for Ubuntu 14.04
+
 ## v0.7.0 (2018-11-06)
 
 - Update to ICU 61.1
