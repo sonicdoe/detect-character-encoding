@@ -32,7 +32,7 @@ detect-character-encoding may return `null` if no charset matches.
 ## Supported operating systems
 
 - macOS Mojave and macOS High Sierra
-- Ubuntu 18.04, 16.04, and 14.04
+- Ubuntu 18.04 and 16.04
 - Debian 9 and 8
 
 detect-character-encoding does not support 32-bit operating systems.

@@ -8,9 +8,6 @@ env:
   - ENVIRONMENT=ubuntu-16.04-node-v10
   - ENVIRONMENT=ubuntu-16.04-node-v8
   - ENVIRONMENT=ubuntu-16.04-node-v6
-  - ENVIRONMENT=ubuntu-14.04-node-v10
-  - ENVIRONMENT=ubuntu-14.04-node-v8
-  - ENVIRONMENT=ubuntu-14.04-node-v6
   - ENVIRONMENT=debian-9-node-v10
   - ENVIRONMENT=debian-9-node-v8
   - ENVIRONMENT=debian-9-node-v6
