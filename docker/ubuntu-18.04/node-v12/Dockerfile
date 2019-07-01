@@ -1,9 +1,9 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y \
   curl \
   gnupg \
-&& curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+&& curl -sL https://deb.nodesource.com/setup_12.x | bash - \
 && { \
       echo 'Package: nodejs'; \
       echo 'Pin: origin deb.nodesource.com'; \

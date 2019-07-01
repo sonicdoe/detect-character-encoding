@@ -6,7 +6,7 @@
 NAN_METHOD(DetectCharacterEncoding) {
 	Nan::HandleScope scope;
 
-	v8::Local<v8::Object> inputBuffer = info[0]->ToObject();
+	v8::Local<v8::Object> inputBuffer = Nan::To<v8::Object>(info[0]).ToLocalChecked();
 
 	UCharsetDetector *charsetDetector;
 	const UCharsetMatch *charsetMatch;
@@ -63,16 +63,16 @@ NAN_METHOD(DetectCharacterEncoding) {
 	}
 
 	v8::Local<v8::Object> obj = Nan::New<v8::Object>();
-	obj->Set(Nan::New<v8::String>("encoding").ToLocalChecked(), Nan::New<v8::String>(charsetName).ToLocalChecked());
-	obj->Set(Nan::New<v8::String>("confidence").ToLocalChecked(), Nan::New<v8::Number>(confidence));
+	Nan::Set(obj, Nan::New<v8::String>("encoding").ToLocalChecked(), Nan::New<v8::String>(charsetName).ToLocalChecked());
+	Nan::Set(obj, Nan::New<v8::String>("confidence").ToLocalChecked(), Nan::New<v8::Number>(confidence));
 
 	info.GetReturnValue().Set(obj);
 	ucsdet_close(charsetDetector);
 }
 
 void Init(v8::Local<v8::Object> exports) {
-	exports->Set(Nan::New<v8::String>("detectCharacterEncoding").ToLocalChecked(),
-		Nan::New<v8::FunctionTemplate>(DetectCharacterEncoding)->GetFunction());
+	Nan::Set(exports, Nan::New<v8::String>("detectCharacterEncoding").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<v8::FunctionTemplate>(DetectCharacterEncoding)).ToLocalChecked());
 }
 
 NODE_MODULE(icuWrapper, Init);
