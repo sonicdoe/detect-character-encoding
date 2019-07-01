@@ -6,7 +6,7 @@
 NAN_METHOD(DetectCharacterEncoding) {
 	Nan::HandleScope scope;
 
-	v8::Local<v8::Object> inputBuffer = info[0]->ToObject();
+	v8::Local<v8::Object> inputBuffer = Nan::To<v8::Object>(info[0]).ToLocalChecked();
 
 	UCharsetDetector *charsetDetector;
 	const UCharsetMatch *charsetMatch;
