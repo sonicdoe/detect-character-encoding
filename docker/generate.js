@@ -11,6 +11,8 @@ const environments = [
 	{os: 'ubuntu', osVersion: '18.04', nodeVersion: '10'},
 	{os: 'ubuntu', osVersion: '16.04', nodeVersion: '12'},
 	{os: 'ubuntu', osVersion: '16.04', nodeVersion: '10'},
+	{os: 'debian', osVersion:    '10', nodeVersion: '12', dockerTag: '10-buster'},
+	{os: 'debian', osVersion:    '10', nodeVersion: '10', dockerTag: '10-buster'},
 	{os: 'debian', osVersion:     '9', nodeVersion: '12', dockerTag: '10-stretch'},
 	{os: 'debian', osVersion:     '9', nodeVersion: '10', dockerTag: '10-stretch'},
 	{os: 'debian', osVersion:     '8', nodeVersion: '12', dockerTag:  '10-jessie'},
