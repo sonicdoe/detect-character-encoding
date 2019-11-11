@@ -70,9 +70,8 @@ NAN_METHOD(DetectCharacterEncoding) {
 	ucsdet_close(charsetDetector);
 }
 
-void Init(v8::Local<v8::Object> exports) {
-	Nan::Set(exports, Nan::New<v8::String>("detectCharacterEncoding").ToLocalChecked(),
-		Nan::GetFunction(Nan::New<v8::FunctionTemplate>(DetectCharacterEncoding)).ToLocalChecked());
+void Init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
+	Nan::SetMethod(module, "exports", DetectCharacterEncoding);
 }
 
 NODE_MODULE(icuWrapper, Init);
