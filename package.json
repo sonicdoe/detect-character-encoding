@@ -21,13 +21,14 @@
 	],
 	"scripts": {
 		"generate-dockerfiles": "node docker/generate.js",
-		"test": "xo && mocha"
+		"test": "clang-format --Wclang-format-violations --Werror --dry-run icuWrapper.cpp && xo && mocha"
 	},
 	"dependencies": {
 		"bindings": "^1.3.0",
 		"nan": "^2.14.0"
 	},
 	"devDependencies": {
+		"clang-format": "^1.3.0",
 		"dockerfile-template": "^0.1.0",
 		"fs-extra": "^7.0.0",
 		"js-yaml": "^3.13.1",
