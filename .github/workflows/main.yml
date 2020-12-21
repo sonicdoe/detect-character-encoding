@@ -1,0 +1,27 @@
+name: CI
+on:
+  - push
+  - pull_request
+jobs:
+  test:
+    name: ${{ matrix.container }}, Node.js ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: apt-get update && apt-get --yes install build-essential python
+      - run: npm ci
+      - run: npm test
+    strategy:
+      matrix:
+        container:
+          - debian:10
+          - debian:9
+          - ubuntu:18.04
+        node-version:
+          - 12
+          - 10
+      fail-fast: false
+    container: ${{ matrix.container }}
