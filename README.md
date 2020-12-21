@@ -11,6 +11,8 @@
 $ npm install detect-character-encoding
 ```
 
+detect-character-encoding is a C++ addon. Therefore, you may need to install various build tools. Check [node-gyp’s readme](https://github.com/nodejs/node-gyp#installation) for more information.
+
 ## Usage
 
 ```js
