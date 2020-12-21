@@ -14,9 +14,7 @@ const environments = [
 	{os: 'debian', osVersion:    '10', nodeVersion: '12', dockerTag: '10-buster'},
 	{os: 'debian', osVersion:    '10', nodeVersion: '10', dockerTag: '10-buster'},
 	{os: 'debian', osVersion:     '9', nodeVersion: '12', dockerTag: '10-stretch'},
-	{os: 'debian', osVersion:     '9', nodeVersion: '10', dockerTag: '10-stretch'},
-	{os: 'debian', osVersion:     '8', nodeVersion: '12', dockerTag:  '10-jessie'},
-	{os: 'debian', osVersion:     '8', nodeVersion: '10', dockerTag:  '10-jessie'}
+	{os: 'debian', osVersion:     '9', nodeVersion: '10', dockerTag: '10-stretch'}
 ];
 /* eslint-enable key-spacing */
 

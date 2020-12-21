@@ -10,8 +10,6 @@ env:
   - ENVIRONMENT=debian-10-node-v10
   - ENVIRONMENT=debian-9-node-v12
   - ENVIRONMENT=debian-9-node-v10
-  - ENVIRONMENT=debian-8-node-v12
-  - ENVIRONMENT=debian-8-node-v10
 script:
   - docker-compose build $ENVIRONMENT
   - docker-compose run --rm $ENVIRONMENT
