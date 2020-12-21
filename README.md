@@ -1,8 +1,5 @@
 # detect-character-encoding
 
-[![npm](https://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
-[![Build status](https://img.shields.io/travis/sonicdoe/detect-character-encoding.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
-
 > Detect character encoding using [ICU](http://site.icu-project.org)
 
 ## Installation
