@@ -26,6 +26,5 @@ jobs:
           - 16
           - 14
           - 12
-          - 10
       fail-fast: false
     container: ${{ matrix.container }}
