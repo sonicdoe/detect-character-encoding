@@ -2,6 +2,8 @@
 
 > Detect character encoding using [ICU](http://site.icu-project.org)
 
+**Tip:** If you don’t need ICU in particular, consider using [ced](https://github.com/sonicdoe/ced), which is based on Google’s lighter [compact_enc_det](https://github.com/google/compact_enc_det) library.
+
 ## Installation
 
 ```console
