@@ -23,6 +23,7 @@ jobs:
           - ubuntu:20.04
           - ubuntu:18.04
         node-version:
+          - 18
           - 16
           - 14
       fail-fast: false
