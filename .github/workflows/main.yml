@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: apt-get update && apt-get --yes install build-essential python
+      - run: apt-get update && apt-get --yes install build-essential python3
       - run: npm ci
       - run: npm test
     strategy:
@@ -19,9 +19,8 @@ jobs:
         container:
           - debian:11
           - debian:10
-          - debian:9
+          - ubuntu:22.04
           - ubuntu:20.04
-          - ubuntu:18.04
         node-version:
           - 18
           - 16
