@@ -25,6 +25,5 @@ jobs:
         node-version:
           - 16
           - 14
-          - 12
       fail-fast: false
     container: ${{ matrix.container }}
