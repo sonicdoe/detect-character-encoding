@@ -1,6 +1,6 @@
 {
 	"name": "detect-character-encoding",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"author": "Jakob Krigovsky <jakob@krigovsky.com>",
 	"description": "Detect character encoding using ICU",
 	"repository": "sonicdoe/detect-character-encoding",
