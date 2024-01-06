@@ -2,6 +2,18 @@
 
 All releases and their notable changes are documented in this file. This project follows [Semantic Versioning 2](https://semver.org).
 
+## v0.9.0 (2024-01-06)
+
+- Update to ICU 64.2
+- Add support for Node.js v20 and v18
+- Add support for Debian 12, 11, and 10
+- Add support for Ubuntu 22.04 and 20.04
+- Add support for macOS Sonoma
+- Drop support for Node.js v16 and older
+- Drop support for Debian 9 and older
+- Drop support for Ubuntu 18.04 and older
+- Drop support for macOS Ventura and older
+
 ## v0.8.0 (2019-07-01)
 
 - Add support for Node.js v12
