@@ -2,7 +2,7 @@
 
 **BSD 2-Clause License**
 
-Copyright © 2015, 2017–2019, Jakob Krigovsky<br>
+Copyright © 2015, 2017–2019, 2024 Jakob Krigovsky<br>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -14,13 +14,13 @@ Redistribution and use in source and binary forms, with or without modification,
 
 ## Acknowledgments
 
-### ICU ([source](https://github.com/unicode-org/icu/blob/release-61-1/icu4c/LICENSE))
+### ICU ([source](https://github.com/unicode-org/icu/blob/release-64-2/icu4c/LICENSE))
 
 ```
 COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
 
-Copyright © 1991-2018 Unicode, Inc. All rights reserved.
-Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
+Copyright © 1991-2019 Unicode, Inc. All rights reserved.
+Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of the Unicode data files and any associated documentation

@@ -1,15 +1,16 @@
 # detect-character-encoding
 
-[![npm](https://img.shields.io/npm/v/detect-character-encoding.svg)](https://www.npmjs.com/package/detect-character-encoding)
-[![Build status](https://img.shields.io/travis/sonicdoe/detect-character-encoding.svg)](https://travis-ci.org/sonicdoe/detect-character-encoding)
-
 > Detect character encoding using [ICU](http://site.icu-project.org)
+
+**Tip:** If you don’t need ICU in particular, consider using [ced](https://github.com/sonicdoe/ced), which is based on Google’s lighter [compact_enc_det](https://github.com/google/compact_enc_det) library.
 
 ## Installation
 
 ```console
 $ npm install detect-character-encoding
 ```
+
+detect-character-encoding is a C++ addon. Therefore, you may need to install various build tools. Check [node-gyp’s readme](https://github.com/nodejs/node-gyp#installation) for more information.
 
 ## Usage
 
@@ -31,9 +32,9 @@ detect-character-encoding may return `null` if no charset matches.
 
 ## Supported operating systems
 
-- macOS Mojave and macOS High Sierra
-- Ubuntu 18.04 and 16.04
-- Debian 9 and 8
+- macOS Sonoma
+- Ubuntu 22.04 and 20.04
+- Debian 12, 11, and 10
 
 detect-character-encoding does not support 32-bit operating systems.
 
@@ -74,4 +75,4 @@ As listed in [ICU’s user guide](http://userguide.icu-project.org/conversion/de
 
 ## License
 
-detect-character-encoding is licensed under the BSD 2-clause license but includes third-party software under different licenses. See [`LICENSE`](./LICENSE) for the full license text.
+detect-character-encoding is licensed under the BSD 2-clause license but includes third-party software under different licenses. See [`LICENSE.md`](./LICENSE.md) for the full license text.

@@ -1,6 +1,6 @@
 {
 	"name": "detect-character-encoding",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"author": "Jakob Krigovsky <jakob@krigovsky.com>",
 	"description": "Detect character encoding using ICU",
 	"repository": "sonicdoe/detect-character-encoding",
@@ -20,22 +20,19 @@
 		"vendor/icu"
 	],
 	"scripts": {
-		"generate-dockerfiles": "node docker/generate.js",
-		"test": "xo && mocha"
+		"test": "clang-format --Wclang-format-violations --Werror --dry-run icuWrapper.cpp && xo && mocha"
 	},
 	"dependencies": {
 		"bindings": "^1.3.0",
-		"nan": "^2.14.0"
+		"nan": "^2.18.0"
 	},
 	"devDependencies": {
-		"dockerfile-template": "^0.1.0",
-		"fs-extra": "^7.0.0",
-		"js-yaml": "^3.13.1",
-		"mocha": "^5.2.0",
-		"xo": "^0.24.0"
+		"clang-format": "^1.8.0",
+		"mocha": "^10.2.0",
+		"xo": "^0.28.0"
 	},
 	"engines": {
-		"node": ">=6"
+		"node": ">=18"
 	},
 	"xo": {
 		"envs": [
