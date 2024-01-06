@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: apt-get update && apt-get --yes install build-essential python
+      - run: apt-get update && apt-get --yes install build-essential python3
       - run: npm ci
       - run: npm test
     strategy:
