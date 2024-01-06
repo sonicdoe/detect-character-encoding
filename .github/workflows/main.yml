@@ -21,7 +21,6 @@ jobs:
           - debian:11
           - debian:10
           - ubuntu:20.04
-          - ubuntu:18.04
         node-version:
           - 16
           - 14
