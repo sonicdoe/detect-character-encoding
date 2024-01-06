@@ -24,8 +24,5 @@ jobs:
           - ubuntu:20.04
         node-version:
           - 18
-          - 16
-          - 14
-          - 12
       fail-fast: false
     container: ${{ matrix.container }}
