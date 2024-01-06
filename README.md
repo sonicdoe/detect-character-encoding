@@ -32,7 +32,7 @@ detect-character-encoding may return `null` if no charset matches.
 
 ## Supported operating systems
 
-- macOS Big Sur
+- macOS Sonoma
 - Ubuntu 22.04 and 20.04
 - Debian 12, 11, and 10
 
